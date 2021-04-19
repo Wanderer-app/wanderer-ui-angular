@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <h3 class="mt-3">{{pin!!.title}}</h3>
+            <div>Author Name</div>
+        </div>
+
+        <div class="col-4 text-right">
+            <button class="btn btn-sm btn-secondary mt-3 mr-1" (click)="close()"><b>. . .</b></button>
+            <button class="btn btn-sm btn-secondary mt-3" (click)="close()"><b>X</b></button>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-2 text-left">
+            <div class="text-center" style="width:fit-content">
+                <div class="triangle-up"></div>
+                <div class="mt-1 mb-1 font-weight-bold" style="font-size: xx-large;">{{pin!!.rating.totalRating}}</div>
+                <div class="triangle-down"></div>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div>{{pin!!.text}}</div>
+        </div>
+    </div>
+</div>

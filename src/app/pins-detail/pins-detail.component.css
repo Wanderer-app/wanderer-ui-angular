@@ -1,0 +1,11 @@
+.triangle-up {
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	border-bottom: 30px solid #555;
+}
+
+.triangle-down {
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	border-top: 30px solid #555;
+}
