@@ -1,3 +1,4 @@
+import { FileType } from "src/app/common/data/file-data";
 import { PinType } from "src/app/common/data/pinType";
 import { PinData } from "./pin-data";
 
@@ -15,8 +16,12 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
         commentsPreview: [],
         routeCode: "123",
         title: "Title 1",
-        text: "Adipisicing fugiat ut tempor mollit exercitation. Irure ipsum minim enim quis cupidatat. Sunt est pariatur adipisicing nulla dolore deserunt magna. Ipsum fugiat occaecat velit aliquip nisi in ea et in ex anim enim. Do adipisicing ipsum nostrud anim id excepteur occaecat est. Voluptate culpa voluptate adipisicing ut Lorem reprehenderit veniam incididunt.",
-        attachedFile: undefined,
+        text: `Adipisicing commodo deserunt adipisicing culpa esse amet proident. Eu consectetur eu Lorem aliqua reprehenderit adipisicing amet nulla cillum aute Lorem quis quis. Officia consequat voluptate consectetur qui do. Nostrud anim ut dolore ex laboris dolore aliquip nulla quis ad.
+
+        Eiusmod mollit elit ipsum consectetur culpa aliqua ut minim nisi id. Lorem dolor voluptate occaecat nulla sunt ad. Ut laboris dolor culpa ad culpa Lorem deserunt ipsum quis consectetur. Cupidatat labore ullamco cillum incididunt aliquip.
+        
+        Enim amet commodo magna laborum. Eiusmod ex mollit tempor nostrud id id. Occaecat id officia ullamco enim proident non ipsum. Aliqua eiusmod fugiat magna duis ea sit veniam est et aute elit dolore ipsum. Elit minim ullamco labore culpa excepteur culpa fugiat culpa elit labore. Minim aliqua sit reprehenderit non magna proident officia.`,
+        attachedFile: {externalId: "123456", fileType: FileType.IMAGE},
         type: PinType.TIP,
         location: {lat: 1, lng: 2}
     },

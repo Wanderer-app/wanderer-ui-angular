@@ -24,4 +24,10 @@
             <div>{{pin!!.text}}</div>
         </div>
     </div>
+
+    <div *ngIf="pin!!.attachedFile" class="card m-2">
+        <div *ngIf="pin!!.attachedFile!!.fileType == 'image'">
+            <!-- <img src='{{ "assets/img/" + files[pin!!.attachedFile!!.externalId] }}' alt="">  -->
+        </div>
+    </div>
 </div>

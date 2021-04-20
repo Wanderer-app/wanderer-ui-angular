@@ -11,6 +11,11 @@ export class PinsDetailComponent implements OnInit {
   @Input() pin?: PinData
   @Output() closeDetailsEvent = new EventEmitter();
 
+  files: Map<string, string> = new Map([
+    ["123456", "butterfly.jpg"],
+    ["1234567", "aaa.txt"]
+  ])
+
   constructor() { }
 
   ngOnInit(): void {
