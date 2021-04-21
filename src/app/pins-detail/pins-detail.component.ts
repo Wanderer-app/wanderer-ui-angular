@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { RatingComponentSize } from '../rating/rating-size';
 import { PinData } from './data/pin-data';
 
 @Component({
@@ -10,6 +11,8 @@ export class PinsDetailComponent implements OnInit {
 
   @Input() pin?: PinData
   @Output() closeDetailsEvent = new EventEmitter();
+
+  ratingSize = RatingComponentSize.MEDIUM
 
   files: Map<string, string> = new Map([
     ["123456", "butterfly.jpg"],

@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PinsComponent } from './pins/pins.component';
 import { PinsDetailComponent } from './pins-detail/pins-detail.component';
+import { RatingComponent } from './rating/rating.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PinsComponent,
-    PinsDetailComponent
+    PinsDetailComponent,
+    RatingComponent
   ],
   imports: [
     BrowserModule,

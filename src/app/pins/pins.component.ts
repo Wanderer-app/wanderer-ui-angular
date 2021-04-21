@@ -19,12 +19,14 @@ export class PinsComponent implements OnInit {
   }
 
   select(pin: PinData) {
+    document.getElementById('pins-div')?.classList.add("d-none")
+    document.getElementById('pins-div')?.classList.add("d-lg-block")
     this.selectedPin = pin
   }
 
   closePinDetail() {
-    console.log("closing");
-    
+    document.getElementById('pins-div')?.classList.remove("d-none")
+    document.getElementById('pins-div')?.classList.remove("d-lg-block")
     this.selectedPin = undefined
   }
 

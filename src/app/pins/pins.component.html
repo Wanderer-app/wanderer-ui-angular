@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col">
+    <div id="pins-div" class="col">
         <div class="container-fluid">
             <h3 class="mt-3">Pins:</h3>
         
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div *ngIf="selectedPin" class="col">
+    <div *ngIf="selectedPin" class="col col-lg-4">
         <app-pins-detail [pin]="selectedPin" (closeDetailsEvent)="closePinDetail()"></app-pins-detail>
     </div>
 </div>
