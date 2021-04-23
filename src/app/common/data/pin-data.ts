@@ -25,3 +25,13 @@ export interface PinData {
     location: LatLng
     userVoteDirection?: VoteDirection
 }
+
+export interface PinShortData {
+    id: number,
+    routeCode: string,
+    location: LatLng,
+    type: PinType,
+    createdAt: Date,
+    title: string,
+    rating: number
+}

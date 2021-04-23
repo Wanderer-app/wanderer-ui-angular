@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { RatingComponentSize } from '../rating/rating-size';
-import { PinData } from './data/pin-data';
+import { PinData } from '../common/data/pin-data';
+import { PinsService } from '../services/pins/pins.service';
 
 @Component({
   selector: 'app-pins-detail',
@@ -19,7 +20,7 @@ export class PinsDetailComponent implements OnInit {
     ["1234567", "aaa.txt"]
   ])
 
-  constructor() { }
+  constructor(public pinsService: PinsService) { }
 
   ngOnInit(): void {
   }

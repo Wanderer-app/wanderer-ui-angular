@@ -7,13 +7,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PinsComponent } from './pins/pins.component';
 import { PinsDetailComponent } from './pins-detail/pins-detail.component';
 import { RatingComponent } from './rating/rating.component';
+import { CommentsComponent } from './comments/comments.component';
+import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     PinsComponent,
     PinsDetailComponent,
-    RatingComponent
+    RatingComponent,
+    CommentsComponent,
+    UserFullNamePipePipe
   ],
   imports: [
     BrowserModule,

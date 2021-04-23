@@ -1,20 +1,74 @@
+import { analyzeAndValidateNgModules } from "@angular/compiler";
 import { FileType } from "src/app/common/data/file-data";
 import { PinType } from "src/app/common/data/pinType";
 import { VoteDirection } from "src/app/common/data/vote-direction";
-import { PinData } from "./pin-data";
+import { PinData } from "src/app/common/data/pin-data";
+import { JAMBURA, PATATA, JANGULA } from "src/app/common/mock/mocked-short-users";
 
 export const MOCKED_PIN_DETAILS: PinData[] = [
     {
         id: 1,
-        creator: {},
+        creator: JAMBURA,
         createdAt: new Date(),
         updatedAt: new Date(),
         isActive: true,
         isRemoved: false,
         isRelevant: true,
         rating: {totalRating: 5},
-        commentsNumber: 0,
-        commentsPreview: [],
+        commentsNumber: 2,
+        commentsPreview: [
+            {
+                id: 1,
+                author: PATATA,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                text: "atrakeb",
+                rating: {totalRating: -1},
+                isActive: true,
+                isRemoved: false,
+                responseNumber: 1,
+                userVoteDirection: VoteDirection.DOWN,
+                responsesPreview: [
+                    {
+                        id: 2,
+                        author: JAMBURA,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        text: "ara shen atrakeb",
+                        rating: {totalRating: 1},
+                        isActive: true,
+                        isRemoved: false,
+                        responseNumber: 0,
+                        responsesPreview: [],
+                    },
+                    {
+                        id: 3,
+                        author: JANGULA,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        text: "bbbbbbbbb",
+                        rating: {totalRating: 3},
+                        isActive: true,
+                        isRemoved: false,
+                        responseNumber: 0,
+                        responsesPreview: [],
+                    }
+                ]
+            },
+            {
+                id: 4,
+                author: JANGULA,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                text: "aaaaaaaaaaaa",
+                rating: {totalRating: 5},
+                isActive: true,
+                isRemoved: false,
+                responseNumber: 1,
+                responsesPreview: [],
+                userVoteDirection: VoteDirection.UP
+            }
+        ],
         routeCode: "123",
         title: "Title 1",
         text: `Adipisicing commodo deserunt adipisicing culpa esse amet proident. Eu consectetur eu Lorem aliqua reprehenderit adipisicing amet nulla cillum aute Lorem quis quis. Officia consequat voluptate consectetur qui do. Nostrud anim ut dolore ex laboris dolore aliquip nulla quis ad.
@@ -29,7 +83,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
     },
     {
         id: 2,
-        creator: {},
+        creator: PATATA,
         createdAt: new Date(),
         updatedAt: new Date(),
         isActive: true,
@@ -48,7 +102,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
     },
     {
         id: 3,
-        creator: {},
+        creator: JANGULA,
         createdAt: new Date(),
         updatedAt: new Date(),
         isActive: true,

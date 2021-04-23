@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserContentType } from '../common/data/user-content-type';
 import { VoteDirection } from '../common/data/vote-direction';
+import { RateableContentService } from '../services/rateable-content-service';
 import { RatingComponentSize } from './rating-size';
 
 @Component({
@@ -11,8 +12,9 @@ import { RatingComponentSize } from './rating-size';
 export class RatingComponent implements OnInit {
 
   @Input() size!: RatingComponentSize
-  @Input() contentId!: Number
-  @Input() ratingValue!: Number
+  @Input() contentId!: number
+  @Input() ratingValue!: number
+  @Input() service!: RateableContentService
   @Input() userVoteDirection?: VoteDirection
 
   constructor() { }
@@ -53,18 +55,24 @@ export class RatingComponent implements OnInit {
   }
 
   upVote() {
-    console.log("Upvoting Content " + this.contentId);
-    this.userVoteDirection = VoteDirection.UP
+    this.service.upVote(this.contentId).subscribe(ratingData => {
+      this.ratingValue = ratingData.totalRating
+      this.userVoteDirection = VoteDirection.UP
+    })
   }
 
   downVote() {
-    console.log("Downvoting Content " + this.contentId);
-    this.userVoteDirection = VoteDirection.DOWN
+    this.service.downVote(this.contentId).subscribe(ratingData => {
+      this.ratingValue = ratingData.totalRating
+      this.userVoteDirection = VoteDirection.DOWN
+    })
   }
 
   removeVote() {
-    console.log("Removing vote from Content " + this.contentId);
-    this.userVoteDirection = undefined
+    this.service.removeVote(this.contentId).subscribe(ratingData => {
+      this.ratingValue = ratingData.totalRating
+      this.userVoteDirection = undefined
+    })
   }
 
   isUpVoted(): boolean {
