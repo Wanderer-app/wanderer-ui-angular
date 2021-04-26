@@ -38,7 +38,7 @@ export class CommentsComponent implements OnInit {
 
   loadMoreComments() {
     this.commentableContentService.getComments(this.commentableContentId)
-    .subscribe(data => data.forEach(d => this.comments.unshift(d)))
+    .subscribe(data => this.comments.unshift(...data))
   }
 
   addCommentToContent() {    
@@ -66,6 +66,15 @@ export class CommentsComponent implements OnInit {
         })
         this.replyForm.reset()
     }
+  }
+
+  getMoreReplies(comment: CommentData) {
+    this.commentsService.getComments(comment.id)
+      .subscribe(replies => {
+        if (replies.length !== 0) {
+          comment.responsesPreview.push(...replies)
+        }
+      })
   }
 
 }

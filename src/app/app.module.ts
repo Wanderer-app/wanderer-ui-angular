@@ -10,6 +10,7 @@ import { RatingComponent } from './rating/rating.component';
 import { CommentsComponent } from './comments/comments.component';
 import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ContentControlMenuComponent } from './content-control-menu/content-control-menu.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     PinsDetailComponent,
     RatingComponent,
     CommentsComponent,
-    UserFullNamePipePipe
+    UserFullNamePipePipe,
+    ContentControlMenuComponent,
   ],
   imports: [
     BrowserModule,

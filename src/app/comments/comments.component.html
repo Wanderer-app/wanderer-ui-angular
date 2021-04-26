@@ -12,7 +12,10 @@
                 <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small>{{comment.createdAt.toJSON()}}</small>
                 <p class="mb-0">{{comment.text}}</p>
             </div>
-            <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(comment)">Reply</button>
+            <div class="btn-group-sm" role="group">
+                <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(comment)">Reply</button>
+                <button class="btn btn-sm btn-link mb-2 text-secondary" *ngIf="comment.responseNumber > comment.responsesPreview.length" (click)="getMoreReplies(comment)">Show More Replies</button>
+            </div>
             <div class="mb-2" *ngIf="selectedCommentForReply?.id === comment.id">
                 <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
                     <div class="row g-1">
@@ -50,9 +53,15 @@
                 <div class="col-9">
                     <div class="">
                         <h5 class="d-inline me-2">{{ response.author | fullname }}</h5> <small>{{response.createdAt.toJSON()}}</small>
-                        <p class="mb-0">{{response.text}}</p>
+                        <p class="mb-0">
+                            <small><span class="badge rounded-pill bg-secondary"><u>@{{comment.author | fullname}}</u></span></small> 
+                            {{response.text}}
+                        </p>
                     </div>
-                    <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(response)">Reply</button>
+                    <div class="btn-group-sm" role="group">
+                        <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(response)">Reply</button>
+                        <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="getMoreReplies(response)">Show More Replies</button>
+                    </div>
                     <div class="mb-2" *ngIf="selectedCommentForReply?.id === response.id">
                         <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
                             <div class="row g-1">

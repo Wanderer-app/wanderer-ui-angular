@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
-import { JAMBURA } from 'src/app/common/mock/mocked-short-users';
+import { JAMBURA, JANGULA } from 'src/app/common/mock/mocked-short-users';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,33 @@ export class CommentsService implements CommentableContentService, RateableConte
   constructor() { }
   getComments(id: number): Observable<CommentData[]> {
     console.log(`getting Comment ${id} responses`);
-    return of([])
+    let data: CommentData[] = [
+      {
+        id: 100,
+        author: JAMBURA,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        text: "aeeeeeeeeeeeeee",
+        rating: {totalRating: 2000},
+        isActive: true,
+        isRemoved: false,
+        responseNumber: 0,
+        responsesPreview: [],
+    },
+    {
+        id: 101,
+        author: JANGULA,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        text: "aeeeeeeeeeeeeeeeee",
+        rating: {totalRating: 5},
+        isActive: true,
+        isRemoved: false,
+        responseNumber: 0,
+        responsesPreview: [],
+    }
+    ]
+    return of(data)
   }
   addComment(id: number, text: string): Observable<CommentData> {
     console.log(`adding response to comment ${id}. Response text: ${text}`);

@@ -26,7 +26,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
                 rating: {totalRating: -1},
                 isActive: true,
                 isRemoved: false,
-                responseNumber: 1,
+                responseNumber: 4,
                 userVoteDirection: VoteDirection.DOWN,
                 responsesPreview: [
                     {
@@ -64,7 +64,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
                 rating: {totalRating: 5},
                 isActive: true,
                 isRemoved: false,
-                responseNumber: 1,
+                responseNumber: 0,
                 responsesPreview: [],
                 userVoteDirection: VoteDirection.UP
             }

@@ -2,6 +2,8 @@ import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angu
 import { RatingComponentSize } from '../rating/rating-size';
 import { PinData } from '../common/data/pin-data';
 import { PinsService } from '../services/pins/pins.service';
+import { UserContentType } from '../common/data/user-content-type';
+import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
 
 @Component({
   selector: 'app-pins-detail',
@@ -14,6 +16,8 @@ export class PinsDetailComponent implements OnInit {
   @Output() closeDetailsEvent = new EventEmitter();
 
   ratingSize = RatingComponentSize.MEDIUM
+  pinContentType = UserContentType.PIN
+  controlMenuPlacement = ContentControlMenuPlacement.LEFT_TOP
 
   files: Map<string, string> = new Map([
     ["123456", "butterfly.jpg"],

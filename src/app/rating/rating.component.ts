@@ -39,6 +39,9 @@ export class RatingComponent implements OnInit {
   }
 
   getRatingValueSize(): string {
+    if (this.ratingValue >= 1000) {
+      return "small"
+    }
     switch(this.size) {
       case RatingComponentSize.LARGE: 
           return "xx-large"

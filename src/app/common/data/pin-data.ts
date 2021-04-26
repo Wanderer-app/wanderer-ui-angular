@@ -11,9 +11,9 @@ export interface PinData {
     creator: UserShortData
     createdAt: Date
     updatedAt: Date
-    isActive: Boolean
-    isRemoved: Boolean
-    isRelevant: Boolean
+    isActive: boolean
+    isRemoved: boolean
+    isRelevant: boolean
     rating: RatingData
     commentsNumber: number
     commentsPreview: CommentData[]
