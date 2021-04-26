@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportReason } from '../common/data/report-reason';
 import { UserContentType } from '../common/data/user-content-type';
 import { UserFullData } from '../common/data/user-full-data';
 import { JAMBURA } from '../common/mock/mocked-short-users';
@@ -24,7 +26,7 @@ export class ContentControlMenuComponent implements OnInit {
     isAdmin: true
   }
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -45,4 +47,42 @@ export class ContentControlMenuComponent implements OnInit {
     return this.loggedInUser.id !== this.contentCreatorId || (this.loggedInUser.isAdmin && this.loggedInUser.id !== this.contentCreatorId)
   }
 
+  reportModal() {
+    const modalRef = this.modalService.open(ReportModal);
+    modalRef.result.then(result => {
+      if (result) {
+        let reason = (result as ReportReason)
+        console.log("selected report reason: " + reason);
+        this.report(reason)
+      }
+    })
+  }
+
+  report(reason: ReportReason) {
+    console.log("Will call service to reprot for " + reason);
+    
+  }
+
+}
+
+@Component({
+  selector: 'ngbd-modal-content',
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title">Choose Report Reason</h4>
+    </div>
+    <div class="modal-body">
+      <p>Hello, world</p>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="activeModal.close(selectedReason)">Report</button>
+      <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">Close</button>
+    </div>
+  `
+})
+export class ReportModal {
+
+  selectedReason: ReportReason = ReportReason.INAPPROPRIATE_CONTENT
+
+  constructor(public activeModal: NgbActiveModal) {}
 }
