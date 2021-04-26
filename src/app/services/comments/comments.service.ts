@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
+import { JAMBURA } from 'src/app/common/mock/mocked-short-users';
 
 @Injectable({
   providedIn: 'root'

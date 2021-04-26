@@ -9,6 +9,7 @@ import { PinsDetailComponent } from './pins-detail/pins-detail.component';
 import { RatingComponent } from './rating/rating.component';
 import { CommentsComponent } from './comments/comments.component';
 import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

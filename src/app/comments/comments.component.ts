@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommentData } from '../common/data/comment-data';
 import { RatingComponentSize } from '../rating/rating-size';
 import { CommentableContentService } from '../services/commentable-content-servce';
@@ -17,8 +18,20 @@ export class CommentsComponent implements OnInit {
   @Input() commentableContentService!: CommentableContentService
 
   ratingSize: RatingComponentSize = RatingComponentSize.SMALL;
+  selectedCommentForReply?: CommentData = undefined
 
-  constructor(public commentsService: CommentsService) { }
+  addCommentForm = this.formBuilder.group({
+    newCommentText: ['']
+  })
+
+  replyForm = this.formBuilder.group({
+    replyText: ['']
+  })
+
+  constructor(
+    public commentsService: CommentsService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
   }
@@ -29,11 +42,30 @@ export class CommentsComponent implements OnInit {
   }
 
   addCommentToContent() {    
-    let commentText = (document.getElementById("newCommentText")! as HTMLInputElement).value
+    let commentText = this.addCommentForm.controls.newCommentText.value
     this.commentableContentService.addComment(this.commentableContentId, commentText)
-      .subscribe(newComment =>
+      .subscribe(newComment => {
         this.comments.push(newComment)
-      )
+      })
+    this.addCommentForm.reset()
+  }
+
+  showReplyForm(comment: CommentData) {
+    this.selectedCommentForReply = comment
+  }
+
+  replyToComment() {
+    if (this.selectedCommentForReply) {
+      let comment = this.selectedCommentForReply
+      let replyText = this.replyForm.controls.replyText.value
+
+      this.commentsService.addComment(this.selectedCommentForReply.id, replyText)
+        .subscribe(reply => {
+          comment.responsesPreview.push(reply);
+          this.selectedCommentForReply = undefined
+        })
+        this.replyForm.reset()
+    }
   }
 
 }

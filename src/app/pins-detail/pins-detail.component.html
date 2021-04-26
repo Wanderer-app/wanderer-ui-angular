@@ -5,15 +5,15 @@
             <div>{{pin!!.creator | fullname}}</div>
         </div>
 
-        <div class="col-4 text-right">
-            <button class="btn btn-sm btn-secondary mt-3 mr-1"><b>. . .</b></button>
+        <div class="col-4 text-end">
+            <button class="btn btn-sm btn-secondary mt-3 me-1"><b>. . .</b></button>
             <button class="btn btn-sm btn-secondary mt-3" (click)="close()"><b>X</b></button>
         </div>
     </div>
     <hr>
 
-    <div class="row">
-        <div class="col-sm-2 text-left">
+    <div class="row g-1">
+        <div class="col-sm-2 text-start">
             <app-rating 
                 [size]="ratingSize"
                 [contentId]="pin!!.id"

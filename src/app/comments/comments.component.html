@@ -3,14 +3,28 @@
 
 <div class="mt-2" *ngFor="let comment of comments">
 
-    <div class="row">
+    <div class="row gx-2">
         <div class="col-1">
             <img src="assets/img/avatar.jpg" alt="" style="max-width: 100%;height: auto;" class="rounded-circle img-fluid">
         </div>
         <div class="col-9">
-            <div class="">
-                <h5 class="d-inline mr-2">{{ comment.author | fullname }}</h5> <small>{{comment.createdAt.toJSON()}}</small>
-                <p>{{comment.text}}</p>
+            <div>
+                <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small>{{comment.createdAt.toJSON()}}</small>
+                <p class="mb-0">{{comment.text}}</p>
+            </div>
+            <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(comment)">Reply</button>
+            <div class="mb-2" *ngIf="selectedCommentForReply?.id === comment.id">
+                <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
+                    <div class="row g-1">
+                        <div class="col-sm-10 form-group">
+                            <textarea required formControlName="replyText" class="form-control" style="resize: none;" rows="1" placeholder="Reply..."></textarea>
+                        </div>
+                    
+                        <div class="col-sm-2 form-group">
+                            <button type="submit" [disabled]="!replyForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-1 text-right">
@@ -26,20 +40,34 @@
         </div>
     </div>
 
-    <div class="row" *ngFor="let response of comment.responsesPreview">
-        <div class="col-1 border-right border-dark" ></div>
+    <div class="row gx-2" *ngFor="let response of comment.responsesPreview">
+        <div class="col-1 border-end border-dark" ></div>
         <div class="col-11">
-            <div class="row">
+            <div class="row gx-2">
                 <div class="col-1">
                     <img src="assets/img/avatar.jpg" alt="" style="max-width: 100%;height: auto;" class="rounded-circle img-fluid">
                 </div>
                 <div class="col-9">
                     <div class="">
-                        <h5 class="d-inline mr-2">{{ response.author | fullname }}</h5> <small>{{response.createdAt.toJSON()}}</small>
-                        <p>{{response.text}}</p>
+                        <h5 class="d-inline me-2">{{ response.author | fullname }}</h5> <small>{{response.createdAt.toJSON()}}</small>
+                        <p class="mb-0">{{response.text}}</p>
+                    </div>
+                    <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(response)">Reply</button>
+                    <div class="mb-2" *ngIf="selectedCommentForReply?.id === response.id">
+                        <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
+                            <div class="row g-1">
+                                <div class="col-sm-10 form-group">
+                                    <textarea required formControlName="replyText" class="form-control" style="resize: none;" rows="1" placeholder="Reply..."></textarea>
+                                </div>
+                            
+                                <div class="col-sm-2 form-group">
+                                    <button type="submit" [disabled]="!replyForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-1 text-right">
+                <div class="col-1 text-end">
                     <app-rating 
                         [size]="ratingSize"
                         [contentId]="response.id"
@@ -56,14 +84,14 @@
 
 <hr>
 
-<form class="mt-2" onsubmit="return false">
-    <div class="row">
-        <div class="col-10 form-group">
-            <textarea id="newCommentText" minlength="3" class="form-control ng-invalid" style="resize: none;" rows="3" placeholder="Add Comment..."></textarea>
+<form class="mt-2" onsubmit="return false" [formGroup]="addCommentForm" (ngSubmit)="addCommentToContent()">
+    <div class="row g-1">
+        <div class="col-sm-10 form-group">
+            <textarea required formControlName="newCommentText" class="form-control" style="resize: none;" rows="2" placeholder="Add Comment..."></textarea>
         </div>
     
-        <div class="col-2 form-group">
-            <button type="submit" (click)="addCommentToContent()" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
+        <div class="col-sm-2 form-group">
+            <button type="submit" [disabled]="!addCommentForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
         </div>
     </div>
 </form>

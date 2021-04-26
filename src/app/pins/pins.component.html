@@ -6,8 +6,8 @@
             <div *ngFor="let pin of pins" class="card mt-4" (click)="select(pin)">
                 <div class="card-body">
                     <div class="row">
-                        <div class="text-left col"><b>{{pin.id}}</b> - {{pin.title}}</div>
-                        <div class="text-right col">Score: {{pin.rating}}</div>
+                        <div class="text-start col"><b>{{pin.id}}</b> - {{pin.title}}</div>
+                        <div class="text-end col">Score: {{pin.rating}}</div>
                     </div>
                     <div>
                         {{pin.createdAt.toJSON()}} <br> {{pin.location | json}}
