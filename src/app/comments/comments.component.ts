@@ -11,10 +11,10 @@ import { CommentsService } from '../services/comments/comments.service';
 })
 export class CommentsComponent implements OnInit {
 
-  @Input() contentId!: number
+  @Input() commentableContentId!: number
   @Input() comments!: CommentData[]
   @Input() totalCommentsNumber!: number
-  @Input() service!: CommentableContentService
+  @Input() commentableContentService!: CommentableContentService
 
   ratingSize: RatingComponentSize = RatingComponentSize.SMALL;
 
@@ -24,8 +24,16 @@ export class CommentsComponent implements OnInit {
   }
 
   loadMoreComments() {
-    this.service.getComments(this.contentId)
+    this.commentableContentService.getComments(this.commentableContentId)
     .subscribe(data => data.forEach(d => this.comments.unshift(d)))
+  }
+
+  addCommentToContent() {    
+    let commentText = (document.getElementById("newCommentText")! as HTMLInputElement).value
+    this.commentableContentService.addComment(this.commentableContentId, commentText)
+      .subscribe(newComment =>
+        this.comments.push(newComment)
+      )
   }
 
 }

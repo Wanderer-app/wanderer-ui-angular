@@ -35,10 +35,10 @@
 
     <div class="mt-2">
         <app-comments
-            [contentId]="pin!!.id"
+            [commentableContentId]="pin!!.id"
             [comments]="pin!!.commentsPreview"
             [totalCommentsNumber]="pin!!.commentsNumber"
-            [service]="pinsService"
+            [commentableContentService]="pinsService"
         ></app-comments>
     </div>
     

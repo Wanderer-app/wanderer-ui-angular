@@ -12,10 +12,12 @@ export class CommentsService implements CommentableContentService, RateableConte
 
   constructor() { }
   getComments(id: number): Observable<CommentData[]> {
-    throw new Error('Method not implemented.');
+    console.log(`getting Comment ${id} responses`);
+    return of([])
   }
-  addComment(id: number): Observable<CommentData> {
-    throw new Error('Method not implemented.');
+  addComment(id: number, text: string): Observable<CommentData> {
+    console.log(`adding response to comment ${id}. Response text: ${text}`);
+    return of()
   }
   upVote(id: number): Observable<RatingData> {
     console.log(`up voting a comment ${id}`);

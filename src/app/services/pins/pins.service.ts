@@ -15,8 +15,8 @@ export class PinsService implements CommentableContentService, RateableContentSe
     console.log(`getting Pin ${id} comments`);
     return of([])
   }
-  addComment(id: number): Observable<CommentData> {
-    console.log(`adding comment to a pin ${id}`);
+  addComment(id: number, text: string): Observable<CommentData> {
+    console.log(`adding comment to a pin ${id}. Comment text: ${text}`);
     return of()
   }
   upVote(id: number): Observable<RatingData> {

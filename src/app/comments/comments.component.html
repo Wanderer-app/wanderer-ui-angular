@@ -53,3 +53,17 @@
     </div>
 
 </div>
+
+<hr>
+
+<form class="mt-2" onsubmit="return false">
+    <div class="row">
+        <div class="col-10 form-group">
+            <textarea id="newCommentText" minlength="3" class="form-control ng-invalid" style="resize: none;" rows="3" placeholder="Add Comment..."></textarea>
+        </div>
+    
+        <div class="col-2 form-group">
+            <button type="submit" (click)="addCommentToContent()" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
+        </div>
+    </div>
+</form>
