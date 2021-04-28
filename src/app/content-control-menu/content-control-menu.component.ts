@@ -4,6 +4,9 @@ import { ReportReason } from '../common/data/report-reason';
 import { UserContentType } from '../common/data/user-content-type';
 import { UserFullData } from '../common/data/user-full-data';
 import { JAMBURA } from '../common/mock/mocked-short-users';
+import { AreYouSureModalComponent } from '../common/modals/are-you-sure-modal/are-you-sure-modal.component';
+import { ContentReportModalComponent } from '../common/modals/content-report-modal/content-report-modal.component';
+import { UserAddedContentService } from '../services/user-added-content-service';
 import { ContentControlMenuPlacement } from './menu-placement';
 
 @Component({
@@ -18,9 +21,10 @@ export class ContentControlMenuComponent implements OnInit {
   @Input() contentId!: number
   @Input() contentCreatorId!: number
   @Input() contentIsActive!: boolean
+  @Input() service!: UserAddedContentService
 
   loggedInUser: UserFullData = {
-    id: 111111,
+    id: JAMBURA.id,
     firstName: JAMBURA.firstName,
     lastName: JAMBURA.lastName,
     isAdmin: true
@@ -47,42 +51,35 @@ export class ContentControlMenuComponent implements OnInit {
     return this.loggedInUser.id !== this.contentCreatorId || (this.loggedInUser.isAdmin && this.loggedInUser.id !== this.contentCreatorId)
   }
 
-  reportModal() {
-    const modalRef = this.modalService.open(ReportModal);
+  report() {
+    const modalRef = this.modalService.open(ContentReportModalComponent);
     modalRef.result.then(result => {
       if (result) {
-        let reason = (result as ReportReason)
-        console.log("selected report reason: " + reason);
-        this.report(reason)
+        this.service.report(this.contentId, (result as ReportReason))
       }
     })
   }
 
-  report(reason: ReportReason) {
-    console.log("Will call service to reprot for " + reason);
-    
+  activate() {
+    const modal = this.modalService.open(AreYouSureModalComponent);
+    modal.componentInstance.question = `Are you sure you want to activate this ${this.contentType}?`
+
+    modal.result.then(result => {
+      if((result as boolean)) {
+        this.service.activate(this.contentId)
+      }
+    })
   }
 
-}
+  remove() {
+    const modal = this.modalService.open(AreYouSureModalComponent);
+    modal.componentInstance.question = `Are you sure you want to remove this ${this.contentType}?`
 
-@Component({
-  selector: 'ngbd-modal-content',
-  template: `
-    <div class="modal-header">
-      <h4 class="modal-title">Choose Report Reason</h4>
-    </div>
-    <div class="modal-body">
-      <p>Hello, world</p>
-    </div>
-    <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="activeModal.close(selectedReason)">Report</button>
-      <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">Close</button>
-    </div>
-  `
-})
-export class ReportModal {
+    modal.result.then(result => {
+      if((result as boolean)) {
+        this.service.remove(this.contentId)      }
+    })
+  
+  }
 
-  selectedReason: ReportReason = ReportReason.INAPPROPRIATE_CONTENT
-
-  constructor(public activeModal: NgbActiveModal) {}
 }

@@ -11,6 +11,8 @@ import { CommentsComponent } from './comments/comments.component';
 import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContentControlMenuComponent } from './content-control-menu/content-control-menu.component';
+import { AreYouSureModalComponent } from './common/modals/are-you-sure-modal/are-you-sure-modal.component';
+import { ContentReportModalComponent } from './common/modals/content-report-modal/content-report-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ContentControlMenuComponent } from './content-control-menu/content-cont
     CommentsComponent,
     UserFullNamePipePipe,
     ContentControlMenuComponent,
+    AreYouSureModalComponent,
+    ContentReportModalComponent,
   ],
   imports: [
     BrowserModule,

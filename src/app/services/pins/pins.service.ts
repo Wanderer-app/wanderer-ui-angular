@@ -4,13 +4,28 @@ import { Observable, of  } from 'rxjs';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
+import { UserAddedContentService } from '../user-added-content-service';
+import { ReportReason } from 'src/app/common/data/report-reason';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PinsService implements CommentableContentService, RateableContentService {
+export class PinsService implements CommentableContentService, RateableContentService, UserAddedContentService {
 
   constructor() { }
+
+  activate(id: number): Observable<boolean> {
+    console.log(`activating Pin ${id}`);
+    return of(true)
+  }
+  remove(id: number): Observable<boolean> {
+    console.log(`removing Pin ${id}`);
+    return of(true)
+  }
+  report(id: number, reason: ReportReason): Observable<boolean> {
+    console.log(`reporting Pin ${id} with reason ${reason}`);
+    return of(true)
+  }
   getComments(id: number): Observable<CommentData[]> {
     console.log(`getting Pin ${id} comments`);
     return of([])

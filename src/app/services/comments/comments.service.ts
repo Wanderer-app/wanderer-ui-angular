@@ -5,13 +5,28 @@ import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
 import { JAMBURA, JANGULA } from 'src/app/common/mock/mocked-short-users';
+import { UserAddedContentService } from '../user-added-content-service';
+import { ReportReason } from 'src/app/common/data/report-reason';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentsService implements CommentableContentService, RateableContentService {
+export class CommentsService implements CommentableContentService, RateableContentService, UserAddedContentService {
 
   constructor() { }
+
+  activate(id: number): Observable<boolean> {
+    console.log(`activating comment ${id}`);
+    return of(true)
+  }
+  remove(id: number): Observable<boolean> {
+    console.log(`removing comment ${id}`);
+    return of(true)
+  }
+  report(id: number, reason: ReportReason): Observable<boolean> {
+    console.log(`reporting comment ${id} with reason ${reason}`);
+    return of(true)
+  }
   getComments(id: number): Observable<CommentData[]> {
     console.log(`getting Comment ${id} responses`);
     let data: CommentData[] = [
