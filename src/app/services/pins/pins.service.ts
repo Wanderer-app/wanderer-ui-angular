@@ -23,7 +23,11 @@ export class PinsService implements CommentableContentService, RateableContentSe
     return of(true)
   }
   report(id: number, reason: ReportReason): Observable<boolean> {
-    console.log(`reporting Pin ${id} with reason ${reason}`);
+    if (reason === ReportReason.IRRELEVANT) {
+      console.log(`marking Pin ${id} as irrelevant`);
+    } else {
+      console.log(`reporting Pin ${id} with reason ${reason}`);
+    }
     return of(true)
   }
   getComments(id: number): Observable<CommentData[]> {

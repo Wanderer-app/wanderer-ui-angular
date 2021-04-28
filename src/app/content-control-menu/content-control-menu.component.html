@@ -5,7 +5,7 @@
         <li *ngIf="hasFullRights() && !contentIsActive" ngbDropdownItem><button (click)="activate()" class="dropdown-item" type="button">Activate</button></li>
         <li *ngIf="hasFullRights() && contentIsActive" ngbDropdownItem><button (click)="remove()" class="dropdown-item" type="button">Remove</button></li>
         <li *ngIf="isCreator() && contentIsActive" ngbDropdownItem><button class="dropdown-item" type="button">Edit</button></li>
-        <li *ngIf="isPin() && contentIsActive" ngbDropdownItem><button class="dropdown-item" type="button">Mark As Irrelevant</button></li>
+        <li *ngIf="isPin() && contentIsActive" ngbDropdownItem><button (click)="markIrrelevant()" class="dropdown-item" type="button">Mark As Irrelevant</button></li>
         <li *ngIf="canReport()" ngbDropdownItem><button (click)="report()" class="dropdown-item">Report</button></li>
     </ul>
 </span>

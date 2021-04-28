@@ -77,9 +77,16 @@ export class ContentControlMenuComponent implements OnInit {
 
     modal.result.then(result => {
       if((result as boolean)) {
-        this.service.remove(this.contentId)      }
+        this.service.remove(this.contentId)      
+      }
     })
   
+  }
+
+  markIrrelevant() {
+    if(this.contentType === UserContentType.PIN) {
+      this.service.report(this.contentId, ReportReason.IRRELEVANT)
+    }
   }
 
 }
