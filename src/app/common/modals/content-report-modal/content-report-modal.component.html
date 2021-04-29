@@ -2,9 +2,16 @@
     <h4 class="modal-title">Choose Report Reason</h4>
   </div>
   <div class="modal-body">
-    <p>Hello, world</p>
+    <div class="form-group">
+      <label class="mb-1" for="reason-selector">Choose report reason for this content</label>
+      <select class="form-select" id="reason-selector" [(ngModel)]="selectedReason" required>
+        <option selected></option>
+        <option *ngFor="let reason of reportReasons" [value]="reason">{{reason}}</option>
+      </select>
+      <small id="reason-selector-error" class="text-danger"></small>
+    </div>
   </div>
   <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="activeModal.close(selectedReason)">Report</button>
+  <button type="button" class="btn btn-primary" (click)="tryToReport()">Report</button>
     <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">Close</button>
   </div>

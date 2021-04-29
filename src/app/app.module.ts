@@ -9,10 +9,11 @@ import { PinsDetailComponent } from './pins-detail/pins-detail.component';
 import { RatingComponent } from './rating/rating.component';
 import { CommentsComponent } from './comments/comments.component';
 import { UserFullNamePipePipe } from './common/pipes/user-full-name-pipe.pipe';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ContentControlMenuComponent } from './content-control-menu/content-control-menu.component';
 import { AreYouSureModalComponent } from './common/modals/are-you-sure-modal/are-you-sure-modal.component';
 import { ContentReportModalComponent } from './common/modals/content-report-modal/content-report-modal.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,9 @@ import { ContentReportModalComponent } from './common/modals/content-report-moda
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

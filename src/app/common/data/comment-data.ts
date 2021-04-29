@@ -9,8 +9,8 @@ export interface CommentData {
     updatedAt: Date,
     text: string,
     rating: RatingData,
-    isActive: Boolean,
-    isRemoved: Boolean,
+    isActive: boolean,
+    isRemoved: boolean,
     responseNumber: number,
     responsesPreview: CommentData[],
     userVoteDirection?: VoteDirection

@@ -1,5 +1,7 @@
 <span ngbDropdown placement="{{placement}}">
-    <button class="btn btn-sm btn-secondary mt-3 me-1 dropdown-toggle" ngbDropdownToggle><b>. . .</b></button>
+    <button class="btn btn-sm btn-light dropdown-toggle" ngbDropdownToggle>
+        <fa-icon [icon]="barsIcon"></fa-icon>
+    </button>
 
     <ul class="dropdown-menu1" ngbDropdownMenu>
         <li *ngIf="hasFullRights() && !contentIsActive" ngbDropdownItem><button (click)="activate()" class="dropdown-item" type="button">Activate</button></li>

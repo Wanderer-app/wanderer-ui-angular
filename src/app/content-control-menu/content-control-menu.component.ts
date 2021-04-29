@@ -8,6 +8,7 @@ import { AreYouSureModalComponent } from '../common/modals/are-you-sure-modal/ar
 import { ContentReportModalComponent } from '../common/modals/content-report-modal/content-report-modal.component';
 import { UserAddedContentService } from '../services/user-added-content-service';
 import { ContentControlMenuPlacement } from './menu-placement';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-content-control-menu',
@@ -29,6 +30,8 @@ export class ContentControlMenuComponent implements OnInit {
     lastName: JAMBURA.lastName,
     isAdmin: true
   }
+
+  barsIcon = faBars
 
   constructor(private modalService: NgbModal) { }
 

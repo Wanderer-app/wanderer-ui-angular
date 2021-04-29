@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportReason } from '../../data/report-reason';
 
@@ -9,8 +9,18 @@ import { ReportReason } from '../../data/report-reason';
 })
 export class ContentReportModalComponent {
 
-  selectedReason: ReportReason = ReportReason.INAPPROPRIATE_CONTENT
+  reportReasons: ReportReason[] = [ReportReason.INAPPROPRIATE_CONTENT, ReportReason.OFFENSIVE_CONTENT]
+  selectedReason?: ReportReason
 
   constructor(public activeModal: NgbActiveModal) {}
+
+  tryToReport() {
+    if (this.selectedReason) {
+      this.activeModal.close(this.selectedReason)
+    } else {
+      document.getElementById('reason-selector')!.classList.add("border-danger")
+      document.getElementById('reason-selector-error')!.innerHTML = "Select a reason first!"
+    }
+  }
 
 }

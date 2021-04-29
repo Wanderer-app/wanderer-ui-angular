@@ -4,6 +4,8 @@ import { PinData } from '../common/data/pin-data';
 import { PinsService } from '../services/pins/pins.service';
 import { UserContentType } from '../common/data/user-content-type';
 import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-pins-detail',
@@ -23,6 +25,8 @@ export class PinsDetailComponent implements OnInit {
     ["123456", "butterfly.jpg"],
     ["1234567", "aaa.txt"]
   ])
+
+  closeIcon = faTimes
 
   constructor(public pinsService: PinsService) { }
 

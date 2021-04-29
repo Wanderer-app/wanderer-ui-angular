@@ -30,16 +30,24 @@
                 </form>
             </div>
         </div>
-        <div class="col-1 text-right">
-            <div class="text-center" style="width:fit-content">
-                <app-rating 
-                    [size]="ratingSize"
-                    [contentId]="comment.id"
-                    [ratingValue]="comment.rating.totalRating"
-                    [service]="commentsService"
-                    [userVoteDirection]="comment.userVoteDirection"
-                ></app-rating>
-            </div>
+        <div class="col-1">
+            <app-rating 
+                [size]="ratingSize"
+                [contentId]="comment.id"
+                [ratingValue]="comment.rating.totalRating"
+                [service]="commentsService"
+                [userVoteDirection]="comment.userVoteDirection"
+            ></app-rating>
+        </div>
+        <div class="col-1">
+            <app-content-control-menu
+                [placement] = "controlMenuPlacement"
+                [contentType] = "commentContentType"
+                [contentId] = "comment.id"
+                [contentCreatorId] = "comment.author.id"
+                [contentIsActive] = "comment.isActive"
+                [service] = "commentsService"
+            ></app-content-control-menu>
         </div>
     </div>
 

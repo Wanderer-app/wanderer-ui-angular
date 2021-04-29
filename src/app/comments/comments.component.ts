@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommentData } from '../common/data/comment-data';
+import { UserContentType } from '../common/data/user-content-type';
+import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
 import { RatingComponentSize } from '../rating/rating-size';
 import { CommentableContentService } from '../services/commentable-content-servce';
 import { CommentsService } from '../services/comments/comments.service';
@@ -19,6 +21,9 @@ export class CommentsComponent implements OnInit {
 
   ratingSize: RatingComponentSize = RatingComponentSize.SMALL;
   selectedCommentForReply?: CommentData = undefined
+
+  commentContentType: UserContentType = UserContentType.COMMENT
+  controlMenuPlacement = ContentControlMenuPlacement.LEFT_TOP
 
   addCommentForm = this.formBuilder.group({
     newCommentText: ['']
