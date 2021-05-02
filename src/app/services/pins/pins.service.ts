@@ -6,6 +6,11 @@ import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
 import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason } from 'src/app/common/data/report-reason';
+import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
+import { PinData } from 'src/app/common/data/pin-data';
+import { JANGULA } from 'src/app/common/mock/mocked-short-users';
+import { FileType } from 'src/app/common/data/file-data';
+import { PinType } from 'src/app/common/data/pinType';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +57,11 @@ export class PinsService implements CommentableContentService, RateableContentSe
     console.log(`removing vote from a pin ${id}`);
     let data: RatingData = {totalRating: 0}
     return of(data)
+  }
+
+  update(updateData: UpdatePinData): Observable<PinData> {
+    console.log(`Updating pin ${updateData.pinId}`);
+    console.log(updateData);
+    return of()
   }
 }

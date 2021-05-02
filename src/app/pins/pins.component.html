@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <h3 class="mt-3">Pins:</h3>
         
-            <div *ngFor="let pin of pins" class="card mt-4" (click)="select(pin)">
+            <div *ngFor="let pin of pins" class="card mt-4" (click)="closePinDetail();select(pin)">
                 <div class="card-body">
                     <div class="row">
                         <div class="text-start col"><b>{{pin.id}}</b> - {{pin.title}}</div>

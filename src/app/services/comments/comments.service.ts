@@ -76,4 +76,21 @@ export class CommentsService implements CommentableContentService, RateableConte
     let data: RatingData = {totalRating: 0}
     return of(data)
   }
+
+  update(commentId: number, newText: string): Observable<CommentData> {
+    console.log(`updating commend ${commentId} with new text: ${newText}`);
+    let c = {
+      id: 200,
+      author: JANGULA,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      text: newText,
+      rating: {totalRating: 5},
+      isActive: true,
+      isRemoved: false,
+      responseNumber: 0,
+      responsesPreview: [],
+  }
+    return of(c)
+  }
 }

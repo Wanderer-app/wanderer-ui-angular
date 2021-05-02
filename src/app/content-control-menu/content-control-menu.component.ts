@@ -1,14 +1,15 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportReason } from '../common/data/report-reason';
 import { UserContentType } from '../common/data/user-content-type';
 import { UserFullData } from '../common/data/user-full-data';
-import { JAMBURA } from '../common/mock/mocked-short-users';
+import { JAMBURA, PATATA } from '../common/mock/mocked-short-users';
 import { AreYouSureModalComponent } from '../common/modals/are-you-sure-modal/are-you-sure-modal.component';
 import { ContentReportModalComponent } from '../common/modals/content-report-modal/content-report-modal.component';
 import { UserAddedContentService } from '../services/user-added-content-service';
 import { ContentControlMenuPlacement } from './menu-placement';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { NotificationService } from '../notifications/service/notification.service';
 
 @Component({
   selector: 'app-content-control-menu',
@@ -24,6 +25,8 @@ export class ContentControlMenuComponent implements OnInit {
   @Input() contentIsActive!: boolean
   @Input() service!: UserAddedContentService
 
+  @Output() editContentEvent = new EventEmitter()
+
   loggedInUser: UserFullData = {
     id: JAMBURA.id,
     firstName: JAMBURA.firstName,
@@ -33,7 +36,7 @@ export class ContentControlMenuComponent implements OnInit {
 
   barsIcon = faBars
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -59,6 +62,7 @@ export class ContentControlMenuComponent implements OnInit {
     modalRef.result.then(result => {
       if (result) {
         this.service.report(this.contentId, (result as ReportReason))
+          .subscribe(result => this.processBooleanResult(result, `${this.contentType} reported successfully!`))
       }
     })
   }
@@ -70,6 +74,7 @@ export class ContentControlMenuComponent implements OnInit {
     modal.result.then(result => {
       if((result as boolean)) {
         this.service.activate(this.contentId)
+          .subscribe(result => this.processBooleanResult(result, `${this.contentType} activated successfully!`))
       }
     })
   }
@@ -81,6 +86,7 @@ export class ContentControlMenuComponent implements OnInit {
     modal.result.then(result => {
       if((result as boolean)) {
         this.service.remove(this.contentId)      
+          .subscribe(result => this.processBooleanResult(result, `${this.contentType} removed successfully!`))
       }
     })
   
@@ -88,8 +94,30 @@ export class ContentControlMenuComponent implements OnInit {
 
   markIrrelevant() {
     if(this.contentType === UserContentType.PIN) {
+      const modal = this.modalService.open(AreYouSureModalComponent);
+      modal.componentInstance.question = `Are you sure you want to mark this pin as irrelevant?`
+
+      modal.result.then(result => {
+        if((result as boolean)) {
+          this.service.report(this.contentId, ReportReason.IRRELEVANT)      
+            .subscribe(result => this.processBooleanResult(result, `Pin marked as irrelevant!`))
+        }
+      })
+
       this.service.report(this.contentId, ReportReason.IRRELEVANT)
     }
+  }
+
+  processBooleanResult(result: boolean, successMsg: string) {
+    if (result) {
+      this.notificationService.showStandardSuccess(successMsg)
+    } else {
+      this.notificationService.showStandardError(`Operation failed, try later again`)
+    }
+  }
+
+  editMode() {
+    this.editContentEvent.emit()
   }
 
 }

@@ -114,7 +114,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
         routeCode: "123",
         title: "Title 3",
         text: "Proident adipisicing dolore velit non ex voluptate officia anim nulla dolor laborum magna nulla. Minim dolor culpa eu aute tempor eiusmod mollit consequat ea. Amet consequat sunt ex eiusmod aute magna officia commodo incididunt. Dolor labore minim sit dolore fugiat consequat. Irure officia reprehenderit pariatur mollit incididunt dolor nisi ut exercitation. Aliqua dolore excepteur qui esse anim.",
-        attachedFile: undefined,
+        attachedFile: {externalId: "1234567", fileType: FileType.IMAGE},
         type: PinType.WARNING,
         location: {lat: 2, lng: 2},
     },

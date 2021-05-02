@@ -14,6 +14,10 @@ import { ContentControlMenuComponent } from './content-control-menu/content-cont
 import { AreYouSureModalComponent } from './common/modals/are-you-sure-modal/are-you-sure-modal.component';
 import { ContentReportModalComponent } from './common/modals/content-report-modal/content-report-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommentRepliesComponent } from './comments/comment-replies/comment-replies.component';
+import { NotificationsComponent } from './notifications/component/notifications.component';
+import { UpdatePinDetailsComponent } from './pins-detail/update-pin-details/update-pin-details.component';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +30,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ContentControlMenuComponent,
     AreYouSureModalComponent,
     ContentReportModalComponent,
+    CommentRepliesComponent,
+    NotificationsComponent,
+    UpdatePinDetailsComponent,
   ],
   imports: [
     BrowserModule,

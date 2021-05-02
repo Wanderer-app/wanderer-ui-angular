@@ -17,9 +17,9 @@ export interface PinData {
     rating: RatingData
     commentsNumber: number
     commentsPreview: CommentData[]
-    routeCode: String
-    title: String
-    text: String
+    routeCode: string
+    title: string
+    text: string
     attachedFile?: FileData
     type: PinType
     location: LatLng

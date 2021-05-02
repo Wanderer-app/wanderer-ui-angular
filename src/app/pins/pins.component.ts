@@ -33,12 +33,17 @@ export class PinsComponent implements OnInit {
     document.getElementById('pins-div')?.classList.add("d-none")
     document.getElementById('pins-div')?.classList.add("d-lg-block")
     this.selectedPin = MOCKED_PIN_DETAILS.find(data => data.id === pin.id)!!
+    console.log(this.selectedPin);
   }
 
   closePinDetail() {
+    console.log("Close");
+    
     document.getElementById('pins-div')?.classList.remove("d-none")
     document.getElementById('pins-div')?.classList.remove("d-lg-block")
     this.selectedPin = undefined
+    console.log(this.selectedPin);
+    
   }
 
 }

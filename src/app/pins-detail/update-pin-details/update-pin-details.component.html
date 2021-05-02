@@ -1,0 +1,53 @@
+<form class="mt-2" onsubmit="return false" [formGroup]="updatePinForm" (ngSubmit)="updatePin()">
+    <div class="row mt-3">
+        <div class="col-8 form-group">
+            <h3>
+                <input type="text" required formControlName="newTitle" class="form-control form-control-lg" [ngModel]="pin.title">
+            </h3>
+            <div>{{pin.creator | fullname}}</div>
+        </div>
+
+        <div class="col-4 text-end">
+            <button class="btn btn-sm btn-light" (click)="exitEditMode()">
+                <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
+        </div>
+    </div>
+    <hr>
+
+    <textarea required 
+        formControlName="newText" 
+        class="form-control" 
+        style="resize: vertical;" 
+        [ngModel]="pin.text"
+        rows=15
+        placeholder="Add Comment...">
+    </textarea>
+
+
+    <div class="m-2 mt-5 row">
+
+        <div *ngIf="(newFile && newFile!!.fileType == 'image')" class="col">
+            <div class="position-relative">
+                <button class="btn btn-sm btn-secondary position-absolute top-0 start-100 translate-middle" (click)="removeFile()">
+                    <fa-icon [icon]="closeIcon"></fa-icon>
+                </button>
+            </div>
+            <img src='{{ img$ | async}}' class="img-fluid img-thumbnail mx-auto d-block" alt=""> 
+        </div>
+
+        <div class="col">
+            <input type="file" id="imgUpload" accept="image/*" class="d-none" (change)="fileSelected($event)" #fileUpload>
+            <div class="container bg-light rounded d-flex justify-content-center" (click)="fileUpload.click()" style="height: 100%;">
+                <div class="text-center text-secondary align-self-center">
+                    <h1><fa-icon [icon]="changeImageIcon"></fa-icon></h1>
+                    <b *ngIf="newFile">Change Image</b>
+                    <b *ngIf="!newFile">Add Image</b>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <button type="submit" [disabled]="!updatePinForm.valid || !canUpdate()" class="btn btn-primary mt-2 mb-2">Save changes</button>
+</form>

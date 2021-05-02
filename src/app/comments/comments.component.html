@@ -10,7 +10,13 @@
         <div class="col-9">
             <div>
                 <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small>{{comment.createdAt.toJSON()}}</small>
-                <p class="mb-0">{{comment.text}}</p>
+                <p *ngIf="!isEditable(comment)" class="mb-0">{{comment.text}}</p>
+                <form *ngIf="isEditable(comment)" onsubmit="return false" [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
+                    <div class="input-group mb-3">
+                        <textarea required formControlName="newText" class="form-control" style="resize: none;" rows="2" [ngModel]="comment.text"></textarea>
+                        <button type="submit" [disabled]="!editCommentForm.valid || !canUpdate()" class="btn btn-secondary"><fa-icon [icon]="editIcon"></fa-icon></button>
+                    </div>
+                </form>
             </div>
             <div class="btn-group-sm" role="group">
                 <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(comment)">Reply</button>
@@ -41,62 +47,22 @@
         </div>
         <div class="col-1">
             <app-content-control-menu
+                *ngIf = "!isEditable(comment)"
                 [placement] = "controlMenuPlacement"
                 [contentType] = "commentContentType"
                 [contentId] = "comment.id"
                 [contentCreatorId] = "comment.author.id"
                 [contentIsActive] = "comment.isActive"
                 [service] = "commentsService"
+                (editContentEvent) = "enterEditMode(comment)"
             ></app-content-control-menu>
+            <button *ngIf = "isEditable(comment)" class="btn btn-sm btn-light m-1" (click)="exitEditMode()">
+                <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
         </div>
     </div>
 
-    <div class="row gx-2" *ngFor="let response of comment.responsesPreview">
-        <div class="col-1 border-end border-dark" ></div>
-        <div class="col-11">
-            <div class="row gx-2">
-                <div class="col-1">
-                    <img src="assets/img/avatar.jpg" alt="" style="max-width: 100%;height: auto;" class="rounded-circle img-fluid">
-                </div>
-                <div class="col-9">
-                    <div class="">
-                        <h5 class="d-inline me-2">{{ response.author | fullname }}</h5> <small>{{response.createdAt.toJSON()}}</small>
-                        <p class="mb-0">
-                            <small><span class="badge rounded-pill bg-secondary"><u>@{{comment.author | fullname}}</u></span></small> 
-                            {{response.text}}
-                        </p>
-                    </div>
-                    <div class="btn-group-sm" role="group">
-                        <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="showReplyForm(response)">Reply</button>
-                        <button class="btn btn-sm btn-link mb-2 text-secondary" (click)="getMoreReplies(response)">Show More Replies</button>
-                    </div>
-                    <div class="mb-2" *ngIf="selectedCommentForReply?.id === response.id">
-                        <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
-                            <div class="row g-1">
-                                <div class="col-sm-10 form-group">
-                                    <textarea required formControlName="replyText" class="form-control" style="resize: none;" rows="1" placeholder="Reply..."></textarea>
-                                </div>
-                            
-                                <div class="col-sm-2 form-group">
-                                    <button type="submit" [disabled]="!replyForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-1 text-end">
-                    <app-rating 
-                        [size]="ratingSize"
-                        [contentId]="response.id"
-                        [ratingValue]="response.rating.totalRating"
-                        [service]="commentsService"
-                        [userVoteDirection]="response.userVoteDirection"
-                    ></app-rating>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <app-comment-replies [comment] = "comment" [level]="1"></app-comment-replies>
 </div>
 
 <hr>
@@ -108,7 +74,7 @@
         </div>
     
         <div class="col-sm-2 form-group">
-            <button type="submit" [disabled]="!addCommentForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;">Send</button>
+            <button type="submit" [disabled]="!addCommentForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;"><fa-icon [icon]="sendIcon"></fa-icon></button>
         </div>
     </div>
 </form>
