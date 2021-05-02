@@ -12,7 +12,7 @@ export class ExternalImageService {
 
   files: Map<string, string> = new Map([
     ["123456", "butterfly.jpg"],
-    ["1234567", "avatar.jpg"]
+    ["1234567", "girl.webp"]
   ])
 
   getImageUrl(fileData: FileData): Observable<string> {    
