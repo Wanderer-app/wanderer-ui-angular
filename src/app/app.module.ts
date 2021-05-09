@@ -17,6 +17,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommentRepliesComponent } from './comments/comment-replies/comment-replies.component';
 import { NotificationsComponent } from './notifications/component/notifications.component';
 import { UpdatePinDetailsComponent } from './pins-detail/update-pin-details/update-pin-details.component';
+import { RouteDiscussionComponent } from './route-discussion/route-discussion.component';
+import { RouteInformationModalComponent } from './common/modals/route-information-modal/route-information-modal.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { UpdatePinDetailsComponent } from './pins-detail/update-pin-details/upda
     CommentRepliesComponent,
     NotificationsComponent,
     UpdatePinDetailsComponent,
+    RouteDiscussionComponent,
+    RouteInformationModalComponent,
   ],
   imports: [
     BrowserModule,

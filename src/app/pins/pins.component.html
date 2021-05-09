@@ -1,9 +1,31 @@
 <div class="row">
     <div id="pins-div" class="col">
         <div class="container-fluid">
-            <h3 class="mt-3">Pins:</h3>
+            <div class="row mt-3">
+                <div class="col-4">
+                    <h3 class="">Route name</h3>
+                    <a href="#" (click)="displayRouteInfo()">Route Information</a>
+                    <br>
+                    <a href="#" (click)="displayDiscussion()">Discussion</a>
+                </div>
+                <div class="col-8 d-flex justify-content-end">                    
+                    <div class="border p-1 w-50 rounded ">
+                        <h4 class="text-center mb-0">Filter</h4>
+                        <hr class="mx-4 my-1">
+                        <div class="text-center">
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.TIP)" class="me-1 badge  bg-secondary">Tip</span>
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.WARNING)" class="me-1 badge  bg-secondary">Warning</span>
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.DANGER)" class="me-1 badge  bg-secondary">Danger</span>
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.SIGHT)" class="me-1 badge  bg-secondary">Sight</span>
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.RESTING_PLACE)" class="me-1 badge  bg-secondary">Resting place</span>
+                            <span style="cursor:pointer;" (click)="filterBy(PIN_TYPE.MISC_FACT)" class="me-1 badge  bg-secondary">Miscelenious fact</span>
+                            <span style="cursor:pointer;" (click)="removeFilters()" class="me-1 badge  bg-secondary">X</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         
-            <div *ngFor="let pin of pins" class="card mt-4" (click)="closePinDetail();select(pin)">
+            <div *ngFor="let pin of pins$ | async" class="card mt-4" (click)="selectPin(pin)">
                 <div class="card-body">
                     <div class="row">
                         <div class="text-start col"><b>{{pin.id}}</b> - {{pin.title}}</div>
@@ -18,7 +40,13 @@
         </div>
     </div>
 
-    <div *ngIf="selectedPin" class="col col-lg-4">
-        <app-pins-detail [pin]="selectedPin" (closeDetailsEvent)="closePinDetail()"></app-pins-detail>
+    <div *ngIf="sidePanelOpen" class="col col-lg-4">
+        <ng-container *ngIf="selectedPin">
+            <app-pins-detail [pin]="selectedPin" (closeDetailsEvent)="closeSidePanel()"></app-pins-detail>
+        </ng-container>
+
+        <ng-container *ngIf="discussionDisplayed">
+            <app-route-discussion></app-route-discussion>
+        </ng-container>
     </div>
 </div>

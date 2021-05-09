@@ -7,9 +7,8 @@ import { RateableContentService } from '../rateable-content-service';
 import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason } from 'src/app/common/data/report-reason';
 import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
-import { PinData } from 'src/app/common/data/pin-data';
-import { JANGULA } from 'src/app/common/mock/mocked-short-users';
-import { FileType } from 'src/app/common/data/file-data';
+import { PinData, PinShortData } from 'src/app/common/data/pin-data';
+import { MOCKED_PIN_DETAILS } from 'src/app/pins-detail/data/mocked-pin-details';
 import { PinType } from 'src/app/common/data/pinType';
 
 @Injectable({
@@ -63,5 +62,47 @@ export class PinsService implements CommentableContentService, RateableContentSe
     console.log(`Updating pin ${updateData.pinId}`);
     console.log(updateData);
     return of()
+  }
+
+  getById(id: number): Observable<PinData | undefined> {
+    return of(MOCKED_PIN_DETAILS.find(data => data.id === id))
+  }
+
+  list(): Observable<PinData[]> {
+    return of(MOCKED_PIN_DETAILS)
+  }
+
+  listForRoute(routeCode: string): Observable<PinShortData[]> {
+    return of(
+      MOCKED_PIN_DETAILS.map(data => {
+        return {
+          id: data.id,
+          routeCode: data.routeCode,
+          location: data.location,
+          type: data.type,
+          createdAt: data.createdAt,
+          title: data.title,
+          rating: data.rating.totalRating
+        } as PinShortData
+      }).filter(pin => pin.routeCode === routeCode)
+    )
+  }
+
+  listForRouteAndType(routeCode: string, pinType: PinType): Observable<PinShortData[]> {
+    return of(
+      MOCKED_PIN_DETAILS.map(data => {
+        return {
+          id: data.id,
+          routeCode: data.routeCode,
+          location: data.location,
+          type: data.type,
+          createdAt: data.createdAt,
+          title: data.title,
+          rating: data.rating.totalRating
+        } as PinShortData
+      })
+      .filter(pin => pin.routeCode === routeCode)
+      .filter(pin => pin.type === pinType)
+    )
   }
 }

@@ -27,7 +27,8 @@ export class PinsDetailComponent implements OnInit {
 
   editMode: boolean = false
 
-  img$!: Observable<string>
+  img$?: Observable<string>
+  lastLoadedImg?: FileData
 
   closeIcon = faTimes
 
@@ -39,6 +40,7 @@ export class PinsDetailComponent implements OnInit {
     console.log("init");
     if(this.pin.attachedFile) {
       this.img$ = this.imgService.getImageUrl(this.pin.attachedFile)
+      this.lastLoadedImg = this.pin.attachedFile
     }
   }
 
@@ -57,6 +59,19 @@ export class PinsDetailComponent implements OnInit {
       this.img$ = this.imgService.getImageUrl(this.pin.attachedFile)
     }
     console.log(`Exiting edit mode for pin ${this.pin.id}`);
+  }
+
+  getImage(): Observable<string> | undefined {
+    if(this.pin.attachedFile) {
+
+      if(this.lastLoadedImg !== this.pin.attachedFile) {
+        this.img$ = this.imgService.getImageUrl(this.pin.attachedFile)
+        this.lastLoadedImg = this.pin.attachedFile
+      }
+      return this.img$
+    } else {
+      return undefined
+    }
   }
 
 
