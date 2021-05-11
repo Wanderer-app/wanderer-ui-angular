@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import { NotificationsComponent } from './notifications/component/notifications.
 import { UpdatePinDetailsComponent } from './pins-detail/update-pin-details/update-pin-details.component';
 import { RouteDiscussionComponent } from './route-discussion/route-discussion.component';
 import { RouteInformationModalComponent } from './common/modals/route-information-modal/route-information-modal.component';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { MapComponent } from './map/map.component';
 
 
 @NgModule({
@@ -37,14 +40,17 @@ import { RouteInformationModalComponent } from './common/modals/route-informatio
     UpdatePinDetailsComponent,
     RouteDiscussionComponent,
     RouteInformationModalComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    AgmCoreModule.forRoot({ apiKey: "AIzaSyC6H2kgr-9t53QyCpT4v-4Ee7JO73x4bvs" })
   ],
   providers: [],
   bootstrap: [AppComponent]

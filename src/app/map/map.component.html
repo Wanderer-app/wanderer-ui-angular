@@ -1,0 +1,5 @@
+<button (click)="adjara()">adjara</button>
+<agm-map [latitude]="mapLatLng.lat" [longitude]="mapLatLng.lng" [zoom]="zoomLevel">
+    <!-- <agm-marker [latitude]="initialLatLng.lat" [longitude]="initialLatLng.lng"></agm-marker> -->
+    <agm-data-layer [geoJson]="routesGeoJson$ | async" [style]="routeDefaultStyle" (layerClick)="routeClicked($event)" #routesDataDirective></agm-data-layer>
+</agm-map>
