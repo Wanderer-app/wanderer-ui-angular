@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MOCKED_PIN_DETAILS } from '../pins-detail/data/mocked-pin-details';
 import { PinData, PinShortData } from '../common/data/pin-data';
 import { Observable } from 'rxjs';
 import { PinsService } from '../services/pins/pins.service';
@@ -14,7 +13,7 @@ import { RouteInformationModalComponent } from '../common/modals/route-informati
 })
 export class PinsComponent implements OnInit {
 
-  @Input() routeCode: string = "123"
+  @Input() routeCode: string = "TB201301"
 
   pins$!: Observable<PinShortData[]>
 

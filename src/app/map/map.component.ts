@@ -1,18 +1,21 @@
 import { AgmDataLayer, DataLayerManager } from '@agm/core';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
+import { PinShortData } from '../common/data/pin-data';
 import { MapDataService } from '../services/map/map-data.service';
 import { RouteFile } from '../services/map/route-files';
+import { PinsService } from '../services/pins/pins.service';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
-  @ViewChild('routesDataDirective') routesDataDirective?: AgmDataLayer
+  @Output() pinSelectedEvent = new EventEmitter()
 
   mapLatLng: LatLng = {
     lat: 41.975520,
@@ -21,68 +24,98 @@ export class MapComponent implements OnInit {
   zoomLevel: number = 8
   ROUTE_DEFAULT_COLOR = '#ff0051e6'
 
-  routesGeoJson$!: Observable<string>
+  selectedFeature?: google.maps.Data.Feature
+  routesGeoJson?: string
+  routesSubscription!: Subscription
+  displayDataLayer = true
+  
+  pins$?: Observable<PinShortData[]>
 
-  constructor(private mapService: MapDataService, private manager: DataLayerManager) { }
+  constructor(private mapService: MapDataService, private pinService: PinsService) { }
+
+  ngOnDestroy(): void {
+    this.routesSubscription.unsubscribe()
+  }
 
   ngOnInit(): void {
-    this.routesGeoJson$ = this.mapService.getRoutes(RouteFile.ROUTES_TBILISI)
-    console.log(this.routesDataDirective);
-    let aaa = new google.maps.Data()
-    
+    this.tbilisi()
   }
 
   adjara() {
-    this.routesGeoJson$ = this.mapService.getRoutes(RouteFile.ROUTES_ADJARA_GURIA)
+    this.changeDataLayer(RouteFile.ROUTES_ADJARA_GURIA)
   }
 
-  findMiddlePoint(feature: any) {
-
+  tbilisi() {
+    this.changeDataLayer(RouteFile.ROUTES_TBILISI)
   }
 
-  routeClicked($event: any) {
+  all() {
+    this.changeDataLayer(RouteFile.ROUTES_ALL)
+  }
+
+  routeClicked($event: any) {    
+    this.selectedFeature?.setProperty("isSelected", false)
     let feature: google.maps.Data.Feature = $event.feature
 
-    console.log("code: " + feature.getProperty('routeCode'));
-    console.log(feature);
+    this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
 
-    this.zoomLevel = this.calculateZoomLevel(feature)
+    this.selectedFeature = feature    
+    feature.setProperty("isSelected", true)
+    this.adjustZoomLevel(feature)
     this.panToMiddleOfRoute(feature)
-  
-    let data: google.maps.Data
   }
 
   panToMiddleOfRoute(feature: google.maps.Data.Feature) {
     let geometry: google.maps.LatLng[] = []
     feature.getGeometry().forEachLatLng(latLng => geometry.push(latLng));
-    console.log(geometry);
 
     var middle: google.maps.LatLng = geometry[Math.round((geometry.length - 1) / 2)];
 
-    let aaa: google.maps.Data.MouseEvent
     this.mapLatLng = {
       lat: middle.lat(),
       lng: middle.lng()
     }
   }
 
-  routeDefaultStyle() {
+  routeDefaultStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
+    let color = '#ff0051e6'
+    if (feature.getProperty("isSelected")) {
+      if (feature.getProperty("isSelected") as boolean === true) {
+        color = 'green'
+      }
+    }
     return {
-      strokeColor: '#ff0051e6',
+      strokeColor: color,
       strokeWeight: 3
     }
   }
 
-  calculateZoomLevel(feature: google.maps.Data.Feature): number {
+  adjustZoomLevel(feature: google.maps.Data.Feature) {
     var routeLength = parseInt(feature.getProperty('lengthInKm'));
-    console.log(routeLength);
+
+    this.zoomLevel = 1
+
+    let level = 0
     if(routeLength <= 5) {
-        return 15;
+      level = 15;
     } else if (routeLength > 5 && routeLength <= 15) {
-      return 13;
+      level = 13;
     } else {
-      return 12;
+      level = 12;
     }
+    this.zoomLevel = level
+  }
+
+  changeDataLayer(routesLayer: RouteFile) {
+    this.displayDataLayer = false
+    this.routesSubscription = this.mapService.getRoutes(routesLayer)
+      .pipe(finalize(() => this.displayDataLayer = true))
+      .subscribe(data => this.routesGeoJson = data)
+  }
+
+  pinSelected(pin: PinShortData) {
+    console.log(pin);
+    this.pinSelectedEvent.emit(pin.id)
   }
 
 }

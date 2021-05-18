@@ -69,7 +69,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
                 userVoteDirection: VoteDirection.UP
             }
         ],
-        routeCode: "123",
+        routeCode: "TB201301",
         title: "Title 1",
         text: `Adipisicing commodo deserunt adipisicing culpa esse amet proident. Eu consectetur eu Lorem aliqua reprehenderit adipisicing amet nulla cillum aute Lorem quis quis. Officia consequat voluptate consectetur qui do. Nostrud anim ut dolore ex laboris dolore aliquip nulla quis ad.
 
@@ -78,7 +78,7 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
         Enim amet commodo magna laborum. Eiusmod ex mollit tempor nostrud id id. Occaecat id officia ullamco enim proident non ipsum. Aliqua eiusmod fugiat magna duis ea sit veniam est et aute elit dolore ipsum. Elit minim ullamco labore culpa excepteur culpa fugiat culpa elit labore. Minim aliqua sit reprehenderit non magna proident officia.`,
         attachedFile: {externalId: "123456", fileType: FileType.IMAGE},
         type: PinType.TIP,
-        location: {lat: 1, lng: 2},
+        location: {lat: 41.81309452631177, lng: 44.84830571006798},
         userVoteDirection: VoteDirection.UP
     },
     {
@@ -92,12 +92,12 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
         rating: {totalRating: 1},
         commentsNumber: 0,
         commentsPreview: [],
-        routeCode: "123",
+        routeCode: "TB201301",
         title: "Title 2",
         text: "Deserunt veniam ad non exercitation nulla sint et sit proident cillum amet. Incididunt occaecat laborum quis adipisicing irure pariatur aliquip culpa excepteur laborum proident. Nisi amet consectetur in laborum ullamco anim eu reprehenderit. Excepteur dolore dolor commodo consequat id irure. Nulla et qui culpa ullamco ex laboris sunt Lorem dolor anim anim et incididunt. Fugiat aliqua voluptate do dolore dolore cillum reprehenderit mollit culpa nisi culpa do magna commodo.",
         attachedFile: undefined,
         type: PinType.DANGER,
-        location: {lat: 1, lng: 3},
+        location: {lat: 41.80877688066833, lng: 44.858985100557675},
         userVoteDirection: VoteDirection.DOWN
     },
     {
@@ -111,11 +111,11 @@ export const MOCKED_PIN_DETAILS: PinData[] = [
         rating: {totalRating: -4},
         commentsNumber: 0,
         commentsPreview: [],
-        routeCode: "123",
+        routeCode: "TB201301",
         title: "Title 3",
         text: "Proident adipisicing dolore velit non ex voluptate officia anim nulla dolor laborum magna nulla. Minim dolor culpa eu aute tempor eiusmod mollit consequat ea. Amet consequat sunt ex eiusmod aute magna officia commodo incididunt. Dolor labore minim sit dolore fugiat consequat. Irure officia reprehenderit pariatur mollit incididunt dolor nisi ut exercitation. Aliqua dolore excepteur qui esse anim.",
         attachedFile: {externalId: "1234567", fileType: FileType.IMAGE},
         type: PinType.WARNING,
-        location: {lat: 2, lng: 2},
+        location: {lat: 41.801802130108065, lng: 44.87436234552735},
     },
 ]
