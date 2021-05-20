@@ -38,7 +38,7 @@
 
         <div class="col">
             <input type="file" id="imgUpload" accept="image/*" class="d-none" (change)="fileSelected($event)" #fileUpload>
-            <div class="container bg-light rounded d-flex justify-content-center" (click)="fileUpload.click()" style="height: 100%;">
+            <div class="container bg-light rounded d-flex justify-content-center" (click)="fileUpload.click()" style="height: 100%; cursor: pointer;">
                 <div class="text-center text-secondary align-self-center">
                     <h1><fa-icon [icon]="changeImageIcon"></fa-icon></h1>
                     <b *ngIf="newFile">Change Image</b>

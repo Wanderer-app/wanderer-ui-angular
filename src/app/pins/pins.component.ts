@@ -1,38 +1,44 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PinData, PinShortData } from '../common/data/pin-data';
-import { Observable } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { PinsService } from '../services/pins/pins.service';
 import { PinType } from '../common/data/pinType';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RouteInformationModalComponent } from '../common/modals/route-information-modal/route-information-modal.component';
+import { LatLng } from '../common/data/latLng';
+import { NewPinInfo } from '../create-pin-form/new-pin-info';
 
 @Component({
   selector: 'app-pins',
   templateUrl: './pins.component.html',
   styleUrls: ['./pins.component.css']
 })
-export class PinsComponent implements OnInit {
+export class PinsComponent implements OnInit, OnDestroy {
 
   @Input() routeCode: string = "TB201301"
-
-  pins$!: Observable<PinShortData[]>
 
   currentRate = 5
   selectedPin?: PinData
   discussionDisplayed: boolean = false
   sidePanelOpen: boolean = false
+  pinSubscription?: Subscription
+  routeInfo?: any
+  newPinInfo?: NewPinInfo
 
   PIN_TYPE = PinType
 
   constructor(private pinService: PinsService, private modalService: NgbModal) { }
 
-  ngOnInit(): void {
-    this.pins$ = this.pinService.listForRoute(this.routeCode)
+  ngOnDestroy(): void {
+    this.pinSubscription?.unsubscribe()
   }
 
-  selectPin(pin: PinShortData) {
-    this.closeSidePanel()
-    this.pinService.getById(pin.id).subscribe(data => {
+  ngOnInit(): void {
+  }
+
+  selectPin(pinId: number) {
+    this.pinService.getById(pinId).subscribe(data => {
+      this.closeSidePanel()
       this.selectedPin = data
       this.openSidePanel()
     })
@@ -50,6 +56,8 @@ export class PinsComponent implements OnInit {
     this.sidePanelOpen = false
     this.discussionDisplayed = false
     this.selectedPin = undefined
+    this.routeInfo = undefined
+    this.newPinInfo = undefined
   }
 
   displayDiscussion() {
@@ -57,18 +65,17 @@ export class PinsComponent implements OnInit {
     this.discussionDisplayed = true;
     this.openSidePanel()
   }
-  
-  filterBy(type: PinType) {
-    this.pins$ = this.pinService.listForRouteAndType(this.routeCode, type)
+
+  displayRouteDetails(desc: any) {
+    this.closeSidePanel()
+    this.routeInfo = desc;
+    this.openSidePanel()
   }
 
-  removeFilters() {
-    this.pins$ = this.pinService.listForRoute(this.routeCode)
-  }
-
-  displayRouteInfo() {
-    this.modalService.open(RouteInformationModalComponent)
-    // modal.componentInstance.routeInfo = this.route
+  displayAddPinForm(info: NewPinInfo) {
+    this.closeSidePanel()
+    this.newPinInfo = info;
+    this.openSidePanel()
   }
   
 }

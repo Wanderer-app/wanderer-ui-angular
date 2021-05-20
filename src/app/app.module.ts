@@ -22,6 +22,9 @@ import { RouteDiscussionComponent } from './route-discussion/route-discussion.co
 import { RouteInformationModalComponent } from './common/modals/route-information-modal/route-information-modal.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { MapComponent } from './map/map.component';
+import { RouteDescriptionComponent } from './route-description/route-description.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { CreatePinFormComponent } from './create-pin-form/create-pin-form.component';
 
 
 @NgModule({
@@ -40,7 +43,9 @@ import { MapComponent } from './map/map.component';
     UpdatePinDetailsComponent,
     RouteDiscussionComponent,
     RouteInformationModalComponent,
-    MapComponent
+    MapComponent,
+    RouteDescriptionComponent,
+    CreatePinFormComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,8 @@ import { MapComponent } from './map/map.component';
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyC6H2kgr-9t53QyCpT4v-4Ee7JO73x4bvs" })
+    AgmCoreModule.forRoot({ apiKey: "AIzaSyC6H2kgr-9t53QyCpT4v-4Ee7JO73x4bvs" }),
+    AgmSnazzyInfoWindowModule
   ],
   providers: [],
   bootstrap: [AppComponent]

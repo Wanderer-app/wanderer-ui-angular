@@ -1,10 +1,12 @@
 <agm-map [latitude]="mapLatLng.lat" [longitude]="mapLatLng.lng" [zoom]="zoomLevel">
+
     <agm-data-layer 
         *ngIf="(displayDataLayer === true) && routesGeoJson" 
         [geoJson]="routesGeoJson" [style]="routeDefaultStyle" 
         (layerClick)="routeClicked($event)" 
         #routesDataDirective
     ></agm-data-layer>
+
     <agm-marker 
         *ngFor="let pin of (pins$ | async)"
         [latitude]="pin.location.lat" 
@@ -12,10 +14,44 @@
         [label]="pin.type.charAt(0)"
         (markerClick)="pinSelected(pin)"
     ></agm-marker>
+
+    <agm-snazzy-info-window 
+        [padding]="'10px'" 
+        (afterClose)="closeInfoWindow()" 
+        [closeOnMapClick]="false" 
+        [isOpen]="infoWindow.isOpen" 
+        [latitude]="infoWindow.lat" 
+        [longitude]="infoWindow.lng" 
+        [closeWhenOthersOpen]="true"
+        [maxWidth]="300"
+    >
+        <ng-template>
+            <div class="mt-3">
+                <ng-container *ngFor="let type of availablePinTypes">
+                    <button class="btn btn-sm btn-danger me-1" (click)="addPin(type)">{{type.toString().charAt(0)}}</button>
+                </ng-container>
+            </div>
+        </ng-template>
+    </agm-snazzy-info-window>
+
 </agm-map>
 
-<div class="position-absolute start-0 top-0">
-    <button (click)="adjara()">adjara</button>
-    <button (click)="tbilisi()">tbilisi</button>
-    <button (click)="all()">all</button>
+<div class="position-absolute start-0 top-0" style="width:300px">
+    <button (click)="changeDataLayer(adjara)">adjara</button>
+    <button (click)="changeDataLayer(tbilisi)">tbilisi</button>
+    <button (click)="changeDataLayer(all)">all</button>
+    <br>
+
+    <div class="border p-1 rounded bg-light" *ngIf="selectedFeature">
+        <h4 class="text-center mb-0">Filter</h4>
+        <hr class="mx-4 my-1">
+        <div class="text-center">
+            <ng-container *ngFor="let type of availablePinTypes">
+                <span style="cursor:pointer;" (click)="filterBy(type)" class="me-1 badge  bg-secondary">{{type}}</span>
+            </ng-container>
+            <span style="cursor:pointer;" (click)="removeFilters()" class="me-1 badge  bg-secondary">X</span>
+        </div>
+        <br>
+        <button (click)="showDetails()">მარშრუტის აღწერა</button>
+    </div>
 </div>

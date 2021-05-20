@@ -1,9 +1,10 @@
 import { AgmDataLayer, DataLayerManager } from '@agm/core';
 import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
 import { PinShortData } from '../common/data/pin-data';
+import { PinType } from '../common/data/pinType';
 import { MapDataService } from '../services/map/map-data.service';
 import { RouteFile } from '../services/map/route-files';
 import { PinsService } from '../services/pins/pins.service';
@@ -16,6 +17,9 @@ import { PinsService } from '../services/pins/pins.service';
 export class MapComponent implements OnInit, OnDestroy {
 
   @Output() pinSelectedEvent = new EventEmitter()
+  @Output() showRouteDetails = new EventEmitter()
+  @Output() addPinEvent = new EventEmitter()
+  @Output() routeSelected = new EventEmitter()
 
   mapLatLng: LatLng = {
     lat: 41.975520,
@@ -31,6 +35,12 @@ export class MapComponent implements OnInit, OnDestroy {
   
   pins$?: Observable<PinShortData[]>
 
+  infoWindow = {
+    isOpen: false,
+    lat: 0,
+    lng: 0,
+  }
+
   constructor(private mapService: MapDataService, private pinService: PinsService) { }
 
   ngOnDestroy(): void {
@@ -38,31 +48,27 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.tbilisi()
-  }
-
-  adjara() {
-    this.changeDataLayer(RouteFile.ROUTES_ADJARA_GURIA)
-  }
-
-  tbilisi() {
-    this.changeDataLayer(RouteFile.ROUTES_TBILISI)
-  }
-
-  all() {
-    this.changeDataLayer(RouteFile.ROUTES_ALL)
+    this.changeDataLayer(this.tbilisi)
   }
 
   routeClicked($event: any) {    
-    this.selectedFeature?.setProperty("isSelected", false)
     let feature: google.maps.Data.Feature = $event.feature
+    
+    this.closeInfoWindow()
+    if(feature === this.selectedFeature) {
+      this.showInfoWindow($event as google.maps.Data.MouseEvent)
+    } else {
+      this.selectedFeature?.setProperty("isSelected", false)
+      this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
 
-    this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
-
-    this.selectedFeature = feature    
-    feature.setProperty("isSelected", true)
-    this.adjustZoomLevel(feature)
-    this.panToMiddleOfRoute(feature)
+      this.selectedFeature = feature
+      feature.setProperty("isSelected", true)
+      this.adjustZoomLevel(feature)
+      this.panToMiddleOfRoute(feature)
+      this.routeSelected.emit()
+    }
+    console.log(this.infoWindow);
+    
   }
 
   panToMiddleOfRoute(feature: google.maps.Data.Feature) {
@@ -107,6 +113,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   changeDataLayer(routesLayer: RouteFile) {
+    this.pins$ = of([])
     this.displayDataLayer = false
     this.routesSubscription = this.mapService.getRoutes(routesLayer)
       .pipe(finalize(() => this.displayDataLayer = true))
@@ -114,8 +121,56 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   pinSelected(pin: PinShortData) {
-    console.log(pin);
     this.pinSelectedEvent.emit(pin.id)
   }
+
+  filterBy(type: PinType) {
+    this.pins$ = this.pinService.listForRouteAndType(this.selectedFeature?.getProperty('routeCode'), type)
+  }
+
+  removeFilters() {
+    this.pins$ = this.pinService.listForRoute(this.selectedFeature?.getProperty('routeCode'))
+  }
+
+  showDetails() {
+    console.log(this.selectedFeature);
+    this.showRouteDetails.emit({
+      description: this.selectedFeature!.getProperty('descriptionKV'),
+      name: this.selectedFeature!.getProperty('name'),
+    })
+  }
+
+  showInfoWindow(event: google.maps.Data.MouseEvent) {    
+    this.infoWindow = {
+      isOpen: true,
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    }
+  }
+
+  closeInfoWindow() {
+    this.infoWindow.isOpen = false
+  }
+
+  addPin(pinType: PinType) {
+    this.closeInfoWindow()
+    this.addPinEvent.emit(
+      { type: pinType, routeCode:this.selectedFeature!.getProperty('routeCode'), location: { lat: this.infoWindow.lat, lng: this.infoWindow.lng }
+    })
+    
+  }
+
+  adjara = RouteFile.ROUTES_ADJARA_GURIA
+  tbilisi = RouteFile.ROUTES_TBILISI
+  all = RouteFile.ROUTES_ALL
+
+  availablePinTypes: PinType[] = [
+    PinType.TIP,
+    PinType.WARNING,
+    PinType.DANGER,
+    PinType.SIGHT,
+    PinType.RESTING_PLACE,
+    PinType.MISC_FACT
+  ]
 
 }
