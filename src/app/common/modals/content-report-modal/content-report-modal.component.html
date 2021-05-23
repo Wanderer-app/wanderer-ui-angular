@@ -1,9 +1,9 @@
 <div class="modal-header">
-    <h4 class="modal-title">Choose Report Reason</h4>
+    <h4 class="modal-title">რეპორტი</h4>
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label class="mb-1" for="reason-selector">Choose report reason for this content</label>
+      <label class="mb-1" for="reason-selector">აირჩიეთ რეპორტის მიზეზი</label>
       <select class="form-select" id="reason-selector" [(ngModel)]="selectedReason" required>
         <option selected></option>
         <option *ngFor="let reason of reportReasons" [value]="reason">{{reason}}</option>
@@ -12,6 +12,6 @@
     </div>
   </div>
   <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="tryToReport()">Report</button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">Close</button>
+  <button type="button" class="btn btn-primary" (click)="tryToReport()">დარეპორტება</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">დახურვა</button>
   </div>

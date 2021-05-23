@@ -1,12 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PinData, PinShortData } from '../common/data/pin-data';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { PinsService } from '../services/pins/pins.service';
 import { PinType } from '../common/data/pinType';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RouteInformationModalComponent } from '../common/modals/route-information-modal/route-information-modal.component';
-import { LatLng } from '../common/data/latLng';
 import { NewPinInfo } from '../create-pin-form/new-pin-info';
+import { NotificationService } from '../notifications/service/notification.service';
 
 @Component({
   selector: 'app-pins',
@@ -27,7 +25,9 @@ export class PinsComponent implements OnInit, OnDestroy {
 
   PIN_TYPE = PinType
 
-  constructor(private pinService: PinsService, private modalService: NgbModal) { }
+  additionalMapPins?: PinShortData[]
+
+  constructor(private pinService: PinsService, private notificationService: NotificationService) { }
 
   ngOnDestroy(): void {
     this.pinSubscription?.unsubscribe()
@@ -41,7 +41,8 @@ export class PinsComponent implements OnInit, OnDestroy {
       this.closeSidePanel()
       this.selectedPin = data
       this.openSidePanel()
-    })
+    },
+    error => this.notificationService.showStandardError(error))
   }
 
   openSidePanel() {
@@ -76,6 +77,28 @@ export class PinsComponent implements OnInit, OnDestroy {
     this.closeSidePanel()
     this.newPinInfo = info;
     this.openSidePanel()
+  }
+
+  pinCreated(pin: PinData) {
+    this.closeSidePanel()
+    this.selectedPin = pin
+    this.openSidePanel()
+
+    let pinShort: PinShortData = {
+      id: pin.id,
+      routeCode: pin.routeCode,
+      location: pin.location,
+      type: pin.type,
+      createdAt: pin.createdAt,
+      title: pin.title,
+      rating: pin.rating.totalRating
+    }
+
+    if(this.additionalMapPins) {
+      this.additionalMapPins.push(pinShort)
+    } else {
+      this.additionalMapPins = [ pinShort ]
+    }
   }
   
 }

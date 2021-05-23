@@ -1,0 +1,17 @@
+@font-face {
+    font-family: dejavu-sans;
+    src: url(assets\fonts\bpg_dejavu_sans.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: nino-mtavruli;
+    src: url(assets\fonts\bpg_extrasquare_mtavruli.ttf) format("opentype");
+}
+
+* {
+    font-family: dejavu-sans;
+}
+
+.ge-heading {
+    font-family: nino-mtavruli;
+}

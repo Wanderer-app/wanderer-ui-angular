@@ -1,11 +1,96 @@
 <div class="p-3">
-    <div class="d-block text-end">
-        <button class="btn btn-sm btn-secondary m-1" (click)="this.close.emit()">
-            <fa-icon [icon]="closeIcon"></fa-icon>
-        </button>
+
+    <div class="row g-1">
+        <div class="col-10">
+            <h3 class="ge-heading">ახალი პინის დამატება</h3>
+        </div>
+        <div class="col-2 text-end">
+            <button class="btn btn-sm btn-light" (click)="this.close.emit()">
+                <fa-icon [icon]="closeIcon"></fa-icon>
+            </button>
+        </div>
     </div>
 
-    <p>{{newPinInfo.type}}</p>
-    <p>{{newPinInfo.location | json}}</p>
-    <p>{{newPinInfo.routeCode}}</p>
+    <form onsubmit="return false" [formGroup]="form" (ngSubmit)="createPin()">
+        <div class="row mt-3 mb-3">
+            <div class="col-6 form-group">
+                <div class="form-group">
+                    <label class="mb-1 text-secondary">სათაური</label>
+                    <input type="text" required formControlName="title" class="form-control form-control {{errorClasses(pinTitle)}}" #pinTitle>
+                    <ng-container *ngIf="isInValid(pinTitle)">
+                        <ng-container *ngFor="let error of getErrors(pinTitle)">
+                        <small class="text-danger">{{error}}</small>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+    
+            <div class="col-6 h-100">
+                <div class="form-group">
+                    <label class="mb-1 text-secondary">კატეგორია</label>
+                    <div ngbDropdown placement="bottom-left">
+                        <button type="button" class="btn border rounded text-start d-block w-100" ngbDropdownToggle>
+                            <span class="">
+                                <span class="badge bg-danger">{{newPinInfo.type.toString().charAt(0)}}</span> {{newPinInfo.type}}
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu1" ngbDropdownMenu>
+                            <li *ngFor="let type of availablePinTypes" ngbDropdownItem>
+                                <button (click)="newPinInfo.type = type" type="button" class="dropdown-item">
+                                    <span class="badge bg-danger">{{type.toString().charAt(0)}}</span> {{type}}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="form-group">
+            <label for="" class="mb-1 text-secondary">ტექსტი</label>
+            <textarea 
+                required 
+                formControlName="text" 
+                class="form-control {{errorClasses(pinText)}}" 
+                style="resize: vertical;" 
+                rows=15
+                #pinText
+            ></textarea>
+            <ng-container *ngIf="isInValid(pinText)">
+                <ng-container *ngFor="let error of getErrors(pinText)">
+                <small class="text-danger">{{error}}</small>
+                </ng-container>
+            </ng-container>
+        </div>
+    
+    
+        <div class="m-2 mt-5">
+    
+            <div *ngIf="(newImage && newImage!!.fileType == 'image')" class="d-block mx-auto" style="width: 60%;">
+                <div class="position-relative">
+                    <button class="btn btn-sm btn-secondary position-absolute top-0 start-100 translate-middle" (click)="removeFile()">
+                        <fa-icon [icon]="closeIcon"></fa-icon>
+                    </button>
+                </div>
+                <img src='{{ img$ | async}}' class="img-fluid img-thumbnail mx-auto d-block"  alt=""> 
+            </div>
+    
+            <div *ngIf="!newImage" class="col">
+                <input type="file" id="imgUpload" accept="image/*" class="d-none" (change)="fileSelected($event)" #fileUpload>
+                <div class=" p-3 bg-light rounded d-flex justify-content-center" (click)="fileUpload.click()" style="cursor: pointer;">
+                    <div class="text-center text-secondary align-self-center">
+                        <h1><fa-icon [icon]="changeImageIcon"></fa-icon></h1>
+                        <b *ngIf="!newImage">სურათის მიმაგრება</b>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+        <button type="submit" [disabled]="!form.valid || creating" class="btn btn-primary mt-2 mb-2">
+            პინის დამატება
+            <span *ngIf="creating" class="spinner-border spinner-border-sm" role="status"></span>
+        </button>
+    </form>
 </div>

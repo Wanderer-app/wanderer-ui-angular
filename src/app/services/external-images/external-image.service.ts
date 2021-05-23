@@ -15,9 +15,7 @@ export class ExternalImageService {
     ["1234567", "girl.webp"]
   ])
 
-  getImageUrl(fileData: FileData): Observable<string> {    
-    console.log("aeeeeeeeeeeeee");
-    
+  getImageUrl(fileData: FileData): Observable<string> {        
     let imageName = this.files.get(fileData.externalId)
 
     if(imageName) {

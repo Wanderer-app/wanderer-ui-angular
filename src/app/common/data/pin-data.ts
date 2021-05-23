@@ -5,10 +5,11 @@ import { FileData } from "src/app/common/data/file-data";
 import { LatLng } from "src/app/common/data/latLng";
 import { PinType } from "src/app/common/data/pinType";
 import { VoteDirection } from "src/app/common/data/vote-direction";
+import { UserFullData } from "./user-full-data";
 
 export interface PinData {
     id: number
-    creator: UserShortData
+    creator: UserFullData
     createdAt: Date
     updatedAt: Date
     isActive: boolean

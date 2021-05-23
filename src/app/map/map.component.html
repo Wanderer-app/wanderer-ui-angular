@@ -15,6 +15,15 @@
         (markerClick)="pinSelected(pin)"
     ></agm-marker>
 
+    <agm-marker 
+        *ngFor="let pin of additionalPins!"
+        [latitude]="pin.location.lat" 
+        [longitude]="pin.location.lng" 
+        [label]="pin.type.charAt(0)"
+        (markerClick)="pinSelected(pin)"
+    ></agm-marker>
+
+
     <agm-snazzy-info-window 
         [padding]="'10px'" 
         (afterClose)="closeInfoWindow()" 
@@ -26,7 +35,8 @@
         [maxWidth]="300"
     >
         <ng-template>
-            <div class="mt-3">
+            <div class="">პინის დამატება</div>
+            <div class="mt-2">
                 <ng-container *ngFor="let type of availablePinTypes">
                     <button class="btn btn-sm btn-danger me-1" (click)="addPin(type)">{{type.toString().charAt(0)}}</button>
                 </ng-container>
@@ -36,14 +46,14 @@
 
 </agm-map>
 
-<div class="position-absolute start-0 top-0" style="width:300px">
-    <button (click)="changeDataLayer(adjara)">adjara</button>
-    <button (click)="changeDataLayer(tbilisi)">tbilisi</button>
-    <button (click)="changeDataLayer(all)">all</button>
+<div class="position-absolute start-0 top-0" style="width:fit-content">
+    <button (click)="changeDataLayer(adjara)">აჭარა-გურია</button>
+    <button (click)="changeDataLayer(tbilisi)">თბილისი</button>
+    <button (click)="changeDataLayer(all)">ყველა მარშრუტი</button>
     <br>
 
-    <div class="border p-1 rounded bg-light" *ngIf="selectedFeature">
-        <h4 class="text-center mb-0">Filter</h4>
+    <div class="border p-1 rounded bg-light" style="width: 200px;" *ngIf="selectedFeature">
+        <h4 class="text-center mb-0">ფილტრი</h4>
         <hr class="mx-4 my-1">
         <div class="text-center">
             <ng-container *ngFor="let type of availablePinTypes">

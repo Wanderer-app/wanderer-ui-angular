@@ -19,7 +19,6 @@ import { CommentRepliesComponent } from './comments/comment-replies/comment-repl
 import { NotificationsComponent } from './notifications/component/notifications.component';
 import { UpdatePinDetailsComponent } from './pins-detail/update-pin-details/update-pin-details.component';
 import { RouteDiscussionComponent } from './route-discussion/route-discussion.component';
-import { RouteInformationModalComponent } from './common/modals/route-information-modal/route-information-modal.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { MapComponent } from './map/map.component';
 import { RouteDescriptionComponent } from './route-description/route-description.component';
@@ -42,7 +41,6 @@ import { CreatePinFormComponent } from './create-pin-form/create-pin-form.compon
     NotificationsComponent,
     UpdatePinDetailsComponent,
     RouteDiscussionComponent,
-    RouteInformationModalComponent,
     MapComponent,
     RouteDescriptionComponent,
     CreatePinFormComponent

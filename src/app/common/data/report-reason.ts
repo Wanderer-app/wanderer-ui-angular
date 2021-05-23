@@ -1,5 +1,5 @@
 export enum ReportReason {
-    INAPPROPRIATE_CONTENT = "innapropriate content",
-    OFFENSIVE_CONTENT = "offensive content",
-    IRRELEVANT = "irrelevant"
+    INAPPROPRIATE_CONTENT = "კონტენტი მიუღებელია",
+    OFFENSIVE_CONTENT = "კონტენტი შეურაწმყოფელია",
+    IRRELEVANT = "კონტენტი არააქტუალურია"
 }

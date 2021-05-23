@@ -1,10 +1,10 @@
 import { AgmDataLayer, DataLayerManager } from '@agm/core';
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
 import { PinShortData } from '../common/data/pin-data';
-import { PinType } from '../common/data/pinType';
+import { AVAILABLE_PIN_TYPES, PinType } from '../common/data/pinType';
 import { MapDataService } from '../services/map/map-data.service';
 import { RouteFile } from '../services/map/route-files';
 import { PinsService } from '../services/pins/pins.service';
@@ -16,6 +16,7 @@ import { PinsService } from '../services/pins/pins.service';
 })
 export class MapComponent implements OnInit, OnDestroy {
 
+  @Input() additionalPins?: PinShortData[]
   @Output() pinSelectedEvent = new EventEmitter()
   @Output() showRouteDetails = new EventEmitter()
   @Output() addPinEvent = new EventEmitter()
@@ -58,6 +59,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if(feature === this.selectedFeature) {
       this.showInfoWindow($event as google.maps.Data.MouseEvent)
     } else {
+      this.additionalPins = undefined
       this.selectedFeature?.setProperty("isSelected", false)
       this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
 
@@ -92,7 +94,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     return {
       strokeColor: color,
-      strokeWeight: 3
+      strokeWeight: 4
     }
   }
 
@@ -164,13 +166,6 @@ export class MapComponent implements OnInit, OnDestroy {
   tbilisi = RouteFile.ROUTES_TBILISI
   all = RouteFile.ROUTES_ALL
 
-  availablePinTypes: PinType[] = [
-    PinType.TIP,
-    PinType.WARNING,
-    PinType.DANGER,
-    PinType.SIGHT,
-    PinType.RESTING_PLACE,
-    PinType.MISC_FACT
-  ]
+  availablePinTypes: PinType[] = AVAILABLE_PIN_TYPES
 
 }

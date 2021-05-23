@@ -41,13 +41,17 @@
             <div class="container bg-light rounded d-flex justify-content-center" (click)="fileUpload.click()" style="height: 100%; cursor: pointer;">
                 <div class="text-center text-secondary align-self-center">
                     <h1><fa-icon [icon]="changeImageIcon"></fa-icon></h1>
-                    <b *ngIf="newFile">Change Image</b>
-                    <b *ngIf="!newFile">Add Image</b>
+                    <b *ngIf="newFile">სურათის შეცვლა</b>
+                    <b *ngIf="!newFile">სურათის დამატება</b>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <button type="submit" [disabled]="!updatePinForm.valid || !canUpdate()" class="btn btn-primary mt-2 mb-2">Save changes</button>
+    <button type="submit" [disabled]="!updatePinForm.valid || !canUpdate() || updateInProgress" class="btn btn-primary mt-2 mb-2">
+        შენახვა
+        <span *ngIf="updateInProgress" class="spinner-border spinner-border-sm" role="status"></span>
+    </button>
+    <span class="ms-2 text-danger" *ngIf="updateErrorText">{{updateErrorText}}</span>
 </form>

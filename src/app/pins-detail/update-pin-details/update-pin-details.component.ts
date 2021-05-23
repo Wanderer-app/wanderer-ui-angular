@@ -2,8 +2,11 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { faImages, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { error } from 'selenium-webdriver';
 import { FileData, FileType } from 'src/app/common/data/file-data';
 import { PinData } from 'src/app/common/data/pin-data';
+import { NotificationService } from 'src/app/notifications/service/notification.service';
 import { ExternalImageService } from 'src/app/services/external-images/external-image.service';
 import { PinsService } from 'src/app/services/pins/pins.service';
 import { UpdatePinData } from './update-pin-data';
@@ -30,7 +33,10 @@ export class UpdatePinDetailsComponent implements OnInit {
   closeIcon = faTimes
   changeImageIcon= faImages
 
-  constructor(private formBuilder: FormBuilder, public imgService: ExternalImageService, private pinService: PinsService) { }
+  updateErrorText?: string
+  updateInProgress = false
+
+  constructor(private formBuilder: FormBuilder, public imgService: ExternalImageService, private pinService: PinsService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     if(this.pin.attachedFile) {
@@ -45,18 +51,27 @@ export class UpdatePinDetailsComponent implements OnInit {
   }
 
   updatePin() {
+    this.updateErrorText = undefined
+    this.updateInProgress = true
+
     let updatePinData: UpdatePinData = {
       pinId: this.pin.id,
       newTitle: this.updatePinForm.controls.newTitle.value,
       newText: this.updatePinForm.controls.newText.value,
       newFile: this.newFile
     }
-    this.pinService.update(updatePinData).subscribe(data => {
+
+    this.pinService.update(updatePinData)
+    .pipe(finalize(() => this.updateInProgress = false))
+    .subscribe(data => {
       this.pin.title = updatePinData.newTitle
       this.pin.text = updatePinData.newText
       this.pin.attachedFile = updatePinData.newFile
       this.exitEditMode()
-    })
+      this.notificationService.showStandardSuccess("პინი წარმატებით დარედაქტირდა!")
+    },
+      error => this.updateErrorText = error
+    )
   }
 
   fileSelected(event: Event) {
