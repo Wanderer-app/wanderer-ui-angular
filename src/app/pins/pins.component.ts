@@ -1,10 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PinData, PinShortData } from '../common/data/pin-data';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PinsService } from '../services/pins/pins.service';
 import { PinType } from '../common/data/pinType';
 import { NewPinInfo } from '../create-pin-form/new-pin-info';
 import { NotificationService } from '../notifications/service/notification.service';
+import { DiscussionElement } from '../common/data/duscussion-element';
+import { DiscussionService } from '../services/discussion/discussion.service';
 
 @Component({
   selector: 'app-pins',
@@ -13,11 +15,9 @@ import { NotificationService } from '../notifications/service/notification.servi
 })
 export class PinsComponent implements OnInit, OnDestroy {
 
-  @Input() routeCode: string = "TB201301"
-
   currentRate = 5
   selectedPin?: PinData
-  discussionDisplayed: boolean = false
+  discussion$?: Observable<DiscussionElement[]>
   sidePanelOpen: boolean = false
   pinSubscription?: Subscription
   routeInfo?: any
@@ -27,7 +27,7 @@ export class PinsComponent implements OnInit, OnDestroy {
 
   additionalMapPins?: PinShortData[]
 
-  constructor(private pinService: PinsService, private notificationService: NotificationService) { }
+  constructor(private pinService: PinsService, private notificationService: NotificationService, private discussionService: DiscussionService) { }
 
   ngOnDestroy(): void {
     this.pinSubscription?.unsubscribe()
@@ -55,15 +55,15 @@ export class PinsComponent implements OnInit, OnDestroy {
     document.getElementById('pins-div')?.classList.remove("d-none")
     document.getElementById('pins-div')?.classList.remove("d-lg-block")
     this.sidePanelOpen = false
-    this.discussionDisplayed = false
+    this.discussion$ = undefined
     this.selectedPin = undefined
     this.routeInfo = undefined
     this.newPinInfo = undefined
   }
 
-  displayDiscussion() {
+  displayDiscussion(routeCode: string) {
     this.closeSidePanel()
-    this.discussionDisplayed = true;
+    this.discussion$ = this.discussionService.listForRoute(routeCode);
     this.openSidePanel()
   }
 

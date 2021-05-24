@@ -6,12 +6,13 @@
             (showRouteDetails)="displayRouteDetails($event)"
             (addPinEvent)="displayAddPinForm($event)"
             (routeSelected)="closeSidePanel()"
+            (displayDiscussion)="displayDiscussion($event)"
         ></app-map>
     </div>
 
     <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh;" class="col col-lg-4 shadow">
         <app-pins-detail *ngIf="selectedPin" [pin]="selectedPin" (closeDetailsEvent)="closeSidePanel()"></app-pins-detail>
-        <app-route-discussion *ngIf="discussionDisplayed"></app-route-discussion>
+        <app-route-discussion *ngIf="discussion$" [discussion$]="discussion$" (close)="closeSidePanel()"></app-route-discussion>
         <app-route-description *ngIf="routeInfo" [routeInfo]="routeInfo" (close)="closeSidePanel()"></app-route-description>
         <app-create-pin-form *ngIf="newPinInfo" [newPinInfo]="newPinInfo" (close)="closeSidePanel()" (pinCreated)="pinCreated($event)"></app-create-pin-form>
     </div>

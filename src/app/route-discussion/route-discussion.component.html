@@ -1,1 +1,19 @@
-<p>route-discussion works!</p>
+<div class="p-3">
+    <div class="d-block text-end">
+        <button class="btn btn-sm btn-secondary m-1" (click)="close.emit()">
+            <fa-icon [icon]="closeIcon"></fa-icon>
+        </button>
+    </div>
+    
+    <div class="mt-1" style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)">
+        {{element | json}}
+    </div>
+
+    <div *ngIf="(discussion$ | async)?.length === 0" style="height:90vh" class="d-flex align-items-center justify-content-center">
+        <h3 class="text-secondary text-center">დისკუსია არ დაწყებულა</h3>
+    </div>
+
+    <div *ngIf="discussionLoading" style="height:90vh" class="d-flex align-items-center justify-content-center">
+        <span class="spinner-border spinner-border text-primary" style="width: 100px; height: 100px;" role="status"></span>
+    </div>
+</div>

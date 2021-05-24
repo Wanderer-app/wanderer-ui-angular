@@ -21,6 +21,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @Output() showRouteDetails = new EventEmitter()
   @Output() addPinEvent = new EventEmitter()
   @Output() routeSelected = new EventEmitter()
+  @Output() displayDiscussion = new EventEmitter()
 
   mapLatLng: LatLng = {
     lat: 41.975520,
@@ -160,6 +161,10 @@ export class MapComponent implements OnInit, OnDestroy {
       { type: pinType, routeCode:this.selectedFeature!.getProperty('routeCode'), location: { lat: this.infoWindow.lat, lng: this.infoWindow.lng }
     })
     
+  }
+
+  showDiscussion() {
+    this.displayDiscussion.emit(this.selectedFeature!.getProperty('routeCode'))
   }
 
   adjara = RouteFile.ROUTES_ADJARA_GURIA

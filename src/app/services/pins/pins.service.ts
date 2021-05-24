@@ -8,7 +8,7 @@ import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason } from 'src/app/common/data/report-reason';
 import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
 import { PinData, PinShortData } from 'src/app/common/data/pin-data';
-import { MOCKED_PIN_DETAILS } from 'src/app/pins-detail/data/mocked-pin-details';
+import { MOCKED_PIN_DETAILS } from 'src/app/common/mock/mocked-pin-details';
 import { PinType } from 'src/app/common/data/pinType';
 import { delay } from 'rxjs/operators';
 import { NewPinInfo } from 'src/app/create-pin-form/new-pin-info';

@@ -1,0 +1,11 @@
+{
+    "batchSize": 20,
+    "batchNumber": 0,
+    "filters": [
+        {
+            "fieldName": "isActive",
+            "operation": "IS",
+            "compareValue": true
+        }
+    ]
+}
