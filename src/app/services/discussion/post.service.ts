@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CommentData } from 'src/app/common/data/comment-data';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { ReportReason } from 'src/app/common/data/report-reason';
@@ -15,35 +15,43 @@ export class PostService implements CommentableContentService, RateableContentSe
   constructor() { }
 
   getComments(id: number): Observable<CommentData[]> {
-    throw new Error('Method not implemented.');
+    console.log(`Getting post ${id} comments`);
+    return of([])
   }
 
   addComment(id: number, text: string): Observable<CommentData> {
-    throw new Error('Method not implemented.');
+    console.log(`adding comment to a post ${id}. Comment text: ${text}`);
+    return of()
   }
 
   upVote(id: number): Observable<RatingData> {
-    throw new Error('Method not implemented.');
+    console.log(`Upvoting post ${id}`);
+    return of({totalRating: 0})
   }
 
   downVote(id: number): Observable<RatingData> {
-    throw new Error('Method not implemented.');
+    console.log(`Downvoting post ${id}`);
+    return of({totalRating: 0})
   }
 
   removeVote(id: number): Observable<RatingData> {
-    throw new Error('Method not implemented.');
+    console.log(`Removing vote from post ${id}`);
+    return of({totalRating: 0})
   }
 
   activate(id: number): Observable<boolean> {
-    throw new Error('Method not implemented.');
+    console.log(`Activating post ${id}`);
+    return of(true)
   }
 
   remove(id: number): Observable<boolean> {
-    throw new Error('Method not implemented.');
+    console.log(`Removing post ${id}`);
+    return of(true)
   }
 
   report(id: number, reason: ReportReason): Observable<boolean> {
-    throw new Error('Method not implemented.');
+    console.log(`Reporting post ${id} for ${reason}`);
+    return of(true)
   }
 
 }

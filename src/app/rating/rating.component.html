@@ -1,9 +1,9 @@
 <div class="text-center" style="width:fit-content">
-    <div *ngIf="!isUpVoted()" class="triangle-up-{{getArrowSizeSuffix()}}" (click)="upVote()"></div>
-    <div *ngIf="isUpVoted()" class="triangle-up-{{getArrowSizeSuffix()}} selected-up" (click)="removeVote()"></div>
+    <div *ngIf="!isUpVoted()" class="triangle-up-{{size}}" (click)="upVote()"></div>
+    <div *ngIf="isUpVoted()" class="triangle-up-{{size}} selected-up" (click)="removeVote()"></div>
 
     <div class="font-weight-bold" style="font-size: {{getRatingValueSize()}};">{{ratingValue!!}}</div>
 
-    <div *ngIf="!isDownVoted()" class="triangle-down-{{getArrowSizeSuffix()}}" (click)="downVote()"></div>
-    <div *ngIf="isDownVoted()" class="triangle-down-{{getArrowSizeSuffix()}} selected-down" (click)="removeVote()"></div>
+    <div *ngIf="!isDownVoted()" class="triangle-down-{{size}}" (click)="downVote()"></div>
+    <div *ngIf="isDownVoted()" class="triangle-down-{{size}} selected-down" (click)="removeVote()"></div>
 </div>

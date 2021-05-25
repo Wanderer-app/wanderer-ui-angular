@@ -22,22 +22,6 @@ export class RatingComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getArrowSizeSuffix(): string {
-    switch(this.size) {
-      case RatingComponentSize.LARGE: 
-          return "lg"
-      
-      case RatingComponentSize.MEDIUM:
-        return "md"
-    
-      case RatingComponentSize.SMALL:
-        return "sm"
-
-      default: return "md"
-      
-    }
-  }
-
   getRatingValueSize(): string {
     if (this.ratingValue >= 1000) {
       return "small"
@@ -50,7 +34,10 @@ export class RatingComponent implements OnInit {
         return "xx-large"
     
       case RatingComponentSize.SMALL:
-        return "large"
+        return "medium"
+
+      case RatingComponentSize.EXTRA_SMALL:
+        return "15px"
 
       default: return "xx-large"
       
@@ -61,6 +48,8 @@ export class RatingComponent implements OnInit {
     this.service.upVote(this.contentId).subscribe(ratingData => {
       this.ratingValue = ratingData.totalRating
       this.userVoteDirection = VoteDirection.UP
+      console.log(this.userVoteDirection);
+      
     })
   }
 

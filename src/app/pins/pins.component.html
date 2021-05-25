@@ -10,7 +10,7 @@
         ></app-map>
     </div>
 
-    <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh;" class="col col-lg-4 shadow">
+    <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh;" class="col col-lg-4">
         <app-pins-detail *ngIf="selectedPin" [pin]="selectedPin" (closeDetailsEvent)="closeSidePanel()"></app-pins-detail>
         <app-route-discussion *ngIf="discussion$" [discussion$]="discussion$" (close)="closeSidePanel()"></app-route-discussion>
         <app-route-description *ngIf="routeInfo" [routeInfo]="routeInfo" (close)="closeSidePanel()"></app-route-description>

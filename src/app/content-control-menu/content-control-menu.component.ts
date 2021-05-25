@@ -24,6 +24,7 @@ export class ContentControlMenuComponent implements OnInit {
   @Input() contentCreatorId!: number
   @Input() contentIsActive!: boolean
   @Input() service!: UserAddedContentService
+  @Input() backgroundColor?: string
 
   @Output() editContentEvent = new EventEmitter()
   @Output() contentRemoved = new EventEmitter()

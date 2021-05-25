@@ -36,7 +36,7 @@ export const MOCK_DISCUSSION_ELEMENTS: DiscussionElement[] = [
         type: UserContentType.POLL
     },
     {
-        id: 1,
+        id: 3,
         creator: PATATA,
         createdAt: "2021-05-25T12:12:12",
         updatedAt: "2021-05-25T12:12:12",

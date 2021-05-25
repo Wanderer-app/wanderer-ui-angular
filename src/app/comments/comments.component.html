@@ -1,5 +1,5 @@
-<h3 class="mt-4 ge-heading">კომენტარები<span class="ms-1">&middot;{{totalCommentsNumber}}</span></h3>
-<a class="mt-2" href="javascript:;" (click)="loadMoreComments()" class>მეტი კომენტარის ნახვა</a>
+<h3 class="mt-4 ge-heading text-secondary">კომენტარები<span class="ms-1">&middot;{{totalCommentsNumber}}</span></h3>
+<a class="mt-2" *ngIf="totalCommentsNumber > comments.length" href="javascript:;" (click)="loadMoreComments()" class>მეტი კომენტარის ნახვა</a>
 
 <div class="mt-2" *ngFor="let comment of comments">
 
