@@ -7,7 +7,7 @@
     
     <div style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)?.concat(additionalDiscussion)">
         
-        <div *ngIf="element.type === post" class="rounded shadow mt-4 p-3 bg-white">
+        <div *ngIf="element.type === post && !removedPosts.includes(element.id)" class="rounded shadow mt-4 p-3 bg-white">
             <p class="text-danger" *ngIf="element.id === postToEditId">aeeeeeeeeeeeee</p>
             <div class="row g-2">
                 <div class="col-11 d-flex">
@@ -36,6 +36,7 @@
                         [contentIsActive] = "element.isActive"
                         [service] = "postService"
                         (editContentEvent)="editMode($event)"
+                        (contentRemoved)="postRemoved($event)"
                     ></app-content-control-menu>
                 </div>
             </div>
@@ -60,7 +61,7 @@
             </div>
         </div>
 
-        <div *ngIf="element.type === poll" class="rounded shadow mt-4 p-3 bg-white">
+        <div *ngIf="element.type === poll && !removedPolls.includes(element.id)" class="rounded shadow mt-4 p-3 bg-white">
             <p class="text-danger" *ngIf="element.id === pollToEditId">aeeeeeeeeeeeee</p>
             <div class="row g-2">
                 <div class="col-11 d-flex">
@@ -80,6 +81,7 @@
                         [contentIsActive] = "element.isActive"
                         [service] = "pollService"
                         (editContentEvent)="editMode($event)"
+                        (contentRemoved) = "pollRemoved($event)"
                     ></app-content-control-menu>
                 </div>
             </div>

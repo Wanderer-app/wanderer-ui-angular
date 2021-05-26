@@ -41,6 +41,8 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   pollToEditId?: number
   postToEditId?: number
+  removedPolls: number[] = []
+  removedPosts: number[] = []
 
   constructor(
     private imageSevice: ExternalImageService,
@@ -125,6 +127,14 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
       this.pollToEditId = elementInfo.id
       this.postToEditId = undefined
     }
+  }
+
+  pollRemoved(pollId: number) {
+    this.removedPolls.push(pollId)
+  }
+
+  postRemoved(postId: number) {
+    this.removedPosts.push(postId)
   }
 
 }
