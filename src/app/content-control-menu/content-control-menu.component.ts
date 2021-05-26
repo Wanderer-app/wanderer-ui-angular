@@ -118,8 +118,8 @@ export class ContentControlMenuComponent implements OnInit {
     }
   }
 
-  editMode() {
-    this.editContentEvent.emit()
+  editMode() {    
+    this.editContentEvent.emit({id: this.contentId, contentType: this.contentType})
   }
 
 }

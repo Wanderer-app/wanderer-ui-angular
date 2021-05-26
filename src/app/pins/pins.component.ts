@@ -17,7 +17,7 @@ export class PinsComponent implements OnInit, OnDestroy {
 
   currentRate = 5
   selectedPin?: PinData
-  discussion$?: Observable<DiscussionElement[]>
+  routeForDiscussion?: string
   sidePanelOpen: boolean = false
   pinSubscription?: Subscription
   routeInfo?: any
@@ -25,7 +25,7 @@ export class PinsComponent implements OnInit, OnDestroy {
 
   PIN_TYPE = PinType
 
-  additionalMapPins?: PinShortData[]
+  additionalMapPins: PinShortData[] = []
 
   constructor(private pinService: PinsService, private notificationService: NotificationService, private discussionService: DiscussionService) { }
 
@@ -55,15 +55,15 @@ export class PinsComponent implements OnInit, OnDestroy {
     document.getElementById('pins-div')?.classList.remove("d-none")
     document.getElementById('pins-div')?.classList.remove("d-lg-block")
     this.sidePanelOpen = false
-    this.discussion$ = undefined
     this.selectedPin = undefined
     this.routeInfo = undefined
     this.newPinInfo = undefined
+    this.routeForDiscussion = undefined
   }
 
   displayDiscussion(routeCode: string) {
     this.closeSidePanel()
-    this.discussion$ = this.discussionService.listForRoute(routeCode);
+    this.routeForDiscussion = routeCode
     this.openSidePanel()
   }
 
@@ -94,11 +94,13 @@ export class PinsComponent implements OnInit, OnDestroy {
       rating: pin.rating.totalRating
     }
 
-    if(this.additionalMapPins) {
-      this.additionalMapPins.push(pinShort)
-    } else {
-      this.additionalMapPins = [ pinShort ]
-    }
+    this.additionalMapPins = this.additionalMapPins.concat([pinShort])
+
+    // if(this.additionalMapPins) {
+    //   this.additionalMapPins.push(pinShort)
+    // } else {
+    //   this.additionalMapPins = [ pinShort ]
+    // }
   }
   
 }

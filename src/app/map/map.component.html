@@ -8,21 +8,12 @@
     ></agm-data-layer>
 
     <agm-marker 
-        *ngFor="let pin of (pins$ | async)"
+        *ngFor="let pin of (pins$ | async)?.concat(additionalPins)"
         [latitude]="pin.location.lat" 
         [longitude]="pin.location.lng" 
         [label]="pin.type.charAt(0)"
         (markerClick)="pinSelected(pin)"
     ></agm-marker>
-
-    <agm-marker 
-        *ngFor="let pin of additionalPins!"
-        [latitude]="pin.location.lat" 
-        [longitude]="pin.location.lng" 
-        [label]="pin.type.charAt(0)"
-        (markerClick)="pinSelected(pin)"
-    ></agm-marker>
-
 
     <agm-snazzy-info-window 
         [padding]="'10px'" 

@@ -5,9 +5,10 @@
         </button>
     </div>
     
-    <div style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)">
+    <div style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)?.concat(additionalDiscussion)">
         
         <div *ngIf="element.type === post" class="rounded shadow mt-4 p-3 bg-white">
+            <p class="text-danger" *ngIf="element.id === postToEditId">aeeeeeeeeeeeee</p>
             <div class="row g-2">
                 <div class="col-11 d-flex">
                     <img src="assets/img/avatar.jpg" alt="" style="width:auto;max-height:50px;" class="rounded-circle img-fluid">
@@ -34,6 +35,7 @@
                         [contentCreatorId] = "element.creator.id"
                         [contentIsActive] = "element.isActive"
                         [service] = "postService"
+                        (editContentEvent)="editMode($event)"
                     ></app-content-control-menu>
                 </div>
             </div>
@@ -41,6 +43,12 @@
             <p class="mt-2">
                 {{element.content}}
             </p>
+
+            <div id="a" class="mt-3 d-flex " *ngIf="hasImages(element)" style="overflow-x: auto;flex-direction: row;">
+                <ng-container *ngFor="let img of getImageUrls(element)">
+                    <img src='{{ img | async}}' (click)="imageClicked($event)" class="img-fluid me-1" style="min-width: 40%;flex-grow: 1;cursor: pointer;" alt=""> 
+                </ng-container>
+            </div>
     
             <div class="mt-3">
                 <app-comments
@@ -53,6 +61,7 @@
         </div>
 
         <div *ngIf="element.type === poll" class="rounded shadow mt-4 p-3 bg-white">
+            <p class="text-danger" *ngIf="element.id === pollToEditId">aeeeeeeeeeeeee</p>
             <div class="row g-2">
                 <div class="col-11 d-flex">
                     <img src="assets/img/avatar.jpg" alt="" style="width:auto;max-height:50px;" class="rounded-circle img-fluid">
@@ -70,6 +79,7 @@
                         [contentCreatorId] = "element.creator.id"
                         [contentIsActive] = "element.isActive"
                         [service] = "pollService"
+                        (editContentEvent)="editMode($event)"
                     ></app-content-control-menu>
                 </div>
             </div>
@@ -78,15 +88,16 @@
                 {{pollQuestion(element.content)}}
             </p>
     
-            <div class="mt-3 p-5 container bg-light">
+            <div class="mt-3 p-4 container">
     
                 <div *ngFor="let answerData of pollAnswersData(element.content)" class="d-flex">
-                    <div (click)="selectPollAnswer(element.id, answerData.answerId)" class="border border-secondary rounded mb-3 position-relative poll-answer" style="transition: 300ms; height: 40px;cursor: pointer;width: 90%;">
-                        <div class="bg-{{hasUsersVote(answerData.answererIds) ? 'primary' : 'secondary'}} rounded h-100" style="width: {{answerData.percentage}}%;"></div>
-                        <span class="position-absolute start-0 top-0 h-100 w-100 d-flex align-items-center justify-content-center ">
-                            {{ answerData.title }}
-                        </span>
+                    <div (click)="selectPollAnswer(element.id, answerData.answerId)" class="progress border border-secondary rounded mb-3 bg-white" style="cursor: pointer;transition: 300ms;">
+                        <div class="progress-text text-{{hasUsersVote(answerData.answererIds) ? 'primary' : 'secondary'}} ge-heading">{{ answerData.title }}</div>
+                        <div class="progress-bar bg-{{hasUsersVote(answerData.answererIds) ? 'primary' : 'secondary'}}" style="width: {{answerData.percentage}}%;">
+                          <div class="progress-text text-white ge-heading">{{ answerData.title }}</div>
+                        </div>
                     </div>
+
                     <div class="text-secondary ms-2 d-flex align-items-center" style="line-height: 1;height: 40px;">
                         {{ answerData.answererIds.length }} ხმა
                     </div>
@@ -106,6 +117,11 @@
 
     </div>
 
+    <div *ngIf="!discussionLoading" class="my-4 d-block text-center">
+        <a href="javascript:;" *ngIf="!additionalElementsLoading" (click)="loadMore()">მეტის ჩატვირთვა</a>
+        <span *ngIf="additionalElementsLoading" class="spinner-border spinner-border text-primary" role="status"></span>
+    </div>
+
 
     <div *ngIf="(discussion$ | async)?.length === 0" style="height:90vh" class="d-flex align-items-center justify-content-center">
         <h3 class="text-secondary text-center">დისკუსია არ დაწყებულა</h3>
@@ -114,4 +130,8 @@
     <div *ngIf="discussionLoading" style="height:90vh" class="d-flex align-items-center justify-content-center">
         <span class="spinner-border spinner-border text-primary" style="width: 100px; height: 100px;" role="status"></span>
     </div>
+
+    <ng-container *ngIf="maximizedImage && (discussion$ | async)?.length !== 0">
+        <app-maximized-image [imageUrl]="maximizedImage" (closeEvent)="maximizedImage = undefined;"></app-maximized-image>
+    </ng-container>
 </div>

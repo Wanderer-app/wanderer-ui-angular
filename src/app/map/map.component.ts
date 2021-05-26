@@ -16,7 +16,7 @@ import { PinsService } from '../services/pins/pins.service';
 })
 export class MapComponent implements OnInit, OnDestroy {
 
-  @Input() additionalPins?: PinShortData[]
+  @Input() additionalPins!: PinShortData[]
   @Output() pinSelectedEvent = new EventEmitter()
   @Output() showRouteDetails = new EventEmitter()
   @Output() addPinEvent = new EventEmitter()
@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if(feature === this.selectedFeature) {
       this.showInfoWindow($event as google.maps.Data.MouseEvent)
     } else {
-      this.additionalPins = undefined
+      this.additionalPins = []
       this.selectedFeature?.setProperty("isSelected", false)
       this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
 
@@ -117,6 +117,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   changeDataLayer(routesLayer: RouteFile) {
     this.pins$ = of([])
+    this.additionalPins = []
     this.displayDataLayer = false
     this.routesSubscription = this.mapService.getRoutes(routesLayer)
       .pipe(finalize(() => this.displayDataLayer = true))

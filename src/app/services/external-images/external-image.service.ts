@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { concat, merge, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { FileData } from 'src/app/common/data/file-data';
 
@@ -10,10 +10,12 @@ export class ExternalImageService {
 
   constructor() { }
 
+  IMAGE_LOCATION = "assets/img/"
+
   files: Map<string, string> = new Map([
     ["123456", "butterfly.jpg"],
-    ["1234567", "birds.webp"],
-    ["1234568", "moon.webp"],
+    ["1234567", "birds.jpg"],
+    ["1234568", "moon.jpg"],
     ["1234569", "girl.webp"]
   ])
 
@@ -21,10 +23,14 @@ export class ExternalImageService {
     let imageName = this.files.get(fileData.externalId)
 
     if(imageName) {
-      return of("assets/img/" + imageName).pipe(delay(500))
+      return of(this.IMAGE_LOCATION + imageName).pipe(delay(500))
     } else {
-      return of("assers/img/no-image.jpg")
+      return of(this.IMAGE_LOCATION + "no-image.jpg")
     }
+  }
+
+  getImageUrls(files: FileData[]): Observable<string>[] {
+    return files.map(file => this.getImageUrl(file))
   }
 
   uploadImage(file: File): Observable<string> {

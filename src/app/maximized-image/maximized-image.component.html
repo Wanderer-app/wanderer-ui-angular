@@ -1,0 +1,6 @@
+<div class="position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background-color: rgba(0, 0, 0, 0.726);">
+    <div (click)="imgClicked()"  class="p-5 rounded bg-dark position-relative" style="max-height: 95vh;max-width: 90%;">
+        <img class="img img-fluid" src="{{imageUrl}}" alt="">
+        <button (click)="close()" class="btn btn-light btn-lg position-absolute start-100 top-0 translate-middle"><fa-icon [icon]="closeIcon"></fa-icon></button>
+    </div>
+</div>

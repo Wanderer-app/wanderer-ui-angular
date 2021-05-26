@@ -1,3 +1,46 @@
-.poll-answer:hover {
+.progress:hover {
     background-color: #f0f0f0!important;
 }
+
+.progress {
+    position: relative;
+    border: 0;
+    width: 500px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    background-color: #07A4DD;
+    border-radius: 40px;
+    overflow: hidden;
+  }
+  .progress .progress-text {
+    position: absolute;
+    top: 0;
+    width: 500px;
+    text-align: center;
+    color: #fff;
+  }
+  .progress .progress-bar {
+    height: 100%;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: inherit;
+    overflow: hidden;
+    position: relative;
+
+  }
+  .progress .progress-bar .progress-text {
+    color: #07A4DD;
+  }
+  
+  @-webkit-keyframes animate {
+    0% {
+      width: 0%;
+    }
+  }
+  
+  @keyframes animate {
+    0% {
+      width: 0%;
+    }
+  }
