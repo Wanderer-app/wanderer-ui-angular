@@ -22,7 +22,7 @@ export class CreatePinFormComponent extends BaseFormComponent implements OnInit,
   @Output() close = new EventEmitter()
   @Output() pinCreated = new EventEmitter()
 
-  img$!: Observable<string>
+  imgUrl?: string
   newImage?: FileData
 
   closeIcon = faTimes
@@ -49,9 +49,9 @@ export class CreatePinFormComponent extends BaseFormComponent implements OnInit,
 
   fileSelected(event: Event) {
     let file = (event.target as HTMLInputElement).files![0]
-    this.imgService.uploadImage(file).subscribe(id => {
-      this.newImage = { externalId: id, fileType: FileType.IMAGE }
-      this.img$ = this.imgService.getImageUrl({externalId: id, fileType: FileType.IMAGE})
+    this.imgService.uploadImage(file).subscribe(img => {
+      this.newImage = { externalId: img.id, fileType: FileType.IMAGE }
+      this.imgUrl = img.url
     })
   }
 

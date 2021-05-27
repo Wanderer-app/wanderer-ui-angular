@@ -25,6 +25,7 @@ import { RouteDescriptionComponent } from './route-description/route-description
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { CreatePinFormComponent } from './create-pin-form/create-pin-form.component';
 import { MaximizedImageComponent } from './maximized-image/maximized-image.component';
+import { CreatePostFormComponent } from './create-post-form/create-post-form.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { MaximizedImageComponent } from './maximized-image/maximized-image.compo
     MapComponent,
     RouteDescriptionComponent,
     CreatePinFormComponent,
-    MaximizedImageComponent
+    MaximizedImageComponent,
+    CreatePostFormComponent
   ],
   imports: [
     BrowserModule,

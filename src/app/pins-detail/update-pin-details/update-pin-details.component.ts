@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { faImages, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { error } from 'selenium-webdriver';
 import { FileData, FileType } from 'src/app/common/data/file-data';
@@ -76,9 +76,9 @@ export class UpdatePinDetailsComponent implements OnInit {
 
   fileSelected(event: Event) {
     let file = (event.target as HTMLInputElement).files![0]
-    this.imgService.uploadImage(file).subscribe(id => {
-      this.newFile = { externalId: id, fileType: FileType.IMAGE }
-      this.img$ = this.imgService.getImageUrl({externalId: id, fileType: FileType.IMAGE})
+    this.imgService.uploadImage(file).subscribe(image => {
+      this.newFile = { externalId: image.id, fileType: FileType.IMAGE }
+      this.img$ = of(image.url)
     })
   }
 

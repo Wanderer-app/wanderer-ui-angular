@@ -4,10 +4,23 @@
             <fa-icon [icon]="closeIcon"></fa-icon>
         </button>
     </div>
+
+    <div class="row g-1 mt-4">
+        <div class="col">
+            <button (click)="showCreatePostForm = true" class="btn btn-secondary d-block w-100"><fa-icon [icon]="addIcon"></fa-icon> პოსტის დამატება</button>
+        </div>
+        <div *ngIf="canAddPoll()" class="col">
+            <button (click)="showCreatePollForm = true" class="btn btn-secondary d-block w-100"><fa-icon [icon]="pollIcon"></fa-icon> პოლის დამატება</button>
+        </div>
+    </div>
+
+    <div *ngIf="showCreatePostForm === true" class="mt-3">
+        <app-create-post-form (postCreated)="postCreated($event)"></app-create-post-form>
+    </div>
     
     <div style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)?.concat(additionalDiscussion)">
         
-        <div *ngIf="element.type === post && !removedPosts.includes(element.id)" class="rounded shadow mt-4 p-3 bg-white">
+        <div *ngIf="element.type === post && !removedPosts.includes(element.id)" class="rounded shadow mt-3 p-3 bg-white">
             <p class="text-danger" *ngIf="element.id === postToEditId">aeeeeeeeeeeeee</p>
             <div class="row g-2">
                 <div class="col-11 d-flex">
@@ -119,7 +132,7 @@
 
     </div>
 
-    <div *ngIf="!discussionLoading" class="my-4 d-block text-center">
+    <div *ngIf="(discussion$ | async)?.length !== 0 && !discussionLoading" class="my-4 d-block text-center">
         <a href="javascript:;" *ngIf="!additionalElementsLoading" (click)="loadMore()">მეტის ჩატვირთვა</a>
         <span *ngIf="additionalElementsLoading" class="spinner-border spinner-border text-primary" role="status"></span>
     </div>

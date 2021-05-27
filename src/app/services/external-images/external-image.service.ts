@@ -33,11 +33,20 @@ export class ExternalImageService {
     return files.map(file => this.getImageUrl(file))
   }
 
-  uploadImage(file: File): Observable<string> {
+  uploadImage(file: File): Observable<UploadedImageData> {
     let ids = [...this.files.keys()]
     let newId: string = ((+ids[ids.length-1])+1).toString()
     this.files.set(newId, file.name)
 
-    return of(newId)
+    return of({id: newId, url: this.IMAGE_LOCATION + file.name})
   }
+
+  uploadMultipleImages(files: File[]): Observable<UploadedImageData>[] {
+    return files.map(file => this.uploadImage(file))
+  }
+}
+
+export interface UploadedImageData {
+  id: string,
+  url: string
 }

@@ -16,7 +16,7 @@
             <div class="col-6 form-group">
                 <div class="form-group">
                     <label class="mb-1 text-secondary">სათაური</label>
-                    <input type="text" required formControlName="title" class="form-control form-control {{errorClasses(pinTitle)}}" #pinTitle>
+                    <input type="text" required formControlName="title" class="form-control {{errorClasses(pinTitle)}}" #pinTitle>
                     <ng-container *ngIf="isInValid(pinTitle)">
                         <ng-container *ngFor="let error of getErrors(pinTitle)">
                         <small class="text-danger">{{error}}</small>
@@ -73,7 +73,7 @@
                         <fa-icon [icon]="closeIcon"></fa-icon>
                     </button>
                 </div>
-                <img src='{{ img$ | async}}' class="img-fluid img-thumbnail mx-auto d-block"  alt=""> 
+                <img *ngIf="imgUrl" src='{{ imgUrl }}' class="img-fluid img-thumbnail mx-auto d-block"  alt=""> 
             </div>
     
             <div *ngIf="!newImage" class="col">

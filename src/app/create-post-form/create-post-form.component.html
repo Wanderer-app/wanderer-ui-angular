@@ -1,0 +1,24 @@
+<form onsubmit="return false" [formGroup]="form" (ngSubmit)="createPost()">
+    <div class="form-group">
+        <div class="input-group">
+            <textarea cols="30" rows="3" class="form-control" style="resize: none;" formControlName="text" required placeholder="დაწერეთ პოსტი"></textarea>
+            <button (click)="fileUpload.click()" type="button" class="btn bg-white border-top border-bottom text-secondary" style="font-size: 20px;">
+                <fa-icon [icon]="clipIcon"></fa-icon>
+            </button>
+            <button type="submit" [disabled]="form.invalid" class="btn btn-primary">გაგზავნა</button>
+            <input type="file" multiple id="imgUpload" accept="image/*" class="d-none" (change)="fileSelected($event)" #fileUpload>
+
+            <div class="d-flex pt-3" style="overflow-x: auto;">
+                <ng-container *ngFor="let imageObservable of uploadedImages">
+                    <span style="max-width: 20%;height:90px;flex-shrink: 0;" class="position-relative me-1">
+                        <img src='{{(imageObservable | async)!.url}}' class="img-fluid img-thumbnail w-100 h-100" alt=""> 
+
+                        <span (click)="removeImage(imageObservable)" class="text-secondary position-absolute translate-middle" style="cursor: pointer;z-index: 1000;left: 98%;top: 1%;">
+                            <fa-icon [icon]="roundTimesIcon"></fa-icon>
+                        </span>
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</form>

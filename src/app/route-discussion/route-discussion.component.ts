@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCross, faPlus, faPollH, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map, observeOn, tap } from 'rxjs/operators';
 import { DiscussionElement, PollAnswerData, PollContent } from '../common/data/duscussion-element';
@@ -30,6 +30,8 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   discussionLoading = true
   additionalElementsLoading = false
+  showCreatePostForm = false
+  showCreatePollForm = false
 
   controlMenuPlacement = ContentControlMenuPlacement.LEFT_TOP
   post = UserContentType.POST
@@ -53,6 +55,8 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   ) { }
 
   closeIcon = faTimes
+  addIcon = faPlus
+  pollIcon = faPollH
 
   ngOnDestroy(): void {
     this.additionalDiscussionSubScription?.unsubscribe()
@@ -135,6 +139,14 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   postRemoved(postId: number) {
     this.removedPosts.push(postId)
+  }
+
+  canAddPoll(): boolean {
+    return this.logInService.getLoggedInUser()?.isAdmin || false
+  }
+
+  postCreated(newPost: DiscussionElement) {
+    this.showCreatePostForm = false
   }
 
 }
