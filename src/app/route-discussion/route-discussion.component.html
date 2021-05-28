@@ -10,15 +10,19 @@
             <button (click)="showCreatePostForm = true" class="btn btn-secondary d-block w-100"><fa-icon [icon]="addIcon"></fa-icon> პოსტის დამატება</button>
         </div>
         <div *ngIf="canAddPoll()" class="col">
-            <button (click)="showCreatePollForm = true" class="btn btn-secondary d-block w-100"><fa-icon [icon]="pollIcon"></fa-icon> პოლის დამატება</button>
+            <button (click)="showCreatePollForm()" class="btn btn-secondary d-block w-100"><fa-icon [icon]="pollIcon"></fa-icon> პოლის დამატება</button>
         </div>
     </div>
 
     <div *ngIf="showCreatePostForm === true" class="mt-3">
-        <app-create-post-form (postCreated)="postCreated($event)"></app-create-post-form>
+        <app-create-post-form (postCreated)="postCreated($event)" [routeCode]="routeCode"></app-create-post-form>
+    </div>
+
+    <div *ngIf="creatingPoll" class="text-center d-block my-3">
+        <span class="spinner-border spinner-border text-primary" role="status"></span>
     </div>
     
-    <div style="word-wrap:break-word;" *ngFor="let element of (discussion$ | async)?.concat(additionalDiscussion)">
+    <div style="word-wrap:break-word;" *ngFor="let element of newlyCreatedElements.concat((discussion$ | async)?.concat(additionalDiscussion) || [])">
         
         <div *ngIf="element.type === post && !removedPosts.includes(element.id)" class="rounded shadow mt-3 p-3 bg-white">
             <p class="text-danger" *ngIf="element.id === postToEditId">aeeeeeeeeeeeee</p>

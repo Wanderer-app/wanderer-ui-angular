@@ -5,13 +5,16 @@
             <button (click)="fileUpload.click()" type="button" class="btn bg-white border-top border-bottom text-secondary" style="font-size: 20px;">
                 <fa-icon [icon]="clipIcon"></fa-icon>
             </button>
-            <button type="submit" [disabled]="form.invalid" class="btn btn-primary">გაგზავნა</button>
+            <button type="submit" [disabled]="form.invalid || creatingPost" class="btn btn-primary">
+                <ng-container *ngIf="!creatingPost">გაგზავნა</ng-container>
+                <span *ngIf="creatingPost" class="spinner-border spinner-border-sm" role="status"></span>
+            </button>
             <input type="file" multiple id="imgUpload" accept="image/*" class="d-none" (change)="fileSelected($event)" #fileUpload>
 
             <div class="d-flex pt-3" style="overflow-x: auto;">
                 <ng-container *ngFor="let imageObservable of uploadedImages">
                     <span style="max-width: 20%;height:90px;flex-shrink: 0;" class="position-relative me-1">
-                        <img src='{{(imageObservable | async)!.url}}' class="img-fluid img-thumbnail w-100 h-100" alt=""> 
+                        <img src='{{(imageObservable | async)!.url}}' class="img-fluid img-thumbnail w-100 h-100 uploaded-img" id="{{(imageObservable | async)!.id}}"> 
 
                         <span (click)="removeImage(imageObservable)" class="text-secondary position-absolute translate-middle" style="cursor: pointer;z-index: 1000;left: 98%;top: 1%;">
                             <fa-icon [icon]="roundTimesIcon"></fa-icon>

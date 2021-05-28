@@ -11,11 +11,9 @@ export class DiscussionService {
 
   constructor() { }
 
-  elements = MOCK_DISCUSSION_ELEMENTS
-
   listForRoute(routeConde: string): Observable<DiscussionElement[]> {
     return of(
-      this.elements.filter(e => e.routeCode === routeConde)
+      MOCK_DISCUSSION_ELEMENTS.filter(e => e.routeCode === routeConde)
     ).pipe(delay(500))
   }
 

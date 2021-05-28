@@ -1,11 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { faCross, faPlus, faPollH, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map, observeOn, tap } from 'rxjs/operators';
 import { DiscussionElement, PollAnswerData, PollContent } from '../common/data/duscussion-element';
 import { FileData, FileType } from '../common/data/file-data';
 import { UserContentType } from '../common/data/user-content-type';
 import { UserFullData } from '../common/data/user-full-data';
+import { CreatePollFormModalComponent } from '../common/modals/create-poll-form-modal/create-poll-form-modal.component';
 import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
 import { RatingComponentSize } from '../rating/rating-size';
 import { DiscussionService } from '../services/discussion/discussion.service';
@@ -25,13 +27,14 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter()
 
   discussion$!: Observable<DiscussionElement[]>
+  newlyCreatedElements: DiscussionElement[] = []
   additionalDiscussion: DiscussionElement[] = []
   additionalDiscussionSubScription?: Subscription
 
   discussionLoading = true
   additionalElementsLoading = false
   showCreatePostForm = false
-  showCreatePollForm = false
+  creatingPoll = false
 
   controlMenuPlacement = ContentControlMenuPlacement.LEFT_TOP
   post = UserContentType.POST
@@ -40,6 +43,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   loadedImages = new Map<number, Observable<string>[]>()
   maximizedImage?: string
+  createPollSubscription?: Subscription
 
   pollToEditId?: number
   postToEditId?: number
@@ -49,6 +53,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   constructor(
     private imageSevice: ExternalImageService,
     private logInService: LogInService,
+    private modalService: NgbModal,
     private discussionService: DiscussionService,
     public postService: PostService,
     public pollService: PollService
@@ -60,6 +65,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.additionalDiscussionSubScription?.unsubscribe()
+    this.createPollSubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
@@ -147,6 +153,22 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   postCreated(newPost: DiscussionElement) {
     this.showCreatePostForm = false
+    this.newlyCreatedElements.unshift(newPost)
+    console.log(this.newlyCreatedElements);
+    
+  }
+
+  showCreatePollForm() {
+    const modalRef = this.modalService.open(CreatePollFormModalComponent);
+    modalRef.result.then(result => {      
+      if (result) {
+        this.creatingPoll = true
+        this.createPollSubscription = this.pollService.createPoll(result.question, result.answers, this.routeCode)
+          .pipe(finalize(() => this.creatingPoll = false))
+          .subscribe(poll => this.newlyCreatedElements.unshift(poll))
+        
+      }
+    })
   }
 
 }

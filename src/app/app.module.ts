@@ -26,6 +26,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { CreatePinFormComponent } from './create-pin-form/create-pin-form.component';
 import { MaximizedImageComponent } from './maximized-image/maximized-image.component';
 import { CreatePostFormComponent } from './create-post-form/create-post-form.component';
+import { CreatePollFormModalComponent } from './common/modals/create-poll-form-modal/create-poll-form-modal.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { CreatePostFormComponent } from './create-post-form/create-post-form.com
     RouteDescriptionComponent,
     CreatePinFormComponent,
     MaximizedImageComponent,
-    CreatePostFormComponent
+    CreatePostFormComponent,
+    CreatePollFormModalComponent
   ],
   imports: [
     BrowserModule,
