@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
-import { faCross, faPlus, faPollH, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder } from '@angular/forms';
+import { faCheck, faCross, faEdit, faImages, faPlus, faPollH, faTimes, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map, observeOn, tap } from 'rxjs/operators';
@@ -9,11 +10,12 @@ import { UserContentType } from '../common/data/user-content-type';
 import { UserFullData } from '../common/data/user-full-data';
 import { CreatePollFormModalComponent } from '../common/modals/create-poll-form-modal/create-poll-form-modal.component';
 import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
+import { NotificationService } from '../notifications/service/notification.service';
 import { RatingComponentSize } from '../rating/rating-size';
 import { DiscussionService } from '../services/discussion/discussion.service';
 import { PollService } from '../services/discussion/poll.service';
 import { PostService } from '../services/discussion/post.service';
-import { ExternalImageService } from '../services/external-images/external-image.service';
+import { ExternalImageService, UploadedImageData } from '../services/external-images/external-image.service';
 import { LogInService } from '../services/log-in/log-in.service';
 
 @Component({
@@ -50,10 +52,17 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   removedPolls: number[] = []
   removedPosts: number[] = []
 
+  postNewImageIds: string[] = []
+  postNewText?: string
+  performingUpdate = false
+  pollNewQuestion?: string
+  updateSubscription?: Subscription
+
   constructor(
     private imageSevice: ExternalImageService,
     private logInService: LogInService,
     private modalService: NgbModal,
+    private notificationService: NotificationService,
     private discussionService: DiscussionService,
     public postService: PostService,
     public pollService: PollService
@@ -62,10 +71,14 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   closeIcon = faTimes
   addIcon = faPlus
   pollIcon = faPollH
+  imgIcon = faImages
+  editIcon = faEdit
+  undoIcon = faUndo
 
   ngOnDestroy(): void {
     this.additionalDiscussionSubScription?.unsubscribe()
     this.createPollSubscription?.unsubscribe()
+    this.updateSubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
@@ -126,7 +139,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   }
 
   editMode(elementInfo: any) {
-    console.log(`Editing ${elementInfo.contentType} with id ${elementInfo.id}`);
+    this.cancelEdit()
 
     if(elementInfo.contentType == UserContentType.POST) {
       this.postToEditId = elementInfo.id
@@ -169,6 +182,64 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
         
       }
     })
+  }
+
+  updatePostPictures(event: Event, postId: number) {
+    let file = (event.target as HTMLInputElement).files![0]
+
+    if (file) {
+      this.loadedImages.get(postId)?.unshift(
+        this.imageSevice.uploadImage(file)
+        .pipe(tap(image => this.postNewImageIds.unshift(image.id)))
+        .pipe(map(img => img.url))
+      )
+    }
+  }
+
+  canEditPost(post: DiscussionElement): boolean {
+    return (this.postNewText && this.postNewText !== post.content )
+      || this.postNewImageIds.length > 0
+  }
+
+  editPost(post: DiscussionElement) {
+
+    this.performingUpdate = true
+
+    if(this.canEditPost(post)) {
+      this.updateSubscription = this.postService.update(
+        this.postNewText!, 
+        post.attachedFiles.concat(this.postNewImageIds.map(id => ({externalId: id, fileType: FileType.IMAGE}))),
+        post.id
+      )
+      .pipe(finalize(() => this.performingUpdate = false))
+      .subscribe(data => {
+        this.cancelEdit()
+        this.notificationService.showStandardSuccess("პოსტი დარედაქტირდა!")
+      })
+    }
+    
+  }
+
+  cancelEdit() {
+    this.postToEditId = undefined
+    this.pollToEditId = undefined
+    this.postNewImageIds = []
+    this.postNewText = undefined
+    this.pollNewQuestion = undefined
+  }
+
+  editPoll(newQuestion: string, poll: DiscussionElement) {
+    this.performingUpdate = true
+    this.updateSubscription = this.pollService.update(newQuestion, poll.id)
+      .pipe(finalize(() => this.performingUpdate = false))
+      .subscribe(data => {
+        this.notificationService.showStandardSuccess("პოლი დარედაქტირდა")
+        this.cancelEdit()
+      })
+  }
+
+  canEditPoll(): boolean {
+    return (this.pollNewQuestion !== undefined && this.pollNewQuestion !== '')
   }
 
 }

@@ -4,10 +4,24 @@
     </button>
 
     <ul class="dropdown-menu1" ngbDropdownMenu>
-        <li *ngIf="hasFullRights() && !contentIsActive" ngbDropdownItem><button (click)="activate()" class="dropdown-item" type="button">აქტივაცია</button></li>
-        <li *ngIf="hasFullRights() && contentIsActive" ngbDropdownItem><button (click)="remove()" class="dropdown-item" type="button">წაშლა</button></li>
-        <li *ngIf="isCreator() && contentIsActive" ngbDropdownItem><button (click)="editMode()" class="dropdown-item" type="button">რედაქტირება</button></li>
-        <li *ngIf="isPin() && contentIsActive && !isCreator()" ngbDropdownItem><button (click)="markIrrelevant()" class="dropdown-item" type="button">არააქტუალურია</button></li>
-        <li *ngIf="canReport()" ngbDropdownItem><button (click)="report()" class="dropdown-item">დარეპორტება</button></li>
+        <li *ngIf="hasFullRights() && !contentIsActive" ngbDropdownItem>
+            <button (click)="activate()" class="dropdown-item" type="button"><fa-icon [icon]="activateIcon"></fa-icon> აქტივაცია</button>
+        </li>
+
+        <li *ngIf="hasFullRights() && contentIsActive" ngbDropdownItem>
+            <button (click)="remove()" class="dropdown-item" type="button"><fa-icon [icon]="removeIcon"></fa-icon> წაშლა</button>
+        </li>
+
+        <li *ngIf="isCreator() && contentIsActive" ngbDropdownItem>
+            <button (click)="editMode()" class="dropdown-item" type="button"><fa-icon [icon]="editIcon"></fa-icon> რედაქტირება</button>
+        </li>
+
+        <li *ngIf="isPin() && contentIsActive && !isCreator()" ngbDropdownItem>
+            <button (click)="markIrrelevant()" class="dropdown-item" type="button"><fa-icon [icon]="reportIcon"></fa-icon> არააქტუალურია</button>
+        </li>
+        
+        <li *ngIf="canReport()" ngbDropdownItem>
+            <button (click)="report()" class="dropdown-item"><fa-icon [icon]="reportIcon"></fa-icon> დარეპორტება</button>
+        </li>
     </ul>
 </span>

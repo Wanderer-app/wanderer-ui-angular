@@ -7,7 +7,7 @@ import { AreYouSureModalComponent } from '../common/modals/are-you-sure-modal/ar
 import { ContentReportModalComponent } from '../common/modals/content-report-modal/content-report-modal.component';
 import { UserAddedContentService } from '../services/user-added-content-service';
 import { ContentControlMenuPlacement } from './menu-placement';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCheck, faEdit, faFlag, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { NotificationService } from '../notifications/service/notification.service';
 import { LogInService } from '../services/log-in/log-in.service';
 
@@ -32,6 +32,10 @@ export class ContentControlMenuComponent implements OnInit {
   loggedInUser: UserFullData = this.logInService.getLoggedInUser()!
 
   barsIcon = faBars
+  removeIcon = faTrashAlt
+  editIcon = faEdit
+  reportIcon = faFlag
+  activateIcon = faCheck
 
   constructor(private modalService: NgbModal, private notificationService: NotificationService, private logInService: LogInService) { }
 

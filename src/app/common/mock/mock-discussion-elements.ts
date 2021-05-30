@@ -37,7 +37,7 @@ export const MOCK_DISCUSSION_ELEMENTS: DiscussionElement[] = [
     },
     {
         id: 3,
-        creator: JAMBURA,
+        creator: JANGULA,
         createdAt: "2021-05-25T12:12:12",
         updatedAt: "2021-05-25T12:12:12",
         isActive: true,

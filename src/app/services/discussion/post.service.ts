@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { CommentData } from 'src/app/common/data/comment-data';
 import { DiscussionElement } from 'src/app/common/data/duscussion-element';
@@ -8,6 +8,7 @@ import { RatingData } from 'src/app/common/data/rating-data';
 import { ReportReason } from 'src/app/common/data/report-reason';
 import { UserContentType } from 'src/app/common/data/user-content-type';
 import { MOCK_DISCUSSION_ELEMENTS } from 'src/app/common/mock/mock-discussion-elements';
+import { NotificationService } from 'src/app/notifications/service/notification.service';
 import { CommentableContentService } from '../commentable-content-servce';
 import { LogInService } from '../log-in/log-in.service';
 import { RateableContentService } from '../rateable-content-service';
@@ -18,7 +19,7 @@ import { UserAddedContentService } from '../user-added-content-service';
 })
 export class PostService implements CommentableContentService, RateableContentService, UserAddedContentService {
 
-  constructor(private loginService: LogInService) { }
+  constructor(private loginService: LogInService, private notificationService: NotificationService) { }
 
   getComments(id: number): Observable<CommentData[]> {
     console.log(`Getting post ${id} comments`);
@@ -83,6 +84,19 @@ export class PostService implements CommentableContentService, RateableContentSe
 
     return of(post).pipe(delay(500))
     
+  }
+
+  update(newText: string, images: FileData[], postId: number): Observable<DiscussionElement> {
+    let post = MOCK_DISCUSSION_ELEMENTS.find(element => element.type === UserContentType.POST && element.id === postId)
+
+    if(post) {
+      post.content = newText
+      post.attachedFiles = images
+      return of(post).pipe(delay(500))
+    } else {
+      this.notificationService.showStandardError("დაფიქსირდა შეცდომა. პოსტი ვერ მოიძებნა")
+      return throwError("პოსტი ვერ მოიძებნა")
+    }
   }
 
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { CommentData } from 'src/app/common/data/comment-data';
-import { DiscussionElement, PollContent } from 'src/app/common/data/duscussion-element';
+import { DiscussionElement, PollAnswerData, PollContent } from 'src/app/common/data/duscussion-element';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { ReportReason } from 'src/app/common/data/report-reason';
 import { UserContentType } from 'src/app/common/data/user-content-type';
@@ -96,6 +96,20 @@ export class PollService implements CommentableContentService, RateableContentSe
 
     return of(poll).pipe(delay(500))
     
+  }
+
+  update(newQuestion: string, pollId: number): Observable<DiscussionElement> {
+    let poll = MOCK_DISCUSSION_ELEMENTS.find(element => element.type === UserContentType.POLL && element.id === pollId)
+
+    if(poll) {
+      let pollContent = JSON.parse(poll.content) as PollContent
+      pollContent.question = newQuestion
+      poll.content = JSON.stringify(pollContent)
+
+      return of(poll).pipe(delay(500))
+    } else {
+      return of()
+    }
   }
 
 }

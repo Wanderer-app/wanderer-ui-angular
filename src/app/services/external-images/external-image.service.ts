@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { concat, merge, Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { FileData } from 'src/app/common/data/file-data';
 
 @Injectable({
