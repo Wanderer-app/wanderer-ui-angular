@@ -49,7 +49,7 @@ import { CreatePollFormModalComponent } from './common/modals/create-poll-form-m
     CreatePinFormComponent,
     MaximizedImageComponent,
     CreatePostFormComponent,
-    CreatePollFormModalComponent
+    CreatePollFormModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +59,7 @@ import { CreatePollFormModalComponent } from './common/modals/create-poll-form-m
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyC6H2kgr-9t53QyCpT4v-4Ee7JO73x4bvs" }),
+    AgmCoreModule.forRoot({ apiKey: "AIzaSyBxxdK5ZjrGYz-kgOviDEGqgJuTVqMoSUI" }),
     AgmSnazzyInfoWindowModule
   ],
   providers: [],

@@ -5,7 +5,7 @@ import { PinsComponent } from './pins/pins.component';
 
 const routes: Routes = [
   { path: '', component: PinsComponent },
-  { path: 'map', component: MapComponent }
+  { path: 'map', component: MapComponent },
 ];
 
 @NgModule({

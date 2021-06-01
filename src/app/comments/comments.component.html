@@ -9,7 +9,7 @@
         </div>
         <div class="col-9">
             <div>
-                <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small>{{comment.createdAt.toJSON()}}</small>
+                <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small class="text-secondary">{{comment.createdAt}}</small>
                 <p *ngIf="!isEditable(comment)" class="mb-0">{{comment.text}}</p>
                 <form *ngIf="isEditable(comment)" onsubmit="return false" [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
                     <div class="input-group mb-3">
@@ -40,7 +40,7 @@
             <app-rating 
                 [size]="ratingSize"
                 [contentId]="comment.id"
-                [ratingValue]="comment.rating.totalRating"
+                [ratingValue]="comment.rating"
                 [service]="commentsService"
                 [userVoteDirection]="comment.userVoteDirection"
             ></app-rating>

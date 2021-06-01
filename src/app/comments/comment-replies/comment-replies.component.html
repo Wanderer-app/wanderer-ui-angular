@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-9">
                     <div class="">
-                        <h5 class="d-inline me-2">{{ reply.author | fullname }}</h5> <small>{{reply.createdAt.toJSON()}}</small>
+                        <h5 class="d-inline me-2">{{ reply.author | fullname }}</h5> <small class="text-secondary">{{reply.createdAt}}</small>
                         <p *ngIf="!isEditable(reply)" class="mb-0">
                             <small><span class="badge rounded-pill bg-secondary"><u>@{{comment.author | fullname}}</u></span></small> 
                             {{reply.text}}
@@ -42,7 +42,7 @@
                     <app-rating 
                         [size]="ratingSize"
                         [contentId]="reply.id"
-                        [ratingValue]="reply.rating.totalRating"
+                        [ratingValue]="reply.rating"
                         [service]="commentsService"
                         [userVoteDirection]="reply.userVoteDirection"
                     ></app-rating>

@@ -10,8 +10,8 @@ import { UserFullData } from "./user-full-data";
 export interface PinData {
     id: number
     creator: UserFullData
-    createdAt: Date
-    updatedAt: Date
+    createdAt: string
+    updatedAt: string
     isActive: boolean
     isRemoved: boolean
     isRelevant: boolean
@@ -32,7 +32,7 @@ export interface PinShortData {
     routeCode: string,
     location: LatLng,
     type: PinType,
-    createdAt: Date,
+    createdAt: string,
     title: string,
     rating: number
 }

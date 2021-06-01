@@ -5,10 +5,10 @@ import { VoteDirection } from "./vote-direction";
 export interface CommentData {
     id: number,
     author: UserShortData,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string,
+    updatedAt: string,
     text: string,
-    rating: RatingData,
+    rating: number,
     isActive: boolean,
     isRemoved: boolean,
     responseNumber: number,

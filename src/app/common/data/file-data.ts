@@ -4,6 +4,6 @@ export interface FileData {
 }
 
 export enum FileType {
-    IMAGE = "image",
-    OTHER = "other"
+    IMAGE = "IMAGE",
+    OTHER = "OTHER"
 }

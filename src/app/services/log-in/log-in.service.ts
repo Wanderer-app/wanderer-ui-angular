@@ -16,4 +16,8 @@ export class LogInService {
   getLoggedInUser(): UserFullData | undefined {
     return this.loggedInUser
   }
+
+  getLoggedInUserToken(): string | undefined {
+    return this.loggedInUser.id.toString()
+  }
 }
