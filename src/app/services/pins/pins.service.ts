@@ -5,34 +5,31 @@ import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
 import { UserAddedContentService } from '../user-added-content-service';
-import { ReportReason } from 'src/app/common/data/report-reason';
+import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
 import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
 import { PinData, PinShortData } from 'src/app/common/data/pin-data';
-import { MOCKED_PIN_DETAILS } from 'src/app/common/mock/mocked-pin-details';
 import { PinType, pinTypeNames } from 'src/app/common/data/pinType';
-import { delay } from 'rxjs/operators';
 import { NewPinInfo } from 'src/app/create-pin-form/new-pin-info';
 import { FileData } from 'src/app/common/data/file-data';
 import { LogInService } from '../log-in/log-in.service';
 import { UserContentApiService } from '../back-end/user-content-api.service';
 import { FilterOperation, SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
-import { dateAsRequestString } from '../back-end/conversions';
+import { now } from '../back-end/conversions';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PinsService implements CommentableContentService, RateableContentService, UserAddedContentService {
+export class PinsService implements CommentableContentService, RateableContentService, UserAddedContentService<PinData> {
 
   constructor(private logInService: LogInService, private api: UserContentApiService) { }
 
   pinsPerPage = 20
+  commentsPageSize = 10
   defaultPinSorting: SortingParams = {fieldName: "rating", sortingDirection: SortingDirection.DESCENDING}
 
   createPin(newPinInfo: NewPinInfo, title: string, text: string, attachedFile: FileData | undefined): Observable<PinData> {
-    console.log(`Creating new Pin`);
-
     let request = {
-      onDate: dateAsRequestString(new Date()),
+      onDate: now(),
       userId: this.logInService.getLoggedInUser()!.id,
       type: pinTypeNames.get(newPinInfo.type),
       title: title,
@@ -45,51 +42,79 @@ export class PinsService implements CommentableContentService, RateableContentSe
     return this.api.post<PinData>("pins/create", request)
   }
 
-  activate(id: number): Observable<boolean> {
-    console.log(`activating Pin ${id}`);
-    return of(true)
+  activate(id: number): Observable<PinData> {
+    return this.api.post<PinData>("pins/activate", {
+      contentId: id,
+      userId: this.logInService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
-  remove(id: number): Observable<boolean> {
-    console.log(`removing Pin ${id}`);
-    return of(true)
+  remove(id: number): Observable<PinData> {
+    return this.api.post<PinData>("pins/remove", {
+      contentId: id,
+      userId: this.logInService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
-  report(id: number, reason: ReportReason): Observable<boolean> {
+  report(id: number, reason: ReportReason): Observable<PinData> {
     if (reason === ReportReason.IRRELEVANT) {
-      console.log(`marking Pin ${id} as irrelevant`);
+      return this.api.post<PinData>("pins/report-irrelevant", {
+        contentId: id,
+        userId: this.logInService.getLoggedInUser()!.id,
+        date: now()
+      })
     } else {
-      console.log(`reporting Pin ${id} with reason ${reason}`);
+      return this.api.post<PinData>("pins/report", {
+        contentId: id,
+        userId: this.logInService.getLoggedInUser()!.id,
+        date: now(),
+        reportReason: reportReasons.get(reason)
+      })
     }
-    return of(true)
   }
 
-  getComments(id: number): Observable<CommentData[]> {
-    console.log(`getting Pin ${id} comments`);
-    return of([])
+  getComments(id: number, pageNumber: number): Observable<CommentData[]> {
+    return this.api.listOf<CommentData>(`pins/${id}/comments`, {
+      batchNumber: pageNumber,
+      batchSize: this.commentsPageSize,
+      sortingParams: this.defaultPinSorting,
+      filters: []
+    })
   }
 
   addComment(id: number, text: string): Observable<CommentData> {
-    console.log(`adding comment to a pin ${id}. Comment text: ${text}`);
-    return of()
+    return this.api.post<CommentData>("pins/add-comment", {
+      contentId: id,
+      commenterId: this.logInService.getLoggedInUser()!.id,
+      commentContent: text,
+      date: now()
+    })
   }
 
   upVote(id: number): Observable<RatingData> {
-    console.log(`up voting a pin ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("pins/up-vote", {
+      contentId: id,
+      userId: this.logInService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
   downVote(id: number): Observable<RatingData> {
-    console.log(`down voting a pin ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("pins/down-vote", {
+      contentId: id,
+      userId: this.logInService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
   removeVote(id: number): Observable<RatingData> {
-    console.log(`removing vote from a pin ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("pins/remove-vote", {
+      contentId: id,
+      userId: this.logInService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
   update(updateData: UpdatePinData): Observable<PinData> {

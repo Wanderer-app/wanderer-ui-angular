@@ -1,8 +1,8 @@
 export enum UserContentType {
-    PIN = "Pin",
-    COMMENT = "Comment",
-    POLL = "Poll", 
-    POST = "Post", 
-    VOTE = "Vote", 
-    REPORT = "Report"
+    PIN = "PIN",
+    COMMENT = "COMMENT",
+    POLL = "POLL", 
+    POST = "POST", 
+    VOTE = "VOTE", 
+    REPORT = "REPORT"
 }

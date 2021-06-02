@@ -17,7 +17,7 @@ import { UserAddedContentService } from '../user-added-content-service';
 @Injectable({
   providedIn: 'root'
 })
-export class PostService implements CommentableContentService, RateableContentService, UserAddedContentService {
+export class PostService implements CommentableContentService, RateableContentService, UserAddedContentService<DiscussionElement> {
 
   constructor(private loginService: LogInService, private notificationService: NotificationService) { }
 
@@ -46,19 +46,19 @@ export class PostService implements CommentableContentService, RateableContentSe
     return of({totalRating: 0})
   }
 
-  activate(id: number): Observable<boolean> {
+  activate(id: number): Observable<DiscussionElement> {
     console.log(`Activating post ${id}`);
-    return of(true)
+    return of()
   }
 
-  remove(id: number): Observable<boolean> {
+  remove(id: number): Observable<DiscussionElement> {
     console.log(`Removing post ${id}`);
-    return of(true)
+    return of()
   }
 
-  report(id: number, reason: ReportReason): Observable<boolean> {
+  report(id: number, reason: ReportReason): Observable<DiscussionElement> {
     console.log(`Reporting post ${id} for ${reason}`);
-    return of(true)
+    return of()
   }
 
   createPost(text: string, images: FileData[], routeCode: string): Observable<DiscussionElement> {

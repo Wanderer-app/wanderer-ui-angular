@@ -75,6 +75,8 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   editIcon = faEdit
   undoIcon = faUndo
 
+  discussionPage = 2
+
   ngOnDestroy(): void {
     this.additionalDiscussionSubScription?.unsubscribe()
     this.createPollSubscription?.unsubscribe()
@@ -82,7 +84,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.discussion$ = this.discussionService.listForRoute(this.routeCode)
+    this.discussion$ = this.discussionService.listForRoute(this.routeCode, 1)
       .pipe(finalize(() => this.discussionLoading = false))
   }
 
@@ -111,9 +113,12 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   loadMore() {
     this.additionalElementsLoading = true
-    this.discussionService.listForRoute(this.routeCode)
-    .pipe(finalize(() => this.additionalElementsLoading = false))
-    .subscribe(result => this.additionalDiscussion.push(...result))
+    this.discussionService.listForRoute(this.routeCode, this.discussionPage)
+      .pipe(finalize(() => this.additionalElementsLoading = false))
+      .subscribe(result => {
+        this.additionalDiscussion.push(...result)
+        this.discussionPage += 1
+      })
   }
 
   hasImages(element: DiscussionElement): boolean {

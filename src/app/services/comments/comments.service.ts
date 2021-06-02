@@ -4,93 +4,96 @@ import { Observable, of } from 'rxjs';
 import { RatingData } from 'src/app/common/data/rating-data';
 import { CommentableContentService } from '../commentable-content-servce';
 import { RateableContentService } from '../rateable-content-service';
-import { JAMBURA, JANGULA } from 'src/app/common/mock/mocked-short-users';
 import { UserAddedContentService } from '../user-added-content-service';
-import { ReportReason } from 'src/app/common/data/report-reason';
+import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
+import { LogInService } from '../log-in/log-in.service';
+import { UserContentApiService } from '../back-end/user-content-api.service';
+import { now } from '../back-end/conversions';
+import { SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentsService implements CommentableContentService, RateableContentService, UserAddedContentService {
+export class CommentsService implements CommentableContentService, RateableContentService, UserAddedContentService<CommentData> {
 
-  constructor() { }
+  constructor(private loginService: LogInService, private api: UserContentApiService) { }
 
-  activate(id: number): Observable<boolean> {
-    console.log(`activating comment ${id}`);
-    return of(true)
+  repliesPerPage = 5
+  defaultCommentSorting: SortingParams = {fieldName: "rating", sortingDirection: SortingDirection.DESCENDING}
+
+
+  activate(id: number): Observable<CommentData> {
+    return this.api.post<CommentData>("comments/activate", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
-  remove(id: number): Observable<boolean> {
-    console.log(`removing comment ${id}`);
-    return of(true)
+
+  remove(id: number): Observable<CommentData> {
+    return this.api.post<CommentData>("comments/remove", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
-  report(id: number, reason: ReportReason): Observable<boolean> {
-    console.log(`reporting comment ${id} with reason ${reason}`);
-    return of(true)
+
+  report(id: number, reason: ReportReason): Observable<CommentData> {
+    return this.api.post<CommentData>("comments/report", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now(),
+      reportReason: reportReasons.get(reason)
+    })
   }
-  getComments(id: number): Observable<CommentData[]> {
-    console.log(`getting Comment ${id} responses`);
-    let data: CommentData[] = [
-      {
-        id: 100,
-        author: JAMBURA,
-        createdAt: new Date().toJSON(),
-        updatedAt: new Date().toJSON(),
-        text: "aeeeeeeeeeeeeee",
-        rating: 5,
-        isActive: true,
-        isRemoved: false,
-        responseNumber: 0,
-        responsesPreview: [],
-    },
-    {
-        id: 101,
-        author: JANGULA,
-        createdAt: new Date().toJSON(),
-        updatedAt: new Date().toJSON(),
-        text: "aeeeeeeeeeeeeeeeee",
-        rating: 5,
-        isActive: true,
-        isRemoved: false,
-        responseNumber: 0,
-        responsesPreview: [],
-    }
-    ]
-    return of(data)
+
+  getComments(id: number, pageNumber: number): Observable<CommentData[]> {
+    return this.api.listOf<CommentData>(`comments/${id}/replies`, {
+      batchNumber: pageNumber,
+      batchSize: this.repliesPerPage,
+      sortingParams: this.defaultCommentSorting,
+      filters: []
+    })
   }
+
   addComment(id: number, text: string): Observable<CommentData> {
-    console.log(`adding response to comment ${id}. Response text: ${text}`);
-    return of()
+    return this.api.post<CommentData>("comments/add-reply", {
+      contentId: id,
+      commenterId: this.loginService.getLoggedInUser()!.id,
+      commentContent: text,
+      date: now()
+    })
   }
+
   upVote(id: number): Observable<RatingData> {
-    console.log(`up voting a comment ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("comments/up-vote", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
+
   downVote(id: number): Observable<RatingData> {
-    console.log(`down voting a comment ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("comments/down-vote", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
+
   removeVote(id: number): Observable<RatingData> {
-    console.log(`removing vote from a comment ${id}`);
-    let data: RatingData = {totalRating: 0}
-    return of(data)
+    return this.api.post("comments/remove-vote", {
+      contentId: id,
+      userId: this.loginService.getLoggedInUser()!.id,
+      date: now()
+    })
   }
 
   update(commentId: number, newText: string): Observable<CommentData> {
-    console.log(`updating commend ${commentId} with new text: ${newText}`);
-    let c = {
-      id: 200,
-      author: JANGULA,
-      createdAt: new Date().toJSON(),
-      updatedAt: new Date().toJSON(),
-      text: newText,
-      rating: 5,
-      isActive: true,
-      isRemoved: false,
-      responseNumber: 0,
-      responsesPreview: [],
-  }
-    return of(c)
+   return this.api.post<CommentData>("comments/update", {
+      commentId: commentId,
+      updaterId: this.loginService.getLoggedInUser()!.id,
+      text: newText
+    })
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportReason } from '../common/data/report-reason';
 import { UserContentType } from '../common/data/user-content-type';
@@ -10,20 +10,21 @@ import { ContentControlMenuPlacement } from './menu-placement';
 import { faBars, faCheck, faEdit, faFlag, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { NotificationService } from '../notifications/service/notification.service';
 import { LogInService } from '../services/log-in/log-in.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-content-control-menu',
   templateUrl: './content-control-menu.component.html',
   styleUrls: ['./content-control-menu.component.css']
 })
-export class ContentControlMenuComponent implements OnInit {
+export class ContentControlMenuComponent implements OnInit, OnDestroy {
 
   @Input() placement!: ContentControlMenuPlacement
   @Input() contentType!: UserContentType
   @Input() contentId!: number
   @Input() contentCreatorId!: number
   @Input() contentIsActive!: boolean
-  @Input() service!: UserAddedContentService
+  @Input() service!: UserAddedContentService<any>
   @Input() backgroundColor?: string
 
   @Output() editContentEvent = new EventEmitter()
@@ -37,7 +38,13 @@ export class ContentControlMenuComponent implements OnInit {
   reportIcon = faFlag
   activateIcon = faCheck
 
+  subscription?: Subscription
+
   constructor(private modalService: NgbModal, private notificationService: NotificationService, private logInService: LogInService) { }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe()
+  }
 
   ngOnInit(): void {
   }
@@ -62,8 +69,8 @@ export class ContentControlMenuComponent implements OnInit {
     const modalRef = this.modalService.open(ContentReportModalComponent);
     modalRef.result.then(result => {
       if (result) {
-        this.service.report(this.contentId, (result as ReportReason))
-          .subscribe(result => this.processBooleanResult(result, `კონტენტი წარმატებიდ დარეპორტდა!`))
+        this.subscription = this.service.report(this.contentId, (result as ReportReason))
+          .subscribe(result => this.notificationService.showStandardSuccess("კონტენტი წარმატებიდ დარეპორტდა!"))
       }
     })
   }
@@ -74,8 +81,8 @@ export class ContentControlMenuComponent implements OnInit {
 
     modal.result.then(result => {
       if((result as boolean)) {
-        this.service.activate(this.contentId)
-          .subscribe(result => this.processBooleanResult(result, `კონტენტი წარმატებით გაააქტიურდა!`))
+        this.subscription = this.service.activate(this.contentId)
+          .subscribe(result => this.notificationService.showStandardSuccess("კონტენტი წარმატებით გაააქტიურდა!"))
       }
     })
   }
@@ -86,13 +93,11 @@ export class ContentControlMenuComponent implements OnInit {
 
     modal.result.then(result => {
       if((result as boolean)) {
-        this.service.remove(this.contentId)      
+        this.subscription = this.service.remove(this.contentId)      
           .subscribe(result => {
-            this.processBooleanResult(result, `კონტენტი წარმატებით წაიშალა!`)
+            this.notificationService.showStandardSuccess("კონტენტი წარმატებით წაიშალა!")
             this.contentRemoved.emit(this.contentId)
-            },
-            error => this.notificationService.showStandardError(error)
-          )
+          })
       }
     })
   
@@ -105,22 +110,13 @@ export class ContentControlMenuComponent implements OnInit {
 
       modal.result.then(result => {
         if((result as boolean)) {
-          this.service.report(this.contentId, ReportReason.IRRELEVANT)      
-            .subscribe(result => this.processBooleanResult(result, `პინი მოინიშნა როგორც არააქტუალური!`))
+          this.subscription = this.service.report(this.contentId, ReportReason.IRRELEVANT)      
+            .subscribe(result => this.notificationService.showStandardSuccess("პინი მოინიშნა როგორც არააქტუალური!"))
         }
       })
-
-      this.service.report(this.contentId, ReportReason.IRRELEVANT)
     }
   }
 
-  processBooleanResult(result: boolean, successMsg: string) {
-    if (result) {
-      this.notificationService.showStandardSuccess(successMsg)
-    } else {
-      this.notificationService.showStandardError( `დაფიქსირდა შეცდომა, სცადეთ მოგვიანებით`)
-    }
-  }
 
   editMode() {    
     this.editContentEvent.emit({id: this.contentId, contentType: this.contentType})

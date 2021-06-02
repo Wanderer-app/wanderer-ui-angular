@@ -22,6 +22,8 @@ export abstract class BaseCommentsComponent {
   replyForm = this.formBuilder.group({ replyText: [''] })
   editCommentForm = this.formBuilder.group({ newText: [''] })
 
+  replyPages: Map<number, number> = new Map()
+  hiddenComments: CommentData[] = []
 
   constructor(
       protected commentsService: CommentsService,
@@ -40,17 +42,25 @@ export abstract class BaseCommentsComponent {
         this.commentsService.addComment(this.selectedCommentForReply.id, replyText)
           .subscribe(reply => {
             comment.responsesPreview.push(reply);
+            
             this.selectedCommentForReply = undefined
           })
-          this.replyForm.reset()
       }
     }
   
     getMoreReplies(comment: CommentData) {
-      this.commentsService.getComments(comment.id)
+      let replyPage = this.nextReplyPage(comment)
+      this.commentsService.getComments(comment.id, replyPage)
         .subscribe(replies => {
           if (replies.length !== 0) {
-            comment.responsesPreview.push(...replies)
+            let allReplies = comment.responsesPreview
+            allReplies.push(
+              ...replies.filter(r => 
+                !allReplies.map(reply => reply.id)
+                .includes(r.id)
+              )
+            )
+            this.replyPages.set(comment.id, replyPage + 1)
           }
         })
     }
@@ -79,5 +89,21 @@ export abstract class BaseCommentsComponent {
   
     canUpdate(): boolean {
       return this.editCommentForm.controls.newText.value !== this.commentToEdit?.text
+    }
+
+    hide(comment: CommentData) {
+      this.hiddenComments.push(comment)
+    }
+
+    private nextReplyPage(comment: CommentData): number {
+      let replyCount = this.replyPages.get(comment.id)
+
+      if(replyCount) {
+        return replyCount
+      } else {
+        this.replyPages.set(comment.id, 1)
+        return 1
+      }
+
     }
 }
