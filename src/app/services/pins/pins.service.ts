@@ -128,7 +128,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
 
   list(): Observable<PinData[]> {
     return this.api.listOf<PinData>("pins/list", {
-      batchNumber: 0,
+      batchNumber: 1,
       batchSize: this.pinsPerPage,
       sortingParams: this.defaultPinSorting,
       filters: []
@@ -137,7 +137,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
 
   listForRoute(routeCode: string): Observable<PinShortData[]> {
     return this.api.listOf<PinShortData>("pins/for-route/" + routeCode, {
-      batchNumber: 0,
+      batchNumber: 1,
       batchSize: this.pinsPerPage,
       sortingParams: this.defaultPinSorting,
       filters: []
@@ -147,7 +147,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   listForRouteAndType(routeCode: string, pinType: PinType): Observable<PinShortData[]> {
 
     return this.api.listOf<PinShortData>("pins/for-route/" + routeCode, {
-      batchNumber: 0,
+      batchNumber: 1,
       batchSize: this.pinsPerPage,
       sortingParams: this.defaultPinSorting,
       filters: [{ fieldName: "pinType", operation: FilterOperation.IS, compareValue: pinTypeNames.get(pinType) || "" }]

@@ -46,6 +46,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   loadedImages = new Map<number, Observable<string>[]>()
   maximizedImage?: string
   createPollSubscription?: Subscription
+  selectAnswerSubscription?: Subscription
 
   pollToEditId?: number
   postToEditId?: number
@@ -81,6 +82,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     this.additionalDiscussionSubScription?.unsubscribe()
     this.createPollSubscription?.unsubscribe()
     this.updateSubscription?.unsubscribe()
+    this.selectAnswerSubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
@@ -96,8 +98,9 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     return (JSON.parse(json) as PollContent).answers
   }
 
-  selectPollAnswer(pollId: number, answerId: number) {
-    this.pollService.selectAnswer(pollId, answerId)
+  selectPollAnswer(poll: DiscussionElement, answerId: number) {
+    this.selectAnswerSubscription = this.pollService.selectAnswer(poll.id, answerId)
+      .subscribe(data => poll.content = data.content)
     
   }
 
@@ -218,6 +221,8 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
       )
       .pipe(finalize(() => this.performingUpdate = false))
       .subscribe(data => {
+        post.attachedFiles = data.attachedFiles
+        post.content = data.content
         this.cancelEdit()
         this.notificationService.showStandardSuccess("პოსტი დარედაქტირდა!")
       })
@@ -238,6 +243,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     this.updateSubscription = this.pollService.update(newQuestion, poll.id)
       .pipe(finalize(() => this.performingUpdate = false))
       .subscribe(data => {
+        poll.content = data.content
         this.notificationService.showStandardSuccess("პოლი დარედაქტირდა")
         this.cancelEdit()
       })
