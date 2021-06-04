@@ -8,7 +8,7 @@ import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
 import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
 import { PinData, PinShortData } from 'src/app/common/data/pin-data';
-import { PinType, pinTypeNames } from 'src/app/common/data/pinType';
+import { PinType } from 'src/app/common/data/pinType';
 import { NewPinInfo } from 'src/app/create-pin-form/new-pin-info';
 import { FileData } from 'src/app/common/data/file-data';
 import { LogInService } from '../log-in/log-in.service';
@@ -31,7 +31,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
     let request = {
       onDate: now(),
       userId: this.logInService.getLoggedInUser()!.id,
-      type: pinTypeNames.get(newPinInfo.type),
+      type: newPinInfo.type,
       title: title,
       text: text,
       attachedFile: attachedFile,
@@ -150,7 +150,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
       batchNumber: 1,
       batchSize: this.pinsPerPage,
       sortingParams: this.defaultPinSorting,
-      filters: [{ fieldName: "pinType", operation: FilterOperation.IS, compareValue: pinTypeNames.get(pinType) || "" }]
+      filters: [{ fieldName: "pinType", operation: FilterOperation.IS, compareValue: pinType }]
     })
   }
 }

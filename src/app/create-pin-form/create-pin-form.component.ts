@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { FileData, FileType } from '../common/data/file-data';
 import { PinData } from '../common/data/pin-data';
-import { AVAILABLE_PIN_TYPES, PinType } from '../common/data/pinType';
+import { AVAILABLE_PIN_TYPES, PinType, pinTypeTranslations } from '../common/data/pinType';
 import { BaseFormComponent } from '../common/forms/base-form-component';
 import { ExternalImageService } from '../services/external-images/external-image.service';
 import { PinsService } from '../services/pins/pins.service';
@@ -28,6 +28,7 @@ export class CreatePinFormComponent extends BaseFormComponent implements OnInit,
   closeIcon = faTimes
   changeImageIcon= faImages
   availablePinTypes: PinType[] = AVAILABLE_PIN_TYPES
+  pinTypeTexts = pinTypeTranslations
 
   pinCreateSubscription?: Subscription
   creating = false

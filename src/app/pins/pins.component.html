@@ -1,19 +1,20 @@
 <div class="row h-100 g-0">
-    <div id="pins-div" class="col">
+    <div id="pins-div" class="col position-relative">
         <app-map 
             [additionalPins]="additionalMapPins"
             (pinSelectedEvent)="selectPin($event)"
             (showRouteDetails)="displayRouteDetails($event)"
             (addPinEvent)="displayAddPinForm($event)"
-            (routeSelected)="closeSidePanel()"
+            (routeSelected)="closeSidePanel();additionalMapPins = []"
             (displayDiscussion)="displayDiscussion($event)"
         ></app-map>
     </div>
 
-    <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh;" class="col col-lg-4">
+    <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh" class="side-panel-animated col col-lg-4">
         <app-pins-detail *ngIf="selectedPin" [pin]="selectedPin" (closeDetailsEvent)="closeSidePanel()"></app-pins-detail>
         <app-route-discussion *ngIf="routeForDiscussion" [routeCode]="routeForDiscussion" (close)="closeSidePanel()"></app-route-discussion>
         <app-route-description *ngIf="routeInfo" [routeInfo]="routeInfo" (close)="closeSidePanel()"></app-route-description>
         <app-create-pin-form *ngIf="newPinInfo" [newPinInfo]="newPinInfo" (close)="closeSidePanel()" (pinCreated)="pinCreated($event)"></app-create-pin-form>
     </div>
+
 </div>

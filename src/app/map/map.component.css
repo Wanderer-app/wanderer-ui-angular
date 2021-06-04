@@ -1,3 +1,87 @@
 agm-map {
     height: 98vh;
 }
+
+.growing-button {
+    height: 50px;
+    width: 50px;
+    background-color: #ff0051;
+    cursor: pointer;
+    transition: 300ms;
+    border-radius: 25px;
+}
+
+.growing-button-sm {
+    height: 40px;
+    width: 40px;
+    background-color: #ff0051;
+    cursor: pointer;
+    transition: 300ms;
+    border-radius: 20px;
+}
+
+.growing-button-sm:hover {
+    background-color: #ec004b;
+    width:125px;
+}
+
+.growing-button:hover {
+    background-color: #ec004b;
+    width:125px;
+}
+
+.growing-button-clicked {
+    height: fit-content;
+    width:100%;
+    background-color: #ec004b;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    animation-name: filter-button-grow-x;
+    animation-duration: 200ms;
+    animation-timing-function: ease-out;
+}
+
+.growing-button-text {
+    animation-name: filter-text-animation;
+    animation-duration: 500ms;
+    animation-timing-function: ease-out;
+}
+
+.filter-menu {
+    animation-name: filter-menu-grow;
+    animation-duration: 200ms;
+    animation-timing-function: ease-out;
+}
+
+@keyframes filter-menu-grow {
+    from {
+        height: 0px;
+        width: 0px;
+    }
+    to {
+
+    }
+}
+
+@keyframes filter-text-animation {
+    from {
+        opacity: 0;
+        display: none;
+    }
+    to {
+        opacity: 1;
+        display: block;
+    }
+}
+
+@keyframes filter-button-grow-x {
+    from {
+        width: 50px;
+    }
+    to {
+
+    }
+}

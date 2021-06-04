@@ -1,10 +1,11 @@
-import { AgmDataLayer, DataLayerManager } from '@agm/core';
-import { Component, OnDestroy, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { MapsAPILoader } from '@agm/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, Input, ElementRef, ViewChild, NgZone, AfterViewInit } from '@angular/core';
+import { faComments, faFileAlt, faFilter, faInfo, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
 import { PinShortData } from '../common/data/pin-data';
-import { AVAILABLE_PIN_TYPES, PinType } from '../common/data/pinType';
+import { AVAILABLE_PIN_TYPES, PinType, pinTypeTranslations } from '../common/data/pinType';
 import { MapDataService } from '../services/map/map-data.service';
 import { RouteFile } from '../services/map/route-files';
 import { PinsService } from '../services/pins/pins.service';
@@ -23,17 +24,19 @@ export class MapComponent implements OnInit, OnDestroy {
   @Output() routeSelected = new EventEmitter()
   @Output() displayDiscussion = new EventEmitter()
 
+  @ViewChild('search') public searchElementRef!: ElementRef;
+
   mapLatLng: LatLng = {
     lat: 41.975520,
     lng: 43.485647
   }
   zoomLevel: number = 8
-  ROUTE_DEFAULT_COLOR = '#ff0051e6'
 
   selectedFeature?: google.maps.Data.Feature
   routesGeoJson?: string
   routesSubscription!: Subscription
   displayDataLayer = true
+  loadingDataLayer = true
   
   pins$?: Observable<PinShortData[]>
 
@@ -43,14 +46,52 @@ export class MapComponent implements OnInit, OnDestroy {
     lng: 0,
   }
 
-  constructor(private mapService: MapDataService, private pinService: PinsService) { }
+  pinTypetexts = pinTypeTranslations
+  routeFiles = RouteFile
+  availablePinTypes: PinType[] = AVAILABLE_PIN_TYPES
+
+  pinsFilterMenuOn = false
+  filterHovered = false
+  discussionBtnHovered = false
+  detailsBtnHovered = false
+  searchBtnHovered = false
+
+  searchClicked = false
+  mapSearchEnabled = false
+
+  filterIcon = faFilter
+  closeIcon = faTimes
+  discussionIcon = faComments
+  infoIcon = faFileAlt
+  searchIcon = faSearch
+
+  constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
+
+  enableMapSearch(element: any) {
+    if (this.mapSearchEnabled === false) {
+      this.mapSearchEnabled = true
+      console.log("enabling search");
+      
+      this.mapsAPILoader.load().then(() => {
+        let autocomplete = new google.maps.places.Autocomplete(element);
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace()!;
+            this.mapLatLng.lat = place.geometry!.location.lat();
+            this.mapLatLng.lng = place.geometry!.location.lng();
+            this.zoomLevel = 12
+          });
+        });
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this.routesSubscription.unsubscribe()
   }
 
   ngOnInit(): void {
-    this.changeDataLayer(this.tbilisi)
+    this.changeDataLayer(RouteFile.ROUTES_TBILISI)
   }
 
   routeClicked($event: any) {    
@@ -70,7 +111,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.panToMiddleOfRoute(feature)
       this.routeSelected.emit()
     }
-    console.log(this.infoWindow);
     
   }
 
@@ -88,14 +128,18 @@ export class MapComponent implements OnInit, OnDestroy {
 
   routeDefaultStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
     let color = '#ff0051e6'
+    let zIndex = undefined
+
     if (feature.getProperty("isSelected")) {
       if (feature.getProperty("isSelected") as boolean === true) {
         color = 'green'
+        zIndex = 1000
       }
     }
     return {
       strokeColor: color,
-      strokeWeight: 4
+      strokeWeight: 4,
+      zIndex: zIndex
     }
   }
 
@@ -115,12 +159,16 @@ export class MapComponent implements OnInit, OnDestroy {
     this.zoomLevel = level
   }
 
-  changeDataLayer(routesLayer: RouteFile) {
+  changeDataLayer(routesLayer: string) {
     this.pins$ = of([])
     this.additionalPins = []
     this.displayDataLayer = false
-    this.routesSubscription = this.mapService.getRoutes(routesLayer)
-      .pipe(finalize(() => this.displayDataLayer = true))
+    this.loadingDataLayer = true
+    this.routesSubscription = this.mapService.getRoutes(routesLayer as RouteFile)
+      .pipe(finalize(() => {
+        this.displayDataLayer = true
+        this.loadingDataLayer = false
+      }))
       .subscribe(data => this.routesGeoJson = data)
   }
 
@@ -161,8 +209,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addPin(pinType: PinType) {
     this.closeInfoWindow()
-    this.addPinEvent.emit(
-      { type: pinType, routeCode:this.selectedFeature!.getProperty('routeCode'), location: { lat: this.infoWindow.lat, lng: this.infoWindow.lng }
+    this.addPinEvent.emit({ 
+      type: pinType, routeCode:this.selectedFeature!.getProperty('routeCode'), 
+      location: { lat: this.infoWindow.lat, lng: this.infoWindow.lng }
     })
     
   }
@@ -171,10 +220,19 @@ export class MapComponent implements OnInit, OnDestroy {
     this.displayDiscussion.emit(this.selectedFeature!.getProperty('routeCode'))
   }
 
-  adjara = RouteFile.ROUTES_ADJARA_GURIA
-  tbilisi = RouteFile.ROUTES_TBILISI
-  all = RouteFile.ROUTES_ALL
 
-  availablePinTypes: PinType[] = AVAILABLE_PIN_TYPES
+  filterClicked() {
+    this.pinsFilterMenuOn = true    
+  }
+
+  closeFilterMenu() {
+    this.pinsFilterMenuOn = false
+    this.filterHovered = false
+  }
+
+  closeSearch() {
+    this.searchClicked = false
+    this.mapSearchEnabled = false
+  }
 
 }

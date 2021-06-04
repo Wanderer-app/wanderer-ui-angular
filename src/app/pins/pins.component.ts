@@ -95,12 +95,6 @@ export class PinsComponent implements OnInit, OnDestroy {
     }
 
     this.additionalMapPins = this.additionalMapPins.concat([pinShort])
-
-    // if(this.additionalMapPins) {
-    //   this.additionalMapPins.push(pinShort)
-    // } else {
-    //   this.additionalMapPins = [ pinShort ]
-    // }
   }
   
 }

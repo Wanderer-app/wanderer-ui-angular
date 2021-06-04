@@ -1,3 +1,10 @@
+<div *ngIf="loadingDataLayer" 
+    class="position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+    style="background-color:rgba(255, 255, 255, 0.336);z-index: 1000;"
+>
+    <span class="spinner-border text-danger" style="width: 100px;height: 100px;" role="status"></span>
+</div>
+
 <agm-map [latitude]="mapLatLng.lat" [longitude]="mapLatLng.lng" [zoom]="zoomLevel">
 
     <agm-data-layer 
@@ -11,7 +18,7 @@
         *ngFor="let pin of (pins$ | async)?.concat(additionalPins)"
         [latitude]="pin.location.lat" 
         [longitude]="pin.location.lng" 
-        [label]="pin.type.charAt(0)"
+        [label]="pinTypetexts.get(pin.type)!.charAt(0)"
         (markerClick)="pinSelected(pin)"
     ></agm-marker>
 
@@ -29,7 +36,7 @@
             <div class="">პინის დამატება</div>
             <div class="mt-2">
                 <ng-container *ngFor="let type of availablePinTypes">
-                    <button class="btn btn-sm btn-danger me-1" (click)="addPin(type)">{{type.toString().charAt(0)}}</button>
+                    <button class="btn btn-sm btn-danger me-1" (click)="addPin(type)">{{pinTypetexts.get(type)!.charAt(0)}}</button>
                 </ng-container>
             </div>
         </ng-template>
@@ -37,23 +44,98 @@
 
 </agm-map>
 
-<div class="position-absolute start-0 top-0" style="width:fit-content">
-    <button (click)="changeDataLayer(adjara)">აჭარა-გურია</button>
-    <button (click)="changeDataLayer(tbilisi)">თბილისი</button>
-    <button (click)="changeDataLayer(all)">ყველა მარშრუტი</button>
-    <br>
+<div class="position-absolute start-0 top-0 p-2 d-flex" style="width:fit-content">
 
-    <div class="border p-1 rounded bg-light" style="width: 200px;" *ngIf="selectedFeature">
-        <h4 class="text-center mb-0">ფილტრი</h4>
-        <hr class="mx-4 my-1">
-        <div class="text-center">
-            <ng-container *ngFor="let type of availablePinTypes">
-                <span style="cursor:pointer;" (click)="filterBy(type)" class="me-1 badge  bg-secondary">{{type}}</span>
-            </ng-container>
-            <span style="cursor:pointer;" (click)="removeFilters()" class="me-1 badge  bg-secondary">X</span>
+    <div style="width: 400px;">
+        <select class="form-select shadow" (change)="changeDataLayer(routesFilter.value)"  #routesFilter>
+            <option selected disabled hidden value="">მარშრუტები რეგიონების მიხედვით</option>
+            <option value="{{ routeFiles.ROUTES_ADJARA_GURIA }}">აჭარა-გურია</option>
+            <option value="{{ routeFiles.ROUTES_IMERETI }}">იმერეთი</option>
+            <option value="{{ routeFiles.ROUTES_KAXETI }}">კახეთი</option>
+            <option value="{{ routeFiles.ROUTES_QVEMO_SHIDA_QARTLI }}">ქვემო და შიდა ქართლი</option>
+            <option value="{{ routeFiles.ROUTES_MCXETA_MTIANETI }}">მცხეთა-მთიანეთი</option>
+            <option value="{{ routeFiles.ROUTES_RACHA_LECHXUMI_QVEMO_SVANETI }}">რაჭა-ლეჩხუმი და ქვემო სვანეთი</option>
+            <option value="{{ routeFiles.ROUTES_SAMCXE_JAVAKHETI }}">სამცხე-ჯავახეთი</option>
+            <option value="{{ routeFiles.ROUTES_SAMEGRELO_ZEMO_SVANETI }}">სამეგრელო და ზემო სვანეთი</option>
+            <option value="{{ routeFiles.ROUTES_TBILISI }}">თბილისი</option>
+            <option value="{{ routeFiles.ROUTES_ADVANCED }}">რთული მარშრუტები</option>
+            <option value="{{ routeFiles.ROUTES_ALL }}">ყველა მარშრუტი</option>
+        </select>
+
+        <div
+            (mouseenter) ="searchBtnHovered = true" 
+            (mouseleave) ="searchBtnHovered = false" 
+            (click)="searchClicked = true;closeFilterMenu()"
+            class="mt-2 p-2 shadow growing-button{{ searchClicked ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white"
+            style="border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;"
+        >
+            <fa-icon [icon]="searchIcon"></fa-icon>
+            <span *ngIf="searchBtnHovered && searchClicked === false" class="ms-1 growing-button-text">ძიება</span>
+            <input *ngIf="searchClicked === true" type="text" 
+                (click)="enableMapSearch(search)" class="ms-3 form-control" (keydown.enter)="$event.preventDefault()" placeholder="ლოკაციის ძიება" 
+                autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
+            >
+            <span *ngIf="searchClicked" class="mx-2 text-end text-white">
+                <span (click)="closeSearch();$event.stopPropagation()" style="flex-grow: 1;cursor: pointer;">
+                    <fa-icon [icon]="closeIcon"></fa-icon>
+                </span>
+            </span>
         </div>
-        <br>
-        <button (click)="showDetails()">მარშრუტის აღწერა</button>
-        <button (click)="showDiscussion()">დისკუსია</button>
+
+    
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="!pinsFilterMenuOn ? filterHovered = true : undefined" 
+            (mouseleave) ="!pinsFilterMenuOn ? filterHovered = false : undefined" 
+            (click)="filterClicked();closeSearch()"
+            class="mt-2 p-3 shadow growing-button{{ pinsFilterMenuOn ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white" 
+        >
+            <fa-icon [icon]="filterIcon"></fa-icon>
+            <span *ngIf="filterHovered || pinsFilterMenuOn" class="ms-1 growing-button-text">ფილტრი</span>
+            <span *ngIf="pinsFilterMenuOn" style="flex-grow: 1;" class="w-100 text-end text-white">
+                <span (click)="closeFilterMenu();$event.stopPropagation()" style="flex-grow: 1;cursor: pointer;">
+                    <fa-icon [icon]="closeIcon"></fa-icon>
+                </span>
+            </span>
+        </div>
+    
+        <div 
+            *ngIf="pinsFilterMenuOn && selectedFeature" 
+            class="px-3 pt-3 bg-white filter-menu shadow" 
+            style="width: 100%; height: 125px;border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;"
+        >
+            <div class="h-100" style="max-height: 100%;overflow: hidden;">
+                <div class="text-center">
+                    <ng-container *ngFor="let type of availablePinTypes">
+                        <span style="cursor:pointer;" (click)="filterBy(type)" class="me-1 badge  bg-secondary">{{type}}</span>
+                    </ng-container>
+                    <span style="cursor:pointer;" (click)="removeFilters()" class="me-1 badge  bg-secondary">X</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="detailsBtnHovered = true" 
+            (mouseleave) ="detailsBtnHovered = false" 
+            (click)="showDetails();closeFilterMenu();closeSearch()"
+            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+        >
+            <fa-icon [icon]="infoIcon"></fa-icon>
+            <span *ngIf="detailsBtnHovered" class="ms-1 growing-button-text">აღწერა</span>
+        </div>
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="discussionBtnHovered = true" 
+            (mouseleave) ="discussionBtnHovered = false" 
+            (click)="showDiscussion();closeFilterMenu();closeSearch()"
+            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+        >
+            <fa-icon [icon]="discussionIcon"></fa-icon>
+            <span *ngIf="discussionBtnHovered" class="ms-1 growing-button-text">დისკუსია</span>
+        </div>
     </div>
+
 </div>
+
+<!-- <div class="position-absolute start-0 top-0 mt-5 text-end p-2" style="width: 20%;margin-left: 80%;">
+    <input type="text" class="form-control shadow float-end" (keydown.enter)="$event.preventDefault()" placeholder="ლოკაციის ძიება" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+</div> -->

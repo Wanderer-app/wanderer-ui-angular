@@ -1,0 +1,14 @@
+.side-panel-animated {
+    animation-name: side-panel-grow;
+    animation-duration: 100ms;
+    animation-timing-function: ease-in;
+}
+
+@keyframes side-panel-grow {
+    from {
+        width: 1%;
+    }
+    to {
+    }
+}
+

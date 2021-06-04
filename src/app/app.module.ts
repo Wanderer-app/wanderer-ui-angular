@@ -59,7 +59,10 @@ import { CreatePollFormModalComponent } from './common/modals/create-poll-form-m
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyBxxdK5ZjrGYz-kgOviDEGqgJuTVqMoSUI" }),
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyBxxdK5ZjrGYz-kgOviDEGqgJuTVqMoSUI",
+      libraries: ['places']
+    }),
     AgmSnazzyInfoWindowModule
   ],
   providers: [],

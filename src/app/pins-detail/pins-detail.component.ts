@@ -10,6 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { ExternalImageService } from '../services/external-images/external-image.service';
 import { FileData, FileType } from '../common/data/file-data';
 import { Observable } from 'rxjs';
+import { pinTypeTranslations } from '../common/data/pinType';
 
 @Component({
   selector: 'app-pins-detail',
@@ -29,6 +30,8 @@ export class PinsDetailComponent implements OnInit {
 
   img$?: Observable<string>
   lastLoadedImg?: FileData
+
+  pinTypeTexts = pinTypeTranslations
 
   closeIcon = faTimes
 
