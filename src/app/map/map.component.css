@@ -56,6 +56,10 @@ agm-map {
     animation-timing-function: ease-out;
 }
 
+.maps-params-menu > * {
+    pointer-events: all;
+}
+
 @keyframes filter-menu-grow {
     from {
         height: 0px;

@@ -27,6 +27,13 @@ import { CreatePinFormComponent } from './create-pin-form/create-pin-form.compon
 import { MaximizedImageComponent } from './maximized-image/maximized-image.component';
 import { CreatePostFormComponent } from './create-post-form/create-post-form.component';
 import { CreatePollFormModalComponent } from './common/modals/create-poll-form-modal/create-poll-form-modal.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { VarDirective } from './common/directives/var.directive';
+import { registerLocaleData } from '@angular/common';
+import localeKa from '@angular/common/locales/ka';
+
+registerLocaleData(localeKa)
 
 
 @NgModule({
@@ -50,6 +57,7 @@ import { CreatePollFormModalComponent } from './common/modals/create-poll-form-m
     MaximizedImageComponent,
     CreatePostFormComponent,
     CreatePollFormModalComponent,
+    VarDirective,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +71,8 @@ import { CreatePollFormModalComponent } from './common/modals/create-poll-form-m
       apiKey: "AIzaSyBxxdK5ZjrGYz-kgOviDEGqgJuTVqMoSUI",
       libraries: ['places']
     }),
-    AgmSnazzyInfoWindowModule
+    AgmSnazzyInfoWindowModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig, "wanderer-ui-angular")
   ],
   providers: [],
   bootstrap: [AppComponent]

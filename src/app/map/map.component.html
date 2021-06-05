@@ -44,9 +44,9 @@
 
 </agm-map>
 
-<div class="position-absolute start-0 top-0 p-2 d-flex" style="width:fit-content">
+<div class="position-absolute start-0 top-0 p-2 d-flex" style="width:fit-content;pointer-events: none;">
 
-    <div style="width: 400px;">
+    <div class="maps-params-menu" style="width: 400px;pointer-events: none;">
         <select class="form-select shadow" (change)="changeDataLayer(routesFilter.value)"  #routesFilter>
             <option selected disabled hidden value="">მარშრუტები რეგიონების მიხედვით</option>
             <option value="{{ routeFiles.ROUTES_ADJARA_GURIA }}">აჭარა-გურია</option>
@@ -135,7 +135,3 @@
     </div>
 
 </div>
-
-<!-- <div class="position-absolute start-0 top-0 mt-5 text-end p-2" style="width: 20%;margin-left: 80%;">
-    <input type="text" class="form-control shadow float-end" (keydown.enter)="$event.preventDefault()" placeholder="ლოკაციის ძიება" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
-</div> -->
