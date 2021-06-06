@@ -51,6 +51,7 @@
     
         <div *ngIf="pin.attachedFile" class="m-2 mt-5">
             <div *ngIf="pin.attachedFile!!.fileType == 'IMAGE'">
+                <span *ngIf="imgLoading === true" class="spinner-border spinner-border-sm" role="status"></span>
                 <img src='{{ getImage() | async}}' class="img-fluid img-thumbnail mx-auto d-block" style="max-width: 100%;" alt=""> 
             </div>
         </div>

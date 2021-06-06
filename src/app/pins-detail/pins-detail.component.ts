@@ -11,6 +11,7 @@ import { ExternalImageService } from '../services/external-images/external-image
 import { FileData, FileType } from '../common/data/file-data';
 import { Observable } from 'rxjs';
 import { pinTypeTranslations } from '../common/data/pinType';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pins-detail',
@@ -30,6 +31,7 @@ export class PinsDetailComponent implements OnInit {
 
   img$?: Observable<string>
   lastLoadedImg?: FileData
+  imgLoading = false
 
   pinTypeTexts = pinTypeTranslations
 
@@ -68,7 +70,9 @@ export class PinsDetailComponent implements OnInit {
     if(this.pin.attachedFile) {
 
       if(this.lastLoadedImg !== this.pin.attachedFile) {
+        this.imgLoading = true
         this.img$ = this.imgService.getImageUrl(this.pin.attachedFile)
+          .pipe(finalize(() => this.imgLoading = false))
         this.lastLoadedImg = this.pin.attachedFile
       }
       return this.img$
