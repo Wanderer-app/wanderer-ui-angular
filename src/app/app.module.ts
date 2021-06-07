@@ -32,6 +32,7 @@ import { environment } from 'src/environments/environment';
 import { VarDirective } from './common/directives/var.directive';
 import { registerLocaleData } from '@angular/common';
 import localeKa from '@angular/common/locales/ka';
+import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(localeKa)
 
@@ -74,7 +75,7 @@ registerLocaleData(localeKa)
     AgmSnazzyInfoWindowModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "wanderer-ui-angular")
   ],
-  providers: [],
+  providers: [ CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
