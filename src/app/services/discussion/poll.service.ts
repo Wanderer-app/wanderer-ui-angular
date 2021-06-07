@@ -34,7 +34,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   addComment(id: number, text: string): Observable<CommentData> {
     return this.api.post<CommentData>("polls/add-comment", {
       contentId: id,
-      commenterId: this.logInService.getLoggedInUser()!.id,
+      commenterId: this.logInService.requireLoggedInUser().id,
       commentContent: text,
       date: now()
     })
@@ -43,7 +43,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   upVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("polls/up-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -51,7 +51,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   downVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("polls/down-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -59,7 +59,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   removeVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("polls/remove-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -67,7 +67,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   activate(id: number): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("polls/activate", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -75,7 +75,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   remove(id: number): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("polls/remove", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -83,7 +83,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   report(id: number, reason: ReportReason): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("polls/report", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now(),
       reportReason: reportReasons.get(reason)
     })
@@ -94,7 +94,7 @@ export class PollService implements CommentableContentService, RateableContentSe
     
     return this.api.post<DiscussionElement>("polls/select-answer", {
       pollId: pollId,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       answerId: answerId
     })
   }
@@ -102,7 +102,7 @@ export class PollService implements CommentableContentService, RateableContentSe
   createPoll(question: string, answers: string[], routeCode: string): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("polls/create", {
       onDate: now(),
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       routeCode: routeCode,
       text: question,
       answers: answers
@@ -113,7 +113,7 @@ export class PollService implements CommentableContentService, RateableContentSe
     return this.api.post<DiscussionElement>("polls/update", {
       pollId: pollId,
       newText: newQuestion,
-      updaterId: this.logInService.getLoggedInUser()!.id
+      updaterId: this.logInService.requireLoggedInUser().id
     })
   }
 

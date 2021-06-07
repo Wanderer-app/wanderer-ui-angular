@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCog, faMapMarkedAlt, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import { UserFullData } from '../common/data/user-full-data';
+import { faCog, faMapMarkedAlt, faSignInAlt, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { UserData } from '../common/data/user-full-data';
 import { LogInService } from '../services/log-in/log-in.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class NavigationComponent implements OnInit {
   logOutIcon = faSignOutAlt
   cogIcon = faCog
   mapIcon = faMapMarkedAlt
+  logInIcon = faSignInAlt
 
   isCollapsed = true;
 
@@ -29,7 +30,7 @@ export class NavigationComponent implements OnInit {
     this.router.navigate([""])
   }
 
-  loggedInUser(): UserFullData | undefined {
+  loggedInUser(): UserData | undefined {
     return this.logInService.getLoggedInUser()
   }
 

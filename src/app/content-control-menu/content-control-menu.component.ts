@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angu
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportReason } from '../common/data/report-reason';
 import { UserContentType } from '../common/data/user-content-type';
-import { UserFullData } from '../common/data/user-full-data';
+import { UserData } from '../common/data/user-full-data';
 import { AreYouSureModalComponent } from '../common/modals/are-you-sure-modal/are-you-sure-modal.component';
 import { ContentReportModalComponent } from '../common/modals/content-report-modal/content-report-modal.component';
 import { UserAddedContentService } from '../services/user-added-content-service';
@@ -30,7 +30,7 @@ export class ContentControlMenuComponent implements OnInit, OnDestroy {
   @Output() editContentEvent = new EventEmitter()
   @Output() contentRemoved = new EventEmitter()
 
-  loggedInUser: UserFullData = this.logInService.getLoggedInUser()!
+  loggedInUser?: UserData = this.logInService.getLoggedInUser()
 
   barsIcon = faBars
   removeIcon = faTrashAlt
@@ -50,19 +50,29 @@ export class ContentControlMenuComponent implements OnInit, OnDestroy {
   }
 
   hasFullRights(): boolean {    
-    return this.loggedInUser.id === this.contentCreatorId || this.loggedInUser.isAdmin
+    if(this.loggedInUser) {
+      return this.loggedInUser.id === this.contentCreatorId || this.loggedInUser.isAdmin
+    }  
+    return false
   }
 
   isCreator(): boolean {
-    return this.loggedInUser.id === this.contentCreatorId
+    if(this.loggedInUser) {
+      return this.loggedInUser.id === this.contentCreatorId
+    }  
+    return false
+  }
+
+  canReport(): boolean {
+    if(this.loggedInUser) {
+      return this.loggedInUser.id !== this.contentCreatorId || (this.loggedInUser.isAdmin && this.loggedInUser.id !== this.contentCreatorId)
+    }
+    return false
+
   }
 
   isPin(): boolean {
     return this.contentType === UserContentType.PIN
-  }
-
-  canReport(): boolean {
-    return this.loggedInUser.id !== this.contentCreatorId || (this.loggedInUser.isAdmin && this.loggedInUser.id !== this.contentCreatorId)
   }
 
   report() {

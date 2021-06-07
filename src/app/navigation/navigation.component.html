@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark text-white" style="background-color: #ec004b">
     <div class="container-fluid">
       <a class="navbar-brand ms-1" href="/"><fa-icon [icon]="mapIcon"></fa-icon></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed">
@@ -7,23 +7,31 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/" #mainPageLink>მთავარი გვერდი</a>
+            <a class="nav-link" aria-current="page" href="/" #mainPageLink>მთავარი</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" *ngIf="loggedInUser()?.isAdmin" href="/user" #registerLink>მომხმარებლის გვერდი</a>
+            <a class="nav-link" href="/user-page" #registerLink>პროფილი</a>
           </li>
         </ul>
-        <ul class="navbar-nav mb-2 mb-lg-0" display="dynamic" ngbDropdown >
-            <li *ngIf="loggedInUser()" class="nav-item dropdown">
+        <ul *ngIf="loggedInUser()" class="navbar-nav mb-2 mb-lg-0" display="dynamic" ngbDropdown >
+            <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
                     <fa-icon class="me-1" [icon]="userIcon"></fa-icon>
                     {{loggedInUser()! | fullname}}
                 </a>
-                <ul *ngIf="loggedInUser()" class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu #dropdownMenu>
-                    <li ngbDropdownItem><a class="dropdown-item" href="/change-password"><fa-icon class="me-1" [icon]="cogIcon"></fa-icon> პაროლის შეცვლა</a></li>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu #dropdownMenu>
+                    <li ngbDropdownItem><a class="dropdown-item" href="/edit-user"><fa-icon class="me-1" [icon]="cogIcon"></fa-icon> პროფილის რედაქტირება</a></li>
                     <li (click)="logOut(dropdownMenu)" ngbDropdownItem><a class="dropdown-item" href="javascript:void(0)"><fa-icon class="me-1" [icon]="logOutIcon"></fa-icon> გამოსვლა</a></li>
                 </ul>
             </li>
+        </ul>
+
+        <ul *ngIf="!loggedInUser()" class="navbar-nav mb-2 mb-lg-0" display="dynamic" ngbDropdown >
+          <li class="nav-item">
+            <a class="nav-link" href="/log-in" #registerLink>
+              <fa-icon [icon]="logInIcon"></fa-icon> ავტორიზაცია
+            </a>
+          </li>
         </ul>
 
       </div>

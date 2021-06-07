@@ -30,7 +30,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   createPin(newPinInfo: NewPinInfo, title: string, text: string, attachedFile: FileData | undefined): Observable<PinData> {
     let request = {
       onDate: now(),
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       type: newPinInfo.type,
       title: title,
       text: text,
@@ -45,7 +45,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   activate(id: number): Observable<PinData> {
     return this.api.post<PinData>("pins/activate", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -53,7 +53,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   remove(id: number): Observable<PinData> {
     return this.api.post<PinData>("pins/remove", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -62,13 +62,13 @@ export class PinsService implements CommentableContentService, RateableContentSe
     if (reason === ReportReason.IRRELEVANT) {
       return this.api.post<PinData>("pins/report-irrelevant", {
         contentId: id,
-        userId: this.logInService.getLoggedInUser()!.id,
+        userId: this.logInService.requireLoggedInUser().id,
         date: now()
       })
     } else {
       return this.api.post<PinData>("pins/report", {
         contentId: id,
-        userId: this.logInService.getLoggedInUser()!.id,
+        userId: this.logInService.requireLoggedInUser().id,
         date: now(),
         reportReason: reportReasons.get(reason)
       })
@@ -87,7 +87,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   addComment(id: number, text: string): Observable<CommentData> {
     return this.api.post<CommentData>("pins/add-comment", {
       contentId: id,
-      commenterId: this.logInService.getLoggedInUser()!.id,
+      commenterId: this.logInService.requireLoggedInUser().id,
       commentContent: text,
       date: now()
     })
@@ -96,7 +96,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   upVote(id: number): Observable<RatingData> {
     return this.api.post("pins/up-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -104,7 +104,7 @@ export class PinsService implements CommentableContentService, RateableContentSe
   downVote(id: number): Observable<RatingData> {
     return this.api.post("pins/down-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -112,13 +112,13 @@ export class PinsService implements CommentableContentService, RateableContentSe
   removeVote(id: number): Observable<RatingData> {
     return this.api.post("pins/remove-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
 
   update(updateData: UpdatePinData): Observable<PinData> {
-    updateData.updaterId = this.logInService.getLoggedInUser()!.id
+    updateData.updaterId = this.logInService.requireLoggedInUser().id
     return this.api.post<PinData>("pins/update", updateData)
   }
 

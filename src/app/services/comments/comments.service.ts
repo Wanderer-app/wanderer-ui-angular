@@ -25,7 +25,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   activate(id: number): Observable<CommentData> {
     return this.api.post<CommentData>("comments/activate", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -33,7 +33,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   remove(id: number): Observable<CommentData> {
     return this.api.post<CommentData>("comments/remove", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -41,7 +41,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   report(id: number, reason: ReportReason): Observable<CommentData> {
     return this.api.post<CommentData>("comments/report", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now(),
       reportReason: reportReasons.get(reason)
     })
@@ -59,7 +59,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   addComment(id: number, text: string): Observable<CommentData> {
     return this.api.post<CommentData>("comments/add-reply", {
       contentId: id,
-      commenterId: this.loginService.getLoggedInUser()!.id,
+      commenterId: this.loginService.requireLoggedInUser().id,
       commentContent: text,
       date: now()
     })
@@ -68,7 +68,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   upVote(id: number): Observable<RatingData> {
     return this.api.post("comments/up-vote", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -76,7 +76,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   downVote(id: number): Observable<RatingData> {
     return this.api.post("comments/down-vote", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -84,7 +84,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   removeVote(id: number): Observable<RatingData> {
     return this.api.post("comments/remove-vote", {
       contentId: id,
-      userId: this.loginService.getLoggedInUser()!.id,
+      userId: this.loginService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -92,7 +92,7 @@ export class CommentsService implements CommentableContentService, RateableConte
   update(commentId: number, newText: string): Observable<CommentData> {
    return this.api.post<CommentData>("comments/update", {
       commentId: commentId,
-      updaterId: this.loginService.getLoggedInUser()!.id,
+      updaterId: this.loginService.requireLoggedInUser().id,
       text: newText
     })
   }

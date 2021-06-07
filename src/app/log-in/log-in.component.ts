@@ -48,7 +48,6 @@ export class LogInComponent extends BaseFormComponent implements OnInit, OnDestr
       .pipe(catchError(error => this.handleError(error)))
       .subscribe(user => {
         if(user) {
-          this.notificationService.showStandardSuccess("თქვენ შეხვედით სისტემაში")
           this.router.navigate([""])
         }
       })

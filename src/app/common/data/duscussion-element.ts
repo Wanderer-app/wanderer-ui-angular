@@ -2,12 +2,12 @@ import { CommentData } from "./comment-data";
 import { FileData } from "./file-data";
 import { RatingData } from "./rating-data";
 import { UserContentType } from "./user-content-type";
-import { UserFullData } from "./user-full-data";
+import { UserData } from "./user-full-data";
 import { VoteDirection } from "./vote-direction";
 
 export interface DiscussionElement {
     id: number,
-    creator: UserFullData,
+    creator: UserData,
     createdAt: string,
     updatedAt: string,
     isActive: boolean,

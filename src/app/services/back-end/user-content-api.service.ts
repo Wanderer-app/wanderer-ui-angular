@@ -80,7 +80,12 @@ export class UserContentApiService {
   }
 
   private userTokenHeader() {
-    return { "user-token": this.logInService.getLoggedInUserToken() || "" }
+    let userId = this.logInService.getLoggedInUserId()
+
+    if(userId) {
+      return { "user-token": userId }
+    }
+    return undefined
   }
 
 }

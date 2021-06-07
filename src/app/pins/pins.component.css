@@ -1,7 +1,18 @@
-.side-panel-animated {
+.side-panel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
     animation-name: side-panel-grow;
     animation-duration: 100ms;
     animation-timing-function: ease-in;
+}
+
+.side-panel::-webkit-scrollbar {
+    display: none;
+}
+
+.pins-box {
+    height: calc(100vh - 60px)
 }
 
 @keyframes side-panel-grow {

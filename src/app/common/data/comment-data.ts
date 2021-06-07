@@ -1,10 +1,9 @@
-import { RatingData } from "./rating-data";
-import { UserShortData } from "./user-short-data";
+import { UserData } from "./user-full-data";
 import { VoteDirection } from "./vote-direction";
 
 export interface CommentData {
     id: number,
-    author: UserShortData,
+    author: UserData,
     createdAt: string,
     updatedAt: string,
     text: string,

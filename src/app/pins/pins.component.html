@@ -1,4 +1,4 @@
-<div class="row h-100 g-0">
+<div class="pins-box row g-0">
     <div id="pins-div" class="col position-relative">
         <app-map 
             [additionalPins]="additionalMapPins"
@@ -10,7 +10,7 @@
         ></app-map>
     </div>
 
-    <div *ngIf="sidePanelOpen" style="overflow-y: scroll; max-height: 98vh" class="side-panel-animated col col-lg-4">
+    <div *ngIf="sidePanelOpen" style="overflow-y: scroll" class="side-panel col col-lg-4 h-100">
         <app-pins-detail *ngIf="selectedPin" [pin]="selectedPin" (closeDetailsEvent)="closeSidePanel()"></app-pins-detail>
         <app-route-discussion *ngIf="routeForDiscussion" [routeCode]="routeForDiscussion" (close)="closeSidePanel()"></app-route-discussion>
         <app-route-description *ngIf="routeInfo" [routeInfo]="routeInfo" (close)="closeSidePanel()"></app-route-description>

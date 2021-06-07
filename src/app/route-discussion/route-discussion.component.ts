@@ -7,7 +7,7 @@ import { finalize, map, observeOn, tap } from 'rxjs/operators';
 import { DiscussionElement, PollAnswerData, PollContent } from '../common/data/duscussion-element';
 import { FileData, FileType } from '../common/data/file-data';
 import { UserContentType } from '../common/data/user-content-type';
-import { UserFullData } from '../common/data/user-full-data';
+import { UserData } from '../common/data/user-full-data';
 import { CreatePollFormModalComponent } from '../common/modals/create-poll-form-modal/create-poll-form-modal.component';
 import { ContentControlMenuPlacement } from '../content-control-menu/menu-placement';
 import { NotificationService } from '../notifications/service/notification.service';
@@ -104,7 +104,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     
   }
 
-  loggedInUser(): UserFullData | undefined {
+  loggedInUser(): UserData | undefined {
     return this.logInService.getLoggedInUser()
   }
 

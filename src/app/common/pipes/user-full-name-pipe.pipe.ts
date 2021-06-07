@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserShortData } from '../data/user-short-data';
+import { UserData } from '../data/user-full-data';
 
 @Pipe({
   name: 'fullname'
 })
 export class UserFullNamePipePipe implements PipeTransform {
 
-  transform(value: UserShortData): string {
+  transform(value: UserData): string {
     return value.firstName + " " + value.lastName;
   }
 

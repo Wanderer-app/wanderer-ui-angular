@@ -39,7 +39,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   addComment(id: number, text: string): Observable<CommentData> {
     return this.api.post<CommentData>("posts/add-comment", {
       contentId: id,
-      commenterId: this.logInService.getLoggedInUser()!.id,
+      commenterId: this.logInService.requireLoggedInUser().id,
       commentContent: text,
       date: now()
     })
@@ -48,7 +48,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   upVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("posts/up-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -56,7 +56,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   downVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("posts/down-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -64,7 +64,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   removeVote(id: number): Observable<RatingData> {
     return this.api.post<RatingData>("posts/remove-vote", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -72,7 +72,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   activate(id: number): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("posts/activate", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -80,7 +80,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   remove(id: number): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("posts/remove", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now()
     })
   }
@@ -88,7 +88,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   report(id: number, reason: ReportReason): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("posts/report", {
       contentId: id,
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       date: now(),
       reportReason: reportReasons.get(reason)
     })
@@ -97,7 +97,7 @@ export class PostService implements CommentableContentService, RateableContentSe
   createPost(text: string, images: FileData[], routeCode: string): Observable<DiscussionElement> {
     return this.api.post<DiscussionElement>("posts/create", {
       onDate: now(),
-      userId: this.logInService.getLoggedInUser()!.id,
+      userId: this.logInService.requireLoggedInUser().id,
       routeCode: routeCode,
       text: text,
       attachedFiles: images
@@ -109,7 +109,7 @@ export class PostService implements CommentableContentService, RateableContentSe
       postId: postId,
       newText: newText,
       files: images,
-      updaterId: this.logInService.getLoggedInUser()!.id
+      updaterId: this.logInService.requireLoggedInUser().id
     })
   }
 
