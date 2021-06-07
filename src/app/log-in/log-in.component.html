@@ -1,0 +1,28 @@
+<form class="p-3" onsubmit="return false" (ngSubmit)="submitLogInForm()" [formGroup]="form">
+
+    <input class="{{errorClasses(userEmail)}" required email type="email" formControlName="email" placeholder="ელფოსტა" #userEmail>
+    <ng-container *ngIf="isInValid(userEmail)">
+        <ng-container *ngFor="let error of getErrors(userEmail)">
+          <small class="text-danger">{{error}}</small>
+        </ng-container>
+    </ng-container>
+
+    <br>
+
+    <input class="{{errorClasses(pass)} my-2" required type="password" formControlName="password" placeholder="პაროლი" #pass>
+    <ng-container *ngIf="isInValid(pass)">
+        <ng-container *ngFor="let error of getErrors(pass)">
+          <small class="text-danger">{{error}}</small>
+        </ng-container>
+    </ng-container>
+    <br>
+
+    <input type="checkbox" formControlName="remember" id="remember"> - დამიმახსოვრე
+        
+    <br>
+    
+    <button type="submit" [disabled]="form.invalid || loggingIn">შესვლა</button>
+    <br>
+    <span *ngIf="loggingIn" class="spinner-border spinner-border-sm" role="status"></span>
+    <div class="text-danger"><b>{{errorText}}</b></div>
+</form>

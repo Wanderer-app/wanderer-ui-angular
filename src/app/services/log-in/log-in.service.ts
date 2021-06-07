@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
 import { UserFullData } from 'src/app/common/data/user-full-data';
 import { JAMBURA, JANGULA, PATATA } from 'src/app/common/mock/mocked-short-users';
 import { UserSession } from './user-session';
@@ -14,7 +14,11 @@ export class LogInService {
 
   constructor(private cookieService: CookieService) { }
 
-  users = [JANGULA, PATATA, JAMBURA]
+  usersEmails: Map<string, UserFullData> = new Map([
+    ["jambura@gmail.lcom", JAMBURA],
+    ["patata@gmail.lcom", PATATA],
+    ["jangula@gmail.lcom", JANGULA],
+  ])
 
   private loggedInUser = JAMBURA
 
@@ -32,10 +36,16 @@ export class LogInService {
       expires: remember ? 180 : undefined
     }
 
-    return of(JAMBURA)
-      .pipe(
-        tap(user => this.cookieService.set(SESSION_COOKIE, JSON.stringify(user), params))
-      )
+    let user = this.usersEmails.get(email)
+    if (user) {
+      return of(user)
+        .pipe(
+          tap(user => this.cookieService.set(SESSION_COOKIE, JSON.stringify(user), params))
+        )
+        .pipe(delay(500))
+    } else {
+      return throwError("მომხმარებელი ვერ მოიძებნა")
+    }
   }
 
   logOut() {

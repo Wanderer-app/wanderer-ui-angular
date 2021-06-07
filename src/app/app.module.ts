@@ -33,6 +33,8 @@ import { VarDirective } from './common/directives/var.directive';
 import { registerLocaleData } from '@angular/common';
 import localeKa from '@angular/common/locales/ka';
 import { CookieService } from 'ngx-cookie-service';
+import { LogInComponent } from './log-in/log-in.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 registerLocaleData(localeKa)
 
@@ -59,6 +61,8 @@ registerLocaleData(localeKa)
     CreatePostFormComponent,
     CreatePollFormModalComponent,
     VarDirective,
+    LogInComponent,
+    NavigationComponent,
   ],
   imports: [
     BrowserModule,

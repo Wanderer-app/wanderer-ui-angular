@@ -52,6 +52,9 @@ export abstract class BaseFormComponent {
           if(control.errors.custom) {
             errorMessages.push(control.errors.custom.errorText);            
           }
+          if(control.errors.email) {
+            errorMessages.push("ელ-ფოსტა არავალიდურია");            
+          }
           return errorMessages
         }
         return []
