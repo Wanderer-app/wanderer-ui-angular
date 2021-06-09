@@ -66,7 +66,7 @@
             (mouseenter) ="searchBtnHovered = true" 
             (mouseleave) ="searchBtnHovered = false" 
             (click)="searchClicked = true;closeFilterMenu()"
-            class="mt-2 p-2 shadow growing-button{{ searchClicked ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white"
+            class="mt-2 p-2 growing-button-shadow growing-button{{ searchClicked ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white"
             style="border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;"
         >
             <fa-icon [icon]="searchIcon"></fa-icon>
@@ -87,7 +87,7 @@
             (mouseenter) ="!pinsFilterMenuOn ? filterHovered = true : undefined" 
             (mouseleave) ="!pinsFilterMenuOn ? filterHovered = false : undefined" 
             (click)="filterClicked();closeSearch()"
-            class="mt-2 p-3 shadow growing-button{{ pinsFilterMenuOn ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 p-3 growing-button-shadow growing-button{{ pinsFilterMenuOn ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="filterIcon"></fa-icon>
             <span *ngIf="filterHovered || pinsFilterMenuOn" class="ms-1 growing-button-text">ფილტრი</span>
@@ -160,7 +160,7 @@
             (mouseenter) ="detailsBtnHovered = true" 
             (mouseleave) ="detailsBtnHovered = false" 
             (click)="showDetails();closeFilterMenu();closeSearch()"
-            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 growing-button-shadow growing-button d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="infoIcon"></fa-icon>
             <span *ngIf="detailsBtnHovered" class="ms-1 growing-button-text">აღწერა</span>
@@ -170,11 +170,37 @@
             (mouseenter) ="discussionBtnHovered = true" 
             (mouseleave) ="discussionBtnHovered = false" 
             (click)="showDiscussion();closeFilterMenu();closeSearch()"
-            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 growing-button-shadow growing-button d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="discussionIcon"></fa-icon>
             <span *ngIf="discussionBtnHovered" class="ms-1 growing-button-text">დისკუსია</span>
         </div>
     </div>
 
+</div>
+
+<div class="position-absolute start-50 translate-middle-x p-2 d-flex pins-pagination" style="width:fit-content;pointer-events: none;">
+    <div class="maps-params-menu d-flex justify-content-center">
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="prevBtnHovered = true" 
+            (mouseleave) ="prevBtnHovered = false" 
+            (click) = "getPinsPreviousPage()"
+            class="growing-button-shadow growing-button-sm d-flex align-items-center justify-content-center text-white me-1" 
+        >
+            <fa-icon [icon]="previousIcon"></fa-icon>
+            <span *ngIf="prevBtnHovered" class="ms-1 growing-button-text">წინა პინები</span>
+        </div>
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="nextBtnHovered = true" 
+            (mouseleave) ="nextBtnHovered = false" 
+            (click) = "getPinsNextPage()"
+            class="growing-button-shadow growing-button-sm growing-button-long d-flex align-items-center justify-content-center text-white ms-1" 
+        >
+            <span *ngIf="nextBtnHovered" class="me-1 growing-button-text">შემდეგი პინები</span>
+            <fa-icon [icon]="nextIcon"></fa-icon>
+        </div>
+        
+    </div>
 </div>

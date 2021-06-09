@@ -1,11 +1,11 @@
 <div class="p-3 bg-light" style="min-height:100%">
-    <div class="d-block text-end">
-        <button class="btn btn-sm btn-secondary m-1" (click)="close.emit()">
+    <div class="d-block">
+        <button class="btn p-0 btn-lg text-secondary btn-light m-1" (click)="close.emit()">
             <fa-icon [icon]="closeIcon"></fa-icon>
         </button>
     </div>
 
-    <div class="row g-1 mt-4">
+    <div class="row g-1 mt-2">
         <div class="col">
             <button (click)="showCreatePostForm = true" class="btn btn-secondary d-block w-100"><fa-icon [icon]="addIcon"></fa-icon> პოსტის დამატება</button>
         </div>
