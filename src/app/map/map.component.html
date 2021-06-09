@@ -110,8 +110,8 @@
                     <div class="row g-2">
                         <div class="col-11">
                             <select class="form-select" (change)="typeSelect.value === '' ? removeTypeFilters() : filterByType(typeSelect.value)" #typeSelect>
-                                <option selected value="">ყველა</option>
-                                <option *ngFor="let type of availablePinTypes" value="{{type}}">{{pinTypeInGeorgian(type)}}</option>
+                                <option [selected]="pinTypeFilter() === undefined" value="">ყველა</option>
+                                <option [selected]="pinTypeFilter()?.compareValue == type" *ngFor="let type of availablePinTypes" value="{{type}}">{{pinTypeInGeorgian(type)}}</option>
                             </select>
                         </div>
                         <div class="col-1 d-flex justify-content-center">
@@ -128,28 +128,28 @@
                 <div class="border rounded mt-3 p-3 position-relative filter-menu-box">
                     <div class="position-absolute start-50 top-0 translate-middle bg-white px-2 text-secondary">სორტირება</div>
                     <div class="btn-group w-100">
-                        <input (click)="sortByRating()" type="radio" class="btn-check" name="sortingRadio" id="byRating" autocomplete="off" [checked]="pinSorting === undefined">
-                        <label  class="btn btn-outline-primary" for="byRating">რეიტინგით</label>
+                        <input (click)="sortByRating()" type="radio" class="btn-check" name="sortingRadio" id="byRating" autocomplete="off">
+                        <label  class="btn btn-main{{ pinSorting === undefined ? '' : '-outline' }} shadow-none" for="byRating">რეიტინგით</label>
 
-                        <input (click)="sortByDate()" type="radio" class="btn-check" name="sortingRadio" id="byCreateDate" autocomplete="off" [checked]="pinSorting?.fieldName === 'createdAt'">
-                        <label class="btn btn-outline-primary" for="byCreateDate">სიახლით</label>
+                        <input (click)="sortByDate()" type="radio" class="btn-check" name="sortingRadio" id="byCreateDate" autocomplete="off">
+                        <label class="btn btn-main{{ pinSorting?.fieldName === 'createdAt' ? '' : '-outline' }} shadow-none" for="byCreateDate">სიახლით</label>
                     </div>
                 </div>
 
                 <div class="border rounded mt-3 p-3 position-relative filter-menu-box">
                     <div class="position-absolute start-50 top-0 translate-middle bg-white px-2 text-secondary">დამატების პერიოდი</div>
                     <div class="btn-group btn-group-sm w-100" >
-                        <input (click)="filterPinsForLastWeek();selectedDateFilter = lastWeek.id" type="radio" class="btn-check" name="dateFilterRadio" id="weekFilter" autocomplete="off" [checked]="selectedDateFilter === lastWeek.id" #lastWeek>
-                        <label  class="btn btn-outline-primary" for="weekFilter">ბოლო კვირა</label>
+                        <input (click)="filterPinsForLastWeek();selectedDateFilter = lastWeek.id" type="radio" class="btn-check" name="dateFilterRadio" id="weekFilter" autocomplete="off" #lastWeek>
+                        <label  class="btn btn-main{{ selectedDateFilter === lastWeek.id ? '' : '-outline' }} shadow-none" for="weekFilter">ბოლო კვირა</label>
 
-                        <input (click)="filterPinsForLastMonth();selectedDateFilter = lastMonth.id" type="radio" class="btn-check" name="dateFilterRadio" id="monthFilter" autocomplete="off" [checked]="selectedDateFilter === lastMonth.id" #lastMonth>
-                        <label class="btn btn-outline-primary" for="monthFilter">ბოლო თვე</label>
+                        <input (click)="filterPinsForLastMonth();selectedDateFilter = lastMonth.id" type="radio" class="btn-check" name="dateFilterRadio" id="monthFilter" autocomplete="off" #lastMonth>
+                        <label class="btn btn-main{{ selectedDateFilter === lastMonth.id ? '' : '-outline' }} shadow-none" for="monthFilter">ბოლო თვე</label>
 
-                        <input (click)="filterPinsForLastYear();selectedDateFilter = lastYear.id" type="radio" class="btn-check" name="dateFilterRadio" id="yearFilter" autocomplete="off" [checked]="selectedDateFilter === lastYear.id" #lastYear>
-                        <label class="btn btn-outline-primary" for="yearFilter">ბოლო წელი</label>
+                        <input (click)="filterPinsForLastYear();selectedDateFilter = lastYear.id" type="radio" class="btn-check" name="dateFilterRadio" id="yearFilter" autocomplete="off" #lastYear>
+                        <label class="btn btn-main{{ selectedDateFilter === lastYear.id ? '' : '-outline' }} shadow-none" for="yearFilter">ბოლო წელი</label>
 
-                        <input (click)="removeDateFilter();selectedDateFilter = undefined" type="radio" class="btn-check" name="dateFilterRadio" id="removeYearFilter" autocomplete="off" [checked]="selectedDateFilter === undefined">
-                        <label class="btn btn-outline-primary" for="removeYearFilter">სულ</label>
+                        <input (click)="removeDateFilter();selectedDateFilter = undefined" type="radio" class="btn-check" name="dateFilterRadio" id="removeYearFilter" autocomplete="off">
+                        <label class="btn btn-main{{ selectedDateFilter === undefined ? '' : '-outline' }} shadow-none" for="removeYearFilter">სულ</label>
                     </div>
                 </div>
 

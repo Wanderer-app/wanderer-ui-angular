@@ -301,4 +301,8 @@ export class MapComponent implements OnInit, OnDestroy {
     return pinTypeTranslations.get(type)!
   }
 
+  pinTypeFilter(): FilterParam | undefined {
+    return this.pinFilter.find(f => f.fieldName === 'pinType')
+  }
+
 }

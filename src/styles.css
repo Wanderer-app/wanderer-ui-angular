@@ -15,3 +15,40 @@
 .ge-heading {
     font-family: nino-mtavruli;
 }
+
+.btn-main-outline {
+    border-color: #ec004b;
+    color: #ec004b;
+    transition: 250ms;
+}
+
+.btn-main {
+    background-color: #ec004b;
+    color: white;
+    transition: 200ms;
+}
+
+.btn-main:hover {
+    background-color: #e00047;
+    color: white !important;
+}
+
+.btn-main-outline:hover {
+    background-color: #ec004b;
+    color: white
+}
+
+.btn-main-outline:checked {
+    background-color: #ec004b;
+    color: white
+}
+
+.btn-check:checked {
+    background-color: #ec004b !important;
+    color: white !important
+}
+
+.btn-main-check:checked {
+    background-color: #ec004b !important;
+    color: white !important
+}
