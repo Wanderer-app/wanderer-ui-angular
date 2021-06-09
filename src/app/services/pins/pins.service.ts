@@ -13,8 +13,8 @@ import { NewPinInfo } from 'src/app/create-pin-form/new-pin-info';
 import { FileData } from 'src/app/common/data/file-data';
 import { LogInService } from '../log-in/log-in.service';
 import { UserContentApiService } from '../back-end/user-content-api.service';
-import { FilterOperation, SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
-import { now } from '../back-end/conversions';
+import { FilterOperation, FilterParam, SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
+import { now } from '../back-end/date-functions';
 
 @Injectable({
   providedIn: 'root'
@@ -135,22 +135,22 @@ export class PinsService implements CommentableContentService, RateableContentSe
     })
   }
 
-  listForRoute(routeCode: string): Observable<PinShortData[]> {
+  listForRoute(routeCode: string, pageNumber: number, filters: FilterParam[], sorting?:SortingParams): Observable<PinShortData[]> {
     return this.api.listOf<PinShortData>("pins/for-route/" + routeCode, {
-      batchNumber: 1,
+      batchNumber: pageNumber,
       batchSize: this.pinsPerPage,
-      sortingParams: this.defaultPinSorting,
-      filters: []
+      sortingParams: sorting || this.defaultPinSorting,
+      filters: filters
     })
   }
 
-  listForRouteAndType(routeCode: string, pinType: PinType): Observable<PinShortData[]> {
+  // listForRouteAndType(routeCode: string, pinType: PinType): Observable<PinShortData[]> {
 
-    return this.api.listOf<PinShortData>("pins/for-route/" + routeCode, {
-      batchNumber: 1,
-      batchSize: this.pinsPerPage,
-      sortingParams: this.defaultPinSorting,
-      filters: [{ fieldName: "pinType", operation: FilterOperation.IS, compareValue: pinType }]
-    })
-  }
+  //   return this.api.listOf<PinShortData>("pins/for-route/" + routeCode, {
+  //     batchNumber: 1,
+  //     batchSize: this.pinsPerPage,
+  //     sortingParams: this.defaultPinSorting,
+  //     filters: [{ fieldName: "pinType", operation: FilterOperation.IS, compareValue: pinType }]
+  //   })
+  // }
 }

@@ -5,7 +5,7 @@ import { DiscussionElement, PollAnswerData, PollContent } from 'src/app/common/d
 import { RatingData } from 'src/app/common/data/rating-data';
 import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
 import { SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
-import { now } from '../back-end/conversions';
+import { now } from '../back-end/date-functions';
 import { UserContentApiService } from '../back-end/user-content-api.service';
 import { CommentableContentService } from '../commentable-content-servce';
 import { LogInService } from '../log-in/log-in.service';

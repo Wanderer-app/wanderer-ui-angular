@@ -6,6 +6,8 @@ import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
 import { PinShortData } from '../common/data/pin-data';
 import { AVAILABLE_PIN_TYPES, PinType, pinTypeTranslations } from '../common/data/pinType';
+import { FilterOperation, FilterParam, SortingDirection, SortingParams } from '../common/listing/listing-params';
+import { georgianStandartTime } from '../services/back-end/date-functions';
 import { MapDataService } from '../services/map/map-data.service';
 import { RouteFile } from '../services/map/route-files';
 import { PinsService } from '../services/pins/pins.service';
@@ -65,6 +67,12 @@ export class MapComponent implements OnInit, OnDestroy {
   infoIcon = faFileAlt
   searchIcon = faSearch
 
+  selectedDateFilter?: string
+
+  pinsPageNumber = 1
+  pinSorting?: SortingParams
+  pinFilter: FilterParam[] = []
+
   constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
 
   enableMapSearch(element: any) {
@@ -103,7 +111,8 @@ export class MapComponent implements OnInit, OnDestroy {
     } else {
       this.additionalPins = []
       this.selectedFeature?.setProperty("isSelected", false)
-      this.pins$ = this.pinService.listForRoute(feature.getProperty("routeCode"))
+      this.selectedFeature = feature
+      this.getPins()
 
       this.selectedFeature = feature
       feature.setProperty("isSelected", true)
@@ -176,12 +185,15 @@ export class MapComponent implements OnInit, OnDestroy {
     this.pinSelectedEvent.emit(pin.id)
   }
 
-  filterBy(type: PinType) {
-    this.pins$ = this.pinService.listForRouteAndType(this.selectedFeature?.getProperty('routeCode'), type)
+  filterByType(type: string) {
+    this.pinFilter = this.pinFilter.filter(filter => filter.fieldName !== "pinType")
+    this.pinFilter.push({ fieldName: "pinType", operation: FilterOperation.IS, compareValue: type })
+    this.getPins()
   }
 
-  removeFilters() {
-    this.pins$ = this.pinService.listForRoute(this.selectedFeature?.getProperty('routeCode'))
+  removeTypeFilters() {
+    this.pinFilter = this.pinFilter.filter(filter => filter.fieldName !== "pinType")
+    this.getPins()
   }
 
   showDetails() {
@@ -233,6 +245,60 @@ export class MapComponent implements OnInit, OnDestroy {
   closeSearch() {
     this.searchClicked = false
     this.mapSearchEnabled = false
+  }
+
+  private getPins() {
+    let routeCode = this.selectedFeature?.getProperty('routeCode')
+    this.pins$ = this.pinService.listForRoute(routeCode, this.pinsPageNumber, this.pinFilter, this.pinSorting)
+  }
+
+  sortByDate() {
+    this.pinSorting = {fieldName: "createdAt", sortingDirection: SortingDirection.DESCENDING}
+    this.getPins()
+  }
+
+  sortByRating() {
+    this.pinSorting = undefined
+    this.getPins()
+  }
+
+
+  filterPinsForLastMonth() {
+    console.log("aaaa");
+    
+    let date = new Date()
+    date.setMonth(date.getMonth() - 1)
+    let targetedDate = georgianStandartTime(date)
+    this.getPinsCreatedAfter(targetedDate)
+  }
+
+  filterPinsForLastWeek() {
+    let date = new Date()
+    date.setDate(date.getDate() - 7)
+    let targetedDate = georgianStandartTime(date)
+    this.getPinsCreatedAfter(targetedDate)
+  }
+
+  filterPinsForLastYear() {
+    let date = new Date()
+    date.setFullYear(date.getFullYear() - 1)
+    let targetedDate = georgianStandartTime(date)
+    this.getPinsCreatedAfter(targetedDate)
+  }
+
+  removeDateFilter() {
+    this.pinFilter = this.pinFilter.filter(filter => filter.fieldName !== "createdAt")
+    this.getPins()
+  }
+
+  getPinsCreatedAfter(dateString: string) {
+    this.pinFilter = this.pinFilter.filter(filter => filter.fieldName !== "createdAt")
+    this.pinFilter.push({ fieldName: "createdAt", operation: FilterOperation.IS_MORE_THEN, compareValue: dateString })
+    this.getPins()
+  }
+
+  pinTypeInGeorgian(type: PinType): string {
+    return pinTypeTranslations.get(type)!
   }
 
 }

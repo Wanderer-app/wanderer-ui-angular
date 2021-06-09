@@ -60,6 +60,10 @@ agm-map {
     pointer-events: all;
 }
 
+.filter-menu-box {
+    border-color: rgb(201, 201, 201);
+}
+
 @keyframes filter-menu-grow {
     from {
         height: 0px;

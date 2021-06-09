@@ -8,7 +8,7 @@ import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
 import { LogInService } from '../log-in/log-in.service';
 import { UserContentApiService } from '../back-end/user-content-api.service';
-import { now } from '../back-end/conversions';
+import { now } from '../back-end/date-functions';
 import { SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
 
 @Injectable({

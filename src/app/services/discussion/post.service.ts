@@ -10,7 +10,7 @@ import { UserContentType } from 'src/app/common/data/user-content-type';
 import { SortingDirection, SortingParams } from 'src/app/common/listing/listing-params';
 import { MOCK_DISCUSSION_ELEMENTS } from 'src/app/common/mock/mock-discussion-elements';
 import { NotificationService } from 'src/app/notifications/service/notification.service';
-import { now } from '../back-end/conversions';
+import { now } from '../back-end/date-functions';
 import { UserContentApiService } from '../back-end/user-content-api.service';
 import { CommentableContentService } from '../commentable-content-servce';
 import { LogInService } from '../log-in/log-in.service';
