@@ -322,7 +322,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   getMarkerIcon(pinType: PinType): string  {
-    return "./assets/img/pins/png/" + pinTypeIcons.get(pinType)!
+    return "./assets/img/pins/" + pinTypeIcons.get(pinType)!
   }
 
 }
