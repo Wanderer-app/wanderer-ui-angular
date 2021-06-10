@@ -5,7 +5,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
 import { PinShortData } from '../common/data/pin-data';
-import { AVAILABLE_PIN_TYPES, PinType, pinTypeTranslations } from '../common/data/pinType';
+import { AVAILABLE_PIN_TYPES, PinType, pinTypeIcons, pinTypeTranslations } from '../common/data/pinType';
 import { FilterOperation, FilterParam, SortingDirection, SortingParams } from '../common/listing/listing-params';
 import { georgianStandartTime } from '../services/back-end/date-functions';
 import { MapDataService } from '../services/map/map-data.service';
@@ -76,11 +76,6 @@ export class MapComponent implements OnInit, OnDestroy {
   pinsPageNumber = 1
   pinSorting?: SortingParams
   pinFilter: FilterParam[] = []
-
-  symbol: google.maps.Icon = {
-    url: "./assets/img/pins/svg/resting-place.svg",
-    scaledSize: new google.maps.Size(40, 60)
-  }
 
   constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
 
@@ -324,6 +319,10 @@ export class MapComponent implements OnInit, OnDestroy {
       this.pinsPageNumber -= 1
       this.getPins()
     }
+  }
+
+  getMarkerIcon(pinType: PinType): string  {
+    return "./assets/img/pins/png/" + pinTypeIcons.get(pinType)!
   }
 
 }

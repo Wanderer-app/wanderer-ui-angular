@@ -24,3 +24,12 @@ export const pinTypeTranslations: Map<PinType, string> = new Map([
     [PinType.RESTING_PLACE, "დასვენების ადგილი" ],
     [PinType.MISC_FACT, "ფაქტი" ]
 ])
+
+export const pinTypeIcons: Map<PinType, string> = new Map([
+    [PinType.TIP, "tip.png" ],
+    [PinType.WARNING, "warning.png" ],
+    [PinType.DANGER, "danger.png" ],
+    [PinType.SIGHT, "sight.png" ],
+    [PinType.RESTING_PLACE, "resting-place.png" ],
+    [PinType.MISC_FACT, "fact.png" ]
+])

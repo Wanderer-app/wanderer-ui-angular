@@ -18,7 +18,7 @@
         *ngFor="let pin of (pins$ | async)?.concat(additionalPins)"
         [latitude]="pin.location.lat" 
         [longitude]="pin.location.lng" 
-        [label]="pinTypetexts.get(pin.type)!.charAt(0)"
+        [iconUrl]="getMarkerIcon(pin.type)"
         (markerClick)="pinSelected(pin)"
     ></agm-marker>
 
