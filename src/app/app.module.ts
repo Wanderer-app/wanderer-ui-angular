@@ -35,6 +35,7 @@ import localeKa from '@angular/common/locales/ka';
 import { CookieService } from 'ngx-cookie-service';
 import { LogInComponent } from './log-in/log-in.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { GOOGLE_MAPS_API_KEY } from 'src/environments/keys';
 
 registerLocaleData(localeKa)
 
@@ -73,7 +74,7 @@ registerLocaleData(localeKa)
     FormsModule,
     FontAwesomeModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyBxxdK5ZjrGYz-kgOviDEGqgJuTVqMoSUI",
+      apiKey: GOOGLE_MAPS_API_KEY,
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,

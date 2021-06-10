@@ -73,6 +73,11 @@ export class MapComponent implements OnInit, OnDestroy {
   pinSorting?: SortingParams
   pinFilter: FilterParam[] = []
 
+  symbol: google.maps.Icon = {
+    url: "./assets/img/pins/svg/resting-place.svg",
+    scaledSize: new google.maps.Size(40, 60)
+  }
+
   constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
 
   enableMapSearch(element: any) {

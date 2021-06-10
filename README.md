@@ -12,3 +12,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 https://angular.io/tutorial/toh-pt0 - Small angular tutorial
 https://ng-bootstrap.github.io/#/getting-started - Angular bootstrap
 https://getbootstrap.com/docs/5.0/components/card/ - Bootstrap Docs
+
+# api keys
+In order for app to work on your machine, you should provide your own api key. <br>
+1) create a file with path: `src/environments/keys.ts` <br>
+2) create constant with your key in this file: `export const GOOGLE_MAPS_API_KEY = "your.api.key"`
