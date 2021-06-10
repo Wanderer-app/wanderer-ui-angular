@@ -36,6 +36,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LogInComponent } from './log-in/log-in.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { GOOGLE_MAPS_API_KEY } from 'src/environments/keys';
+import { LogoAnimationComponent } from './logo-animation/logo-animation.component';
 
 registerLocaleData(localeKa)
 
@@ -64,6 +65,7 @@ registerLocaleData(localeKa)
     VarDirective,
     LogInComponent,
     NavigationComponent,
+    LogoAnimationComponent,
   ],
   imports: [
     BrowserModule,

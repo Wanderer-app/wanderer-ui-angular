@@ -1,0 +1,85 @@
+#mze1 {
+    animation-name: sun-appear;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+}
+
+#mze2 {
+    animation-name: sun-2-appear;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+}
+
+#mze3 {
+    animation-name: sun-3-appear;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+}
+
+#mtaleft {
+    transform: translateX(25%);
+    animation-name: mountain-left-move;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+#mtaright {
+    transform: translateX(-27%);
+    animation-name: mountain-left-move;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes sun-appear {
+    0% {
+        opacity: 0.3;
+    }
+    12.5%, 75% {
+        opacity: 1;
+    }
+    87.5%, 100% {
+        opacity: 0.3;
+    }
+
+}
+
+@keyframes sun-2-appear {
+    0%, 12.5%, 75%, 100% {
+        opacity: 0;
+    }
+    25%, 50% {
+        opacity: 1;
+    }
+}
+
+@keyframes sun-3-appear {
+    0%, 25%, 62.5%, 100% {
+        opacity: 0;
+    }
+    37.5%, 50% {
+        opacity: 1;
+    }
+}
+
+@keyframes mountain-left-move {
+    form {
+        transform: translateX(25%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes mountain-right-move {
+    form {
+        transform: translateX(-27%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
