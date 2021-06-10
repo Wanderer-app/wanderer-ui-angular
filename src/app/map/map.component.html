@@ -66,7 +66,7 @@
             (mouseenter) ="searchBtnHovered = true" 
             (mouseleave) ="searchBtnHovered = false" 
             (click)="searchClicked = true;closeFilterMenu()"
-            class="mt-2 p-2 shadow growing-button{{ searchClicked ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white"
+            class="mt-2 p-2 growing-button-shadow growing-button{{ searchClicked ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white"
             style="border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;"
         >
             <fa-icon [icon]="searchIcon"></fa-icon>
@@ -87,7 +87,7 @@
             (mouseenter) ="!pinsFilterMenuOn ? filterHovered = true : undefined" 
             (mouseleave) ="!pinsFilterMenuOn ? filterHovered = false : undefined" 
             (click)="filterClicked();closeSearch()"
-            class="mt-2 p-3 shadow growing-button{{ pinsFilterMenuOn ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 p-3 growing-button-shadow growing-button{{ pinsFilterMenuOn ? '-clicked' : '' }} d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="filterIcon"></fa-icon>
             <span *ngIf="filterHovered || pinsFilterMenuOn" class="ms-1 growing-button-text">ფილტრი</span>
@@ -110,8 +110,8 @@
                     <div class="row g-2">
                         <div class="col-11">
                             <select class="form-select" (change)="typeSelect.value === '' ? removeTypeFilters() : filterByType(typeSelect.value)" #typeSelect>
-                                <option selected value="">ყველა</option>
-                                <option *ngFor="let type of availablePinTypes" value="{{type}}">{{pinTypeInGeorgian(type)}}</option>
+                                <option [selected]="pinTypeFilter() === undefined" value="">ყველა</option>
+                                <option [selected]="pinTypeFilter()?.compareValue == type" *ngFor="let type of availablePinTypes" value="{{type}}">{{pinTypeInGeorgian(type)}}</option>
                             </select>
                         </div>
                         <div class="col-1 d-flex justify-content-center">
@@ -128,28 +128,28 @@
                 <div class="border rounded mt-3 p-3 position-relative filter-menu-box">
                     <div class="position-absolute start-50 top-0 translate-middle bg-white px-2 text-secondary">სორტირება</div>
                     <div class="btn-group w-100">
-                        <input (click)="sortByRating()" type="radio" class="btn-check" name="sortingRadio" id="byRating" autocomplete="off" [checked]="pinSorting === undefined">
-                        <label  class="btn btn-outline-primary" for="byRating">რეიტინგით</label>
+                        <input (click)="sortByRating()" type="radio" class="btn-check" name="sortingRadio" id="byRating" autocomplete="off">
+                        <label  class="btn btn-main{{ pinSorting === undefined ? '' : '-outline' }} shadow-none" for="byRating">რეიტინგით</label>
 
-                        <input (click)="sortByDate()" type="radio" class="btn-check" name="sortingRadio" id="byCreateDate" autocomplete="off" [checked]="pinSorting?.fieldName === 'createdAt'">
-                        <label class="btn btn-outline-primary" for="byCreateDate">სიახლით</label>
+                        <input (click)="sortByDate()" type="radio" class="btn-check" name="sortingRadio" id="byCreateDate" autocomplete="off">
+                        <label class="btn btn-main{{ pinSorting?.fieldName === 'createdAt' ? '' : '-outline' }} shadow-none" for="byCreateDate">სიახლით</label>
                     </div>
                 </div>
 
                 <div class="border rounded mt-3 p-3 position-relative filter-menu-box">
                     <div class="position-absolute start-50 top-0 translate-middle bg-white px-2 text-secondary">დამატების პერიოდი</div>
                     <div class="btn-group btn-group-sm w-100" >
-                        <input (click)="filterPinsForLastWeek();selectedDateFilter = lastWeek.id" type="radio" class="btn-check" name="dateFilterRadio" id="weekFilter" autocomplete="off" [checked]="selectedDateFilter === lastWeek.id" #lastWeek>
-                        <label  class="btn btn-outline-primary" for="weekFilter">ბოლო კვირა</label>
+                        <input (click)="filterPinsForLastWeek();selectedDateFilter = lastWeek.id" type="radio" class="btn-check" name="dateFilterRadio" id="weekFilter" autocomplete="off" #lastWeek>
+                        <label  class="btn btn-main{{ selectedDateFilter === lastWeek.id ? '' : '-outline' }} shadow-none" for="weekFilter">ბოლო კვირა</label>
 
-                        <input (click)="filterPinsForLastMonth();selectedDateFilter = lastMonth.id" type="radio" class="btn-check" name="dateFilterRadio" id="monthFilter" autocomplete="off" [checked]="selectedDateFilter === lastMonth.id" #lastMonth>
-                        <label class="btn btn-outline-primary" for="monthFilter">ბოლო თვე</label>
+                        <input (click)="filterPinsForLastMonth();selectedDateFilter = lastMonth.id" type="radio" class="btn-check" name="dateFilterRadio" id="monthFilter" autocomplete="off" #lastMonth>
+                        <label class="btn btn-main{{ selectedDateFilter === lastMonth.id ? '' : '-outline' }} shadow-none" for="monthFilter">ბოლო თვე</label>
 
-                        <input (click)="filterPinsForLastYear();selectedDateFilter = lastYear.id" type="radio" class="btn-check" name="dateFilterRadio" id="yearFilter" autocomplete="off" [checked]="selectedDateFilter === lastYear.id" #lastYear>
-                        <label class="btn btn-outline-primary" for="yearFilter">ბოლო წელი</label>
+                        <input (click)="filterPinsForLastYear();selectedDateFilter = lastYear.id" type="radio" class="btn-check" name="dateFilterRadio" id="yearFilter" autocomplete="off" #lastYear>
+                        <label class="btn btn-main{{ selectedDateFilter === lastYear.id ? '' : '-outline' }} shadow-none" for="yearFilter">ბოლო წელი</label>
 
-                        <input (click)="removeDateFilter();selectedDateFilter = undefined" type="radio" class="btn-check" name="dateFilterRadio" id="removeYearFilter" autocomplete="off" [checked]="selectedDateFilter === undefined">
-                        <label class="btn btn-outline-primary" for="removeYearFilter">სულ</label>
+                        <input (click)="removeDateFilter();selectedDateFilter = undefined" type="radio" class="btn-check" name="dateFilterRadio" id="removeYearFilter" autocomplete="off">
+                        <label class="btn btn-main{{ selectedDateFilter === undefined ? '' : '-outline' }} shadow-none" for="removeYearFilter">სულ</label>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
             (mouseenter) ="detailsBtnHovered = true" 
             (mouseleave) ="detailsBtnHovered = false" 
             (click)="showDetails();closeFilterMenu();closeSearch()"
-            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 growing-button-shadow growing-button d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="infoIcon"></fa-icon>
             <span *ngIf="detailsBtnHovered" class="ms-1 growing-button-text">აღწერა</span>
@@ -170,11 +170,37 @@
             (mouseenter) ="discussionBtnHovered = true" 
             (mouseleave) ="discussionBtnHovered = false" 
             (click)="showDiscussion();closeFilterMenu();closeSearch()"
-            class="mt-2 shadow growing-button d-flex align-items-center justify-content-center text-white" 
+            class="mt-2 growing-button-shadow growing-button d-flex align-items-center justify-content-center text-white" 
         >
             <fa-icon [icon]="discussionIcon"></fa-icon>
             <span *ngIf="discussionBtnHovered" class="ms-1 growing-button-text">დისკუსია</span>
         </div>
     </div>
 
+</div>
+
+<div class="position-absolute start-50 translate-middle-x p-2 d-flex pins-pagination" style="width:fit-content;pointer-events: none;">
+    <div class="maps-params-menu d-flex justify-content-center">
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="prevBtnHovered = true" 
+            (mouseleave) ="prevBtnHovered = false" 
+            (click) = "getPinsPreviousPage()"
+            class="growing-button-shadow growing-button-sm d-flex align-items-center justify-content-center text-white me-1" 
+        >
+            <fa-icon [icon]="previousIcon"></fa-icon>
+            <span *ngIf="prevBtnHovered" class="ms-1 growing-button-text">წინა პინები</span>
+        </div>
+
+        <div *ngIf="selectedFeature"
+            (mouseenter) ="nextBtnHovered = true" 
+            (mouseleave) ="nextBtnHovered = false" 
+            (click) = "getPinsNextPage()"
+            class="growing-button-shadow growing-button-sm growing-button-long d-flex align-items-center justify-content-center text-white ms-1" 
+        >
+            <span *ngIf="nextBtnHovered" class="me-1 growing-button-text">შემდეგი პინები</span>
+            <fa-icon [icon]="nextIcon"></fa-icon>
+        </div>
+        
+    </div>
 </div>

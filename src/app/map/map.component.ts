@@ -1,6 +1,6 @@
 import { MapsAPILoader } from '@agm/core';
 import { Component, OnDestroy, OnInit, Output, EventEmitter, Input, ElementRef, ViewChild, NgZone, AfterViewInit } from '@angular/core';
-import { faComments, faFileAlt, faFilter, faInfo, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faComments, faFileAlt, faFilter, faInfo, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
@@ -57,6 +57,8 @@ export class MapComponent implements OnInit, OnDestroy {
   discussionBtnHovered = false
   detailsBtnHovered = false
   searchBtnHovered = false
+  prevBtnHovered = false
+  nextBtnHovered = false
 
   searchClicked = false
   mapSearchEnabled = false
@@ -66,6 +68,8 @@ export class MapComponent implements OnInit, OnDestroy {
   discussionIcon = faComments
   infoIcon = faFileAlt
   searchIcon = faSearch
+  nextIcon = faChevronRight
+  previousIcon = faChevronLeft
 
   selectedDateFilter?: string
 
@@ -304,6 +308,22 @@ export class MapComponent implements OnInit, OnDestroy {
 
   pinTypeInGeorgian(type: PinType): string {
     return pinTypeTranslations.get(type)!
+  }
+
+  pinTypeFilter(): FilterParam | undefined {
+    return this.pinFilter.find(f => f.fieldName === 'pinType')
+  }
+
+  getPinsNextPage() {
+    this.pinsPageNumber += 1
+    this.getPins()
+  }
+
+  getPinsPreviousPage() {
+    if(this.pinsPageNumber > 1) {
+      this.pinsPageNumber -= 1
+      this.getPins()
+    }
   }
 
 }
