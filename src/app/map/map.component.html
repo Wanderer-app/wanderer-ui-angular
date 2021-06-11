@@ -38,7 +38,12 @@
             <div class="">პინის დამატება</div>
             <div class="mt-2">
                 <ng-container *ngFor="let type of availablePinTypes">
-                    <button class="btn btn-sm btn-danger me-1" (click)="addPin(type)">{{pinTypetexts.get(type)!.charAt(0)}}</button>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn" (click)="addPin(type)">
+                            <img class="img img-fluid" src="{{getMarkerIcon(type)}}" style="max-height: 30px;">
+                        </button>
+                    </div>
+                    <!-- <img style="width"> -->
                 </ng-container>
             </div>
         </ng-template>
@@ -116,13 +121,9 @@
                                 <option [selected]="pinTypeFilter()?.compareValue == type" *ngFor="let type of availablePinTypes" value="{{type}}">{{pinTypeInGeorgian(type)}}</option>
                             </select>
                         </div>
-                        <div class="col-1 d-flex justify-content-center">
-                            <span *ngIf="typeSelect.value === ''">
-                                <img src="assets/img/empty-marker.png"  style="max-width:100%;height:auto">
-                            </span>
-                            <div *ngIf="typeSelect.value !== ''" class="h-100 w-75 p-1 bg-danger rounded text-white">
-                                {{typeSelect.value.charAt(0)}}
-                            </div>
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                            <img *ngIf="typeSelect.value === ''" src="assets/img/empty-marker.png"  style="max-width:100%;height:auto">
+                            <img *ngIf="typeSelect.value !== ''" class="img img-fluid" src="{{getMarkerIcon(typeSelect.value)}}" style="max-width:100%;">
                         </div>
                     </div>
                 </div>

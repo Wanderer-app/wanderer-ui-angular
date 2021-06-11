@@ -10,7 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { ExternalImageService } from '../services/external-images/external-image.service';
 import { FileData, FileType } from '../common/data/file-data';
 import { Observable } from 'rxjs';
-import { pinTypeTranslations } from '../common/data/pinType';
+import { pinTypeIcons, pinTypeTranslations } from '../common/data/pinType';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -35,6 +35,8 @@ export class PinsDetailComponent implements OnInit {
   pinTypeTexts = pinTypeTranslations
 
   closeIcon = faTimes
+
+  pinIcons = pinTypeIcons
 
   constructor(public pinsService: PinsService, private formBuilder: FormBuilder, public imgService: ExternalImageService) {
   }

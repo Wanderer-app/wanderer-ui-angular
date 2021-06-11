@@ -2,7 +2,7 @@
 
     <div class="row g-1">
         <div class="col-10">
-            <h3 class="ge-heading">ახალი პინის დამატება</h3>
+            <h3 class="ge-heading">ახალი პინი</h3>
         </div>
         <div class="col-2 text-end">
             <button class="btn btn-sm btn-light" (click)="this.close.emit()">
@@ -12,39 +12,32 @@
     </div>
 
     <form onsubmit="return false" [formGroup]="form" (ngSubmit)="createPin()">
-        <div class="row mt-3 mb-3">
-            <div class="col-6 form-group">
-                <div class="form-group">
-                    <label class="mb-1 text-secondary">სათაური</label>
-                    <input type="text" required formControlName="title" class="form-control {{errorClasses(pinTitle)}}" #pinTitle>
-                    <ng-container *ngIf="isInValid(pinTitle)">
-                        <ng-container *ngFor="let error of getErrors(pinTitle)">
-                        <small class="text-danger">{{error}}</small>
-                        </ng-container>
-                    </ng-container>
-                </div>
-            </div>
-    
-            <div class="col-6 h-100">
-                <div class="form-group">
-                    <label class="mb-1 text-secondary">კატეგორია</label>
-                    <div ngbDropdown placement="bottom-left">
-                        <button type="button" class="btn border rounded text-start d-block w-100" ngbDropdownToggle>
-                            <span class="">
-                                <span class="badge bg-danger">{{ pinTypeTexts.get(newPinInfo.type)!.charAt(0) }}</span> {{ pinTypeTexts.get(newPinInfo.type) }}
-                            </span>
-                        </button>
-                        <ul class="dropdown-menu1" ngbDropdownMenu>
-                            <li *ngFor="let type of availablePinTypes" ngbDropdownItem>
-                                <button (click)="newPinInfo.type = type" type="button" class="dropdown-item">
-                                    <span class="badge bg-danger">{{ pinTypeTexts.get(type)!.charAt(0) }}</span> {{pinTypeTexts.get(type)}}
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
+        <div class="form-group mt-2">
+            <div ngbDropdown placement="bottom-left">
+                <button type="button" class="btn text-start d-block p-0" ngbDropdownToggle>
+                    <span class="">
+                        <img src="/assets/img/pins/{{pinIcons.get(newPinInfo.type)}}" class="img img-fluid"> {{ pinTypeTexts.get(newPinInfo.type) }}
+                    </span>
+                </button>
+                <ul class="dropdown-menu1" ngbDropdownMenu>
+                    <li *ngFor="let type of availablePinTypes" ngbDropdownItem>
+                        <button (click)="newPinInfo.type = type" type="button" class="dropdown-item">
+                            <img src="/assets/img/pins/{{pinIcons.get(type)}}" class="img img-fluid"> {{pinTypeTexts.get(type)}}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="form-group mt-3 mb-3">
+            <label class="mb-1 text-secondary">სათაური</label>
+            <input type="text" required formControlName="title" class="form-control {{errorClasses(pinTitle)}}" #pinTitle>
+            <ng-container *ngIf="isInValid(pinTitle)">
+                <ng-container *ngFor="let error of getErrors(pinTitle)">
+                <small class="text-danger">{{error}}</small>
+                </ng-container>
+            </ng-container>
         </div>
     
         <div class="form-group">
