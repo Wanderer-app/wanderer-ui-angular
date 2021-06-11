@@ -39,6 +39,7 @@ export class MapComponent implements OnInit, OnDestroy {
   routesSubscription!: Subscription
   displayDataLayer = true
   loadingDataLayer = true
+  firstLoading = true
   
   pins$?: Observable<PinShortData[]>
 
@@ -103,7 +104,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.changeDataLayer(RouteFile.ROUTES_TBILISI)
+    this.changeDataLayer(RouteFile.ROUTES_ALL)
+    setTimeout(() => this.firstLoading = false, 2500);
   }
 
   routeClicked($event: any) {    

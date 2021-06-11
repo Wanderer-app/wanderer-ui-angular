@@ -1,8 +1,10 @@
-<div *ngIf="loadingDataLayer" 
+<div *ngIf="loadingDataLayer || firstLoading" 
     class="position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-    style="background-color:rgba(255, 255, 255, 0.336);z-index: 1000;"
+    style="background-color:rgba(0, 0, 0, 0.226);z-index: 1000;"
 >
-    <span class="spinner-border text-danger" style="width: 100px;height: 100px;" role="status"></span>
+    <span style="width: 500px;" role="status">
+        <app-logo-animation></app-logo-animation>
+    </span>
 </div>
 
 <agm-map [latitude]="mapLatLng.lat" [longitude]="mapLatLng.lng" [zoom]="zoomLevel">

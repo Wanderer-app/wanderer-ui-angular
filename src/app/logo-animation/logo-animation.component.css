@@ -19,21 +19,17 @@
     animation-timing-function: ease-in;
 }
 
-#mtaleft {
-    transform: translateX(25%);
+/* #mtaleft {
     animation-name: mountain-left-move;
     animation-duration: 300ms;
     animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
 }
 
 #mtaright {
-    transform: translateX(-27%);
-    animation-name: mountain-left-move;
+    animation-name: mountain-right-move;
     animation-duration: 300ms;
     animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
-}
+} */
 
 @keyframes sun-appear {
     0% {
@@ -67,7 +63,7 @@
 }
 
 @keyframes mountain-left-move {
-    form {
+    from {
         transform: translateX(25%);
     }
     to {
@@ -76,10 +72,164 @@
 }
 
 @keyframes mountain-right-move {
-    form {
+    from {
         transform: translateX(-27%);
     }
     to {
         transform: translateX(0);
+    }
+}
+
+#w {
+    animation-name: w-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#a {
+    animation-name: a-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#n {
+    animation-name: n-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#d {
+    animation-name: d-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#e1 {
+    animation-name: e1-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#r1 {
+    animation-name: r1-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+}
+
+#e2 {
+    animation-name: e2-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+}
+
+#r2 {
+    animation-name: r2-move;
+    animation-duration: 1225ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+}
+
+@keyframes w-move {
+    0% {
+        transform: translateY(0px);
+    }
+    6.25% {
+        transform: translateY(-10px);
+    }
+    12.5% {
+        transform: translateY(0px);
+    }
+
+}
+
+@keyframes a-move {
+    6.25% {
+        transform: translateY(0px);
+    }
+    12.5% {
+        transform: translateY(-10px);
+    }
+    18.75% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes n-move {
+    18.75% {
+        transform: translateY(0px);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    31.5% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes d-move {
+    25% {
+        transform: translateY(0px);
+    }
+    31.25% {
+        transform: translateY(-10px);
+    }
+    37.5% {
+        transform: translateY(0px);
+    }
+
+}
+
+@keyframes e1-move {
+    31.25% {
+        transform: translateY(0px);
+    }
+    37.5% {
+        transform: translateY(-10px);
+    }
+    43.75% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes r1-move {
+    37.5% {
+        transform: translateY(0px);
+    }
+    43.75% {
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes e2-move {
+    43.75% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    56.25% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes r2-move {
+    50% {
+        transform: translateY(0px);
+    }
+    56.25% {
+        transform: translateY(-10px);
+    }
+    62.5% {
+        transform: translateY(0px);
     }
 }
