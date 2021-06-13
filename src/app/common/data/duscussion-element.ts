@@ -20,6 +20,7 @@ export interface DiscussionElement {
     attachedFiles: FileData[],
     type: UserContentType,
     userVoteDirection?: VoteDirection
+    highlighted?: boolean
 }
 
 export interface PollContent {

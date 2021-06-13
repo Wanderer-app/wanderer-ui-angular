@@ -15,6 +15,47 @@
             <a class="nav-link" href="/user-page" #registerLink>პროფილი</a>
           </li>
         </ul>
+
+        <ul *ngIf="loggedInUser()" class="navbar-nav mb-2 mb-lg-0 me-3" id="bellbtn" display="dynamic" placement='bottom-right' ngbDropdown #notificationsDropdown="ngbDropdown" >
+          <li class="nav-item dropdown">
+              <a (click)="notificationsSeen()" class="nav-link" href="javascript:void(0)" id="navbarDropdownNot" role="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                <span class="position-relative">
+                  <fa-icon class="me-1" [icon]="notificationsIcon"></fa-icon>
+                  <small class="position-absolute start-100 top-0 translate-middle">
+                    <span *ngIf="unseenNotificationsCount() > 0" class="badge bg-secondary">{{unseenNotificationsCount()}}</span>
+                  </small>
+                </span>  
+              </a>
+              <ul class="dropdown-menu overflow-auto" style="width: 400px;max-height: 75vh;" aria-labelledby="navbarDropdownNot" ngbDropdownMenu>
+
+                  <div class="p-2 w-100 h-100">
+                    <div *ngFor="let notification of orderByStatus(notifications || [])" (click)="notificationClicked(notification);notificationsDropdown.close()" class="notification w-100 p-3 border-bottom w-100 mb-0 d-flex align-items-center" style="cursor: pointer;max-width: 100%;">
+
+                      <span class="me-2">
+                        <h3>
+                          <fa-icon class="text-dark" [icon]="notificationTypeIcons.get(notification.type)!"></fa-icon>
+                        </h3>
+                      </span>
+
+                      <span class="mx-2 {{notification.status === notificationStatus.OPENED ? 'text-secondary' : ''}}" style="flex-grow: 1;word-wrap: break-word;">
+                        {{notification.text}} <br>
+                        <small class="text-main">{{notification.createdAt}}</small>
+                      </span>
+
+                      <small>
+                        <fa-icon *ngIf="notification.status !== notificationStatus.OPENED " class="text-main" [icon]="newNotificationIcon"></fa-icon>
+                      </small>
+
+                    </div>
+                    <div class="d-block text-center mt-3">
+                      <a class="text-main" href="javascript:void(0)">მეტის ჩატვირთვა</a>
+                    </div>
+                  </div>
+
+              </ul>
+          </li>
+        </ul>
+
         <ul *ngIf="loggedInUser()" class="navbar-nav mb-2 mb-lg-0" display="dynamic" ngbDropdown >
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>

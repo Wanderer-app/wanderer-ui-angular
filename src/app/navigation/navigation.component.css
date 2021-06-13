@@ -5,3 +5,14 @@
 .nav-link:hover {
     color: rgb(240, 240, 240) !important
 }
+
+#navbarDropdownNot::after {
+    display:none;
+}
+
+.notification {
+    transition: 300ms;
+}
+.notification:hover {
+    background-color: rgb(233, 233, 233);
+}

@@ -47,7 +47,7 @@ export class UserContentApiService {
     }))
   }
 
-  get<T>(endpoint: string): Observable<T> {
+  get<T>(endpoint: string): Observable<T> {    
     return this.http.get<ServiceResponse<T>>(this.SERVICE_URL + endpoint, { headers: this.userTokenHeader() })
       .pipe(map(response => this.handleServiceResponse(response)))
   }

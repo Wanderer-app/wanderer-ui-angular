@@ -1,9 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { faCheck, faCross, faEdit, faImages, faPlus, faPollH, faTimes, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
-import { finalize, map, observeOn, tap } from 'rxjs/operators';
+import { finalize, map, observeOn, shareReplay, tap } from 'rxjs/operators';
 import { DiscussionElement, PollAnswerData, PollContent } from '../common/data/duscussion-element';
 import { FileData, FileType } from '../common/data/file-data';
 import { UserContentType } from '../common/data/user-content-type';
@@ -59,10 +60,13 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
   pollNewQuestion?: string
   updateSubscription?: Subscription
 
+  queryParamsSubscription?: Subscription
+
   constructor(
     private imageSevice: ExternalImageService,
     private logInService: LogInService,
     private modalService: NgbModal,
+    private route: ActivatedRoute,
     private notificationService: NotificationService,
     private discussionService: DiscussionService,
     public postService: PostService,
@@ -83,10 +87,13 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     this.createPollSubscription?.unsubscribe()
     this.updateSubscription?.unsubscribe()
     this.selectAnswerSubscription?.unsubscribe()
+    this.queryParamsSubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
     this.discussion$ = this.discussionService.listForRoute(this.routeCode, 1)
+      .pipe(tap(discussion => this.getPostFromQueryParam(discussion)))
+      .pipe(shareReplay())
       .pipe(finalize(() => this.discussionLoading = false))
   }
 
@@ -251,6 +258,29 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
   canEditPoll(): boolean {
     return (this.pollNewQuestion !== undefined && this.pollNewQuestion !== '')
+  }
+
+  private getPostFromQueryParam(discussion: DiscussionElement[]) {
+    
+    this.queryParamsSubscription = this.route.queryParamMap.subscribe(params => {
+      let postId = params.get("post")
+      if (postId) {
+        let matchedDiscussion = discussion.find(d => d.type === UserContentType.POST && d.id === parseInt(postId!))
+
+        if (matchedDiscussion) {
+          matchedDiscussion.highlighted = true
+          this.additionalDiscussion.unshift(matchedDiscussion)
+        } else {
+          this.additionalDiscussionSubScription = this.postService.getPostById(parseInt(postId!))
+            .subscribe(post => {
+              post.highlighted = true
+              this.newlyCreatedElements.unshift(post)
+              console.log(post);
+              
+            })
+        }
+      }
+    })
   }
 
 }

@@ -5,6 +5,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { UserData } from 'src/app/common/data/user-full-data';
 import { LogInRequiredError } from 'src/app/common/errors/log-in-required-error';
+import { LogInSubscriber } from 'src/app/common/event-listeners/log-in-subscriber';
 import { JAMBURA, JANGULA, PATATA } from 'src/app/common/mock/mocked-short-users';
 import { NotificationService } from 'src/app/notifications/service/notification.service';
 import { UserSession } from './user-session';
@@ -22,6 +23,12 @@ export class LogInService {
     ["patata@gmail.com", PATATA],
     ["jangula@gmail.com", JANGULA],
   ])
+
+  loginSubscribers: LogInSubscriber[] = []
+
+  registerLogInSubscriber(subscriber: LogInSubscriber) {
+    this.loginSubscribers.push(subscriber)
+  }
 
   getLoggedInUser(): UserData | undefined {
     return this.userSession()?.userData || undefined
@@ -41,8 +48,9 @@ export class LogInService {
 
   getLoggedInUserId(): string | undefined {    
     let session = this.userSession()
+    
     if (session) {
-      session.userData.id.toString()
+      return session.userData.id.toString()
     }
     return undefined
   }
@@ -57,8 +65,10 @@ export class LogInService {
     if (user) {
       return of(user)
         .pipe(
-          tap(user => this.cookieService.set(SESSION_COOKIE, JSON.stringify({sessionId: "12345", userData: user}), params))
-        )
+          tap(user => {
+            this.cookieService.set(SESSION_COOKIE, JSON.stringify({sessionId: "12345", userData: user}), params)
+            this.notifyLogInSubscribers()
+          }))
         .pipe(delay(500))
     } else {
       return throwError("მომხმარებელი ვერ მოიძებნა")
@@ -67,6 +77,10 @@ export class LogInService {
 
   logOut() {
     this.cookieService.delete(SESSION_COOKIE)
+  }
+
+  private notifyLogInSubscribers() {
+    this.loginSubscribers.forEach(s => s.userLoggedIn())
   }
 
   private userSession(): UserSession | undefined {

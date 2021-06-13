@@ -1,6 +1,8 @@
 import { MapsAPILoader } from '@agm/core';
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnDestroy, OnInit, Output, EventEmitter, Input, ElementRef, ViewChild, NgZone, AfterViewInit } from '@angular/core';
-import { faChevronLeft, faChevronRight, faComments, faFileAlt, faFilter, faInfo, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
+import { faCampground, faChevronLeft, faChevronRight, faComments, faFileAlt, faFilter, faInfo, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LatLng } from '../common/data/latLng';
@@ -66,19 +68,21 @@ export class MapComponent implements OnInit, OnDestroy {
 
   filterIcon = faFilter
   closeIcon = faTimes
-  discussionIcon = faComments
+  discussionIcon = faCampground
   infoIcon = faFileAlt
   searchIcon = faSearch
   nextIcon = faChevronRight
   previousIcon = faChevronLeft
 
   selectedDateFilter?: string
+  
+  querySubscription?: Subscription
 
   pinsPageNumber = 1
   pinSorting?: SortingParams
   pinFilter: FilterParam[] = []
 
-  constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) { }
+  constructor(private mapService: MapDataService, private pinService: PinsService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private route: ActivatedRoute) { }
 
   enableMapSearch(element: any) {
     if (this.mapSearchEnabled === false) {
@@ -101,6 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routesSubscription.unsubscribe()
+    this.querySubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
@@ -115,18 +120,21 @@ export class MapComponent implements OnInit, OnDestroy {
     if(feature === this.selectedFeature) {
       this.showInfoWindow($event as google.maps.Data.MouseEvent)
     } else {
-      this.additionalPins = []
-      this.selectedFeature?.setProperty("isSelected", false)
-      this.selectedFeature = feature
-      this.getPins()
-
-      this.selectedFeature = feature
-      feature.setProperty("isSelected", true)
-      this.adjustZoomLevel(feature)
-      this.panToMiddleOfRoute(feature)
-      this.routeSelected.emit()
+      this.selectFeature(feature)
     }
     
+  }
+
+  selectFeature(feature: google.maps.Data.Feature) {
+    this.additionalPins = []
+    this.selectedFeature?.setProperty("isSelected", false)
+    this.selectedFeature = feature
+    this.getPins()
+
+    feature.setProperty("isSelected", true)
+    this.adjustZoomLevel(feature)
+    this.panToMiddleOfRoute(feature)
+    this.routeSelected.emit()
   }
 
   panToMiddleOfRoute(feature: google.maps.Data.Feature) {
@@ -184,7 +192,40 @@ export class MapComponent implements OnInit, OnDestroy {
         this.displayDataLayer = true
         this.loadingDataLayer = false
       }))
-      .subscribe(data => this.routesGeoJson = data)
+      .subscribe(data => {
+        this.routesGeoJson = data
+        if(this.querySubscription === undefined) {
+          this.subscribeToQueryParamsChange()
+        }
+      })
+  }
+
+  subscribeToQueryParamsChange() {
+    this.querySubscription = this.route.queryParamMap.subscribe(params => {
+      let routeCode = params.get("route")
+
+      if (routeCode) {
+        this.loadingDataLayer = true
+        new google.maps.Data().loadGeoJson("assets/geojson/routes-all.geojson", undefined, features => {
+          let feature = features.find(f => f.getProperty('routeCode') === routeCode)
+          this.loadingDataLayer = false
+          if (feature) {
+            (this.routesGeoJson as any).features.push(feature)
+            this.selectFeature(feature)
+            let pinId = params.get("pin")
+            let postId = params.get("post")
+            if(pinId) {
+              this.pinSelectedEvent.emit(parseInt(pinId))
+            }
+            if(postId) {
+              this.showDiscussion()
+            }
+
+          }
+        })
+      }
+
+    })
   }
 
   pinSelected(pin: PinShortData) {

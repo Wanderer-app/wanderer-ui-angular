@@ -27,6 +27,10 @@ export class PostService implements CommentableContentService, RateableContentSe
   commentsBatchSize = 5
   commentsSorting: SortingParams = { fieldName: "rating", sortingDirection: SortingDirection.DESCENDING }
 
+  getPostById(id: number): Observable<DiscussionElement> {
+    return this.api.get<DiscussionElement>(`posts/${id}`)
+  }
+
   getComments(id: number, pageNumber: number): Observable<CommentData[]> {
     return this.api.listOf<CommentData>(`posts/${id}/comments`, {
       batchNumber: pageNumber,
