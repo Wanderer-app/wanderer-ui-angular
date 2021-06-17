@@ -32,9 +32,7 @@ export class UserService {
     
   }
 
-  notificationsSeen(ids: number[]): Observable<NotificationData[]> {
-    console.log("Notifications seen");
-    
+  notificationsSeen(ids: number[]): Observable<NotificationData[]> {    
     this.notifications
       .filter(n => ids.includes(n.id))
       .forEach(n => n.status = NotificationStatus.SEEN)

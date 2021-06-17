@@ -8,16 +8,40 @@
     src: url(assets\fonts\bpg_extrasquare_mtavruli.ttf) format("opentype");
 }
 
+.h-100-after-navbar {
+    height: calc(100vh - 60px)
+}
+
 * {
     font-family: dejavu-sans;
 }
 
 .text-main {
-    color: #ec004b;
+    color: #500000;
+}
+
+.link-main {
+    color: #500000;
+}
+
+.link-main:hover {
+    color: #3a0000;
+}
+
+.link-logo {
+    color: #f06800;
+}
+
+.link-logo:hover {
+    color: #db5f00;
+}
+
+.text-logo {
+    color: #f06800;
 }
 
 .bg-main {
-    background-color: #ec004b;
+    background-color: #500000;
 }
 
 .ge-heading {
@@ -25,39 +49,50 @@
 }
 
 .btn-main-outline {
-    border-color: #ec004b;
-    color: #ec004b;
+    border-color: #500000;
+    color: #500000;
     transition: 250ms;
 }
 
 .btn-main {
-    background-color: #ec004b;
+    background-color: #500000;
     color: white;
     transition: 200ms;
 }
 
 .btn-main:hover {
-    background-color: #e00047;
+    background-color: #380000;
+    color: white !important;
+}
+
+.btn-logo {
+    background-color: #ff6d00;
+    color: white;
+    transition: 200ms;
+}
+
+.btn-logo:hover {
+    background-color: #f06800;
     color: white !important;
 }
 
 .btn-main-outline:hover {
-    background-color: #ec004b;
+    background-color: #500000;
     color: white
 }
 
 .btn-main-outline:checked {
-    background-color: #ec004b;
+    background-color: #500000;
     color: white
 }
 
 .btn-check:checked {
-    background-color: #ec004b !important;
+    background-color: #500000 !important;
     color: white !important
 }
 
 .btn-main-check:checked {
-    background-color: #ec004b !important;
+    background-color: #500000 !important;
     color: white !important
 }
 
@@ -65,4 +100,8 @@
     border-color:  rgba(82,168,236,.8);
     box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 8px rgba(82,168,236,.8);
     outline: 0 none;
+}
+
+.border-main {
+    border-color: #500000 !important;
 }

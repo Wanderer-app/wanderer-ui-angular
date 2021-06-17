@@ -20,10 +20,11 @@ export class CommentsComponent extends BaseCommentsComponent implements OnInit, 
   @Input() commentableContentService!: CommentableContentService
 
   addCommentForm = this.formBuilder.group({ newCommentText: [''] })
-  commentPage = 1
 
   commentsSubsciption?: Subscription
   addingComment = false
+
+  commentPage = 1
 
   constructor(
     public commentsService: CommentsService,
@@ -42,12 +43,12 @@ export class CommentsComponent extends BaseCommentsComponent implements OnInit, 
   loadMoreComments() {
     this.commentsSubsciption = this.commentableContentService.getComments(this.commentableContentId, this.commentPage)
     .subscribe(data => {
-      this.comments.unshift(...data)
+      this.comments.unshift(...data.filter(newComment => !this.comments.map(c => c.id).includes(newComment.id)))
       this.commentPage += 1
     })
   }
 
-  addCommentToContent() {    
+  addCommentToContent() {        
     let commentText = this.addCommentForm.controls.newCommentText.value
     this.addingComment = true
 

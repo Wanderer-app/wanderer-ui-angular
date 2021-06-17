@@ -1,5 +1,5 @@
-<h3 class="mt-4 ge-heading text-secondary">კომენტარები<span class="ms-1">&middot;{{totalCommentsNumber}}</span></h3>
-<a class="mt-2" *ngIf="totalCommentsNumber > comments.length" href="javascript:;" (click)="loadMoreComments()" class>მეტი კომენტარის ნახვა</a>
+<h3 class="mt-4 ge-heading text-main">კომენტარები<span class="ms-1">&middot;{{totalCommentsNumber > comments.length ? totalCommentsNumber : comments.length}}</span></h3>
+<a class="mt-2" *ngIf="totalCommentsNumber > comments.length" href="javascript:;" (click)="loadMoreComments()" class="link-logo">მეტი კომენტარის ნახვა</a>
 
 <div class="mt-2" *ngFor="let comment of comments">
     <ng-container *ngIf="!hiddenComments.includes(comment)">
@@ -9,7 +9,7 @@
             </div>
             <div class="col-9">
                 <div>
-                    <h5 class="d-inline me-2">{{ comment.author | fullname }}</h5> <small class="text-secondary">{{comment.createdAt}}</small>
+                    <h5 class="d-inline me-2 text-main">{{ comment.author | fullname }}</h5> <small class="text-secondary">{{comment.createdAt}}</small>
                     <p *ngIf="!isEditable(comment)" class="mb-0">{{comment.text}}</p>
                     <form *ngIf="isEditable(comment)" onsubmit="return false" [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
                         <div class="input-group mb-3">
@@ -23,14 +23,14 @@
                     <button class="btn btn-sm btn-link mb-2 text-secondary px-0" *ngIf="comment.responseNumber > comment.responsesPreview.length" (click)="getMoreReplies(comment)">მეტი პასუხი</button>
                 </div>
                 <div class="mb-2" *ngIf="selectedCommentForReply?.id === comment.id">
-                    <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
+                    <form onsubmit="return false" [formGroup]="replyForm">
                         <div class="row g-1">
                             <div class="col-sm-10 form-group">
                                 <textarea required formControlName="replyText" class="form-control" style="resize: none;" rows="1" placeholder="თქვენი პასუხი..."></textarea>
                             </div>
                         
                             <div class="col-sm-2 form-group">
-                                <button type="submit" [disabled]="!replyForm.valid || addingComment" class="btn btn-primary" style="height: 100%; width: 100%;">
+                                <button (click)="replyToComment()" type="submit" [disabled]="!replyForm.valid || addingComment" class="btn btn-main" style="height: 100%; width: 100%;">
                                     <fa-icon [icon]="sendIcon"></fa-icon>
                                     <span *ngIf="addingComment" class="spinner-border spinner-border-sm" role="status"></span>
                                 </button>
@@ -72,14 +72,14 @@
 
 <hr>
 
-<form class="mt-2" onsubmit="return false" [formGroup]="addCommentForm" (ngSubmit)="addCommentToContent()">
+<form class="mt-2" onsubmit="return false" [formGroup]="addCommentForm">
     <div class="row g-1">
         <div class="col-sm-10 form-group">
             <textarea required formControlName="newCommentText" class="form-control" style="resize: none;" rows="2" placeholder="დაწერეთ კომენტარი"></textarea>
         </div>
     
         <div class="col-sm-2 form-group">
-            <button type="submit" [disabled]="!addCommentForm.valid || addingComment" class="btn btn-primary" style="height: 100%; width: 100%;">
+            <button (click)="addCommentToContent()" type="submit" [disabled]="!addCommentForm.valid || addingComment" class="btn btn-main" style="height: 100%; width: 100%;">
                 <fa-icon *ngIf="!addingComment" [icon]="sendIcon"></fa-icon>
                 <span *ngIf="addingComment" class="spinner-border spinner-border-sm" role="status"></span>
             </button>

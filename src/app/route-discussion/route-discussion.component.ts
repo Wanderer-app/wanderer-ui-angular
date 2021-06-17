@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faCheck, faCross, faEdit, faImages, faPlus, faPollH, faTimes, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { finalize, map, observeOn, shareReplay, tap } from 'rxjs/operators';
 import { DiscussionElement, PollAnswerData, PollContent } from '../common/data/duscussion-element';
 import { FileData, FileType } from '../common/data/file-data';
@@ -121,6 +121,11 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     return user !== undefined && voterIds.includes(user.id)
   }
 
+  aaa(element: HTMLInputElement) {
+    console.log(element);
+    element.click()
+  }
+
   loadMore() {
     this.additionalElementsLoading = true
     this.discussionService.listForRoute(this.routeCode, this.discussionPage)
@@ -199,15 +204,26 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     })
   }
 
-  updatePostPictures(event: Event, postId: number) {
-    let file = (event.target as HTMLInputElement).files![0]
+  uploadSubscription?: Subscription
+  updatePostPictures(element: HTMLInputElement) {
+    let file = element.files![0]
 
-    if (file) {
-      this.loadedImages.get(postId)?.unshift(
-        this.imageSevice.uploadImage(file)
-        .pipe(tap(image => this.postNewImageIds.unshift(image.id)))
-        .pipe(map(img => img.url))
-      )
+    if (file && this.postToEditId) {
+
+      let images = this.loadedImages.get(this.postToEditId)
+
+      this.uploadSubscription = this.imageSevice.uploadImage(file)
+        .subscribe(image => {
+          this.postNewImageIds.unshift(image.id)
+
+          if (images) {
+            images.unshift(of(image.url))
+          } else {
+            this.loadedImages.set(this.postToEditId!, [of(image.url)])        
+          }
+
+        })
+    
     }
   }
 
@@ -222,7 +238,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
 
     if(this.canEditPost(post)) {
       this.updateSubscription = this.postService.update(
-        this.postNewText!, 
+        this.postNewText || post.content, 
         post.attachedFiles.concat(this.postNewImageIds.map(id => ({externalId: id, fileType: FileType.IMAGE}))),
         post.id
       )

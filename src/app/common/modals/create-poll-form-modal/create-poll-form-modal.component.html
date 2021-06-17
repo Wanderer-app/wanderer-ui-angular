@@ -20,9 +20,9 @@
             <label *ngIf="pollAnswers.length !== 0" class="text-secondary mb-2">პასუხები</label>
 
             <div *ngFor="let answer of pollAnswers" class="d-flex mb-3">
-                <div class="border border-secondary rounded bg-white" style="height: 40px;flex-grow: 1;">
+                <div class="border border-main rounded bg-white" style="height: 40px;flex-grow: 1;">
                     <div class="d-flex align-items-center justify-content-center w-100 h-100">
-                        <div class="ge-heading text-secondary" style="font-size: 20px;">{{answer}}</div>
+                        <div class="ge-heading text-main" style="font-size: 20px;">{{answer}}</div>
                     </div>
                 </div>
                 <button type="button" (click)="removeAnswer(answer)" class="btn ms-2 btn-light"><fa-icon [icon]="closeIcon"></fa-icon></button>
@@ -30,7 +30,7 @@
 
             <div class="d-flex">
                 <input required type="text" class="form-control" formControlName="answerText" placeholder="პასუხის დამატება" style="flex-grow: 1;">
-                <button [disabled]="form.controls.answerText.invalid" type="button" (click)="addAnswer()" class="btn btn-primary ms-1"><fa-icon [icon]="addIcon"></fa-icon></button>
+                <button [disabled]="form.controls.answerText.invalid" type="button" (click)="addAnswer()" class="btn btn-logo ms-1"><fa-icon [icon]="addIcon"></fa-icon></button>
             </div>
         </div>
 
@@ -39,6 +39,6 @@
 
 <div class="modal-footer">
     <span *ngIf="error" class="text-danger me-3"><b>{{error}}</b></span>
-    <button [disabled]="form.controls.question.invalid || pollAnswers.length === 0" type="button" class="btn btn-primary" (click)="create()">შექმნა</button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close(undefined)">უკან დაბრუნება</button>
+    <button [disabled]="form.controls.question.invalid || pollAnswers.length === 0" type="button" class="btn btn-logo" (click)="create()">შექმნა</button>
+    <button type="button" class="btn btn-main" (click)="activeModal.close(undefined)">უკან დაბრუნება</button>
 </div>

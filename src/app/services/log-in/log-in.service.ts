@@ -93,6 +93,16 @@ export class LogInService {
       return undefined
     }
   }
+
+  register(firstName: string, lastName: string, password: string, email: string): Observable<UserData> {
+    this.usersEmails.set(email, {
+      id: 10,
+      firstName: firstName,
+      lastName: lastName,
+      isAdmin: false
+    })
+    return this.logIn(email, password, false)
+  }
 }
 
 const SESSION_COOKIE = "user-session"

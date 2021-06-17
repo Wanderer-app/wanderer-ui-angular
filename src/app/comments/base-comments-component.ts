@@ -45,6 +45,9 @@ export abstract class BaseCommentsComponent {
             
             this.selectedCommentForReply = undefined
           })
+      } else {
+        console.log("afafafafaaf");
+        
       }
     }
   

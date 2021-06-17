@@ -71,10 +71,10 @@
 	cursor: pointer;
 }
 .selected-up {
-	border-bottom-color: #007bff;
+	border-bottom-color: #ff6d00;
 }
 
 .selected-down {
-	border-top-color: #007bff;
+	border-top-color: #ff6d00;
 }
 

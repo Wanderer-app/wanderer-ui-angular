@@ -9,7 +9,7 @@
     height: 40px;
     line-height: 40px;
     font-size: 20px;
-    background-color: #07A4DD;
+    background-color: #500000;
     border-radius: 40px;
     overflow: hidden;
   }
@@ -18,19 +18,19 @@
     top: 0;
     width: 500px;
     text-align: center;
-    color: #fff;
+    color: #500000;
   }
   .progress .progress-bar {
     height: 100%;
     overflow: hidden;
-    background-color: #fff;
+    background-color: #500000;
     border-radius: inherit;
     overflow: hidden;
     position: relative;
 
   }
   .progress .progress-bar .progress-text {
-    color: #07A4DD;
+    color: #500000;
   }
   
   @-webkit-keyframes animate {

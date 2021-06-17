@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark text-white" style="background-color: #ec004b">
+<nav class="navbar navbar-expand-lg navbar-dark text-white" style="background-color: #500000">
     <div class="container-fluid">
       <a class="navbar-brand ms-1" href="/">
         <img src="assets/svg/logo-no-text.svg" class="img img-fluid" style="height: 40px;">
@@ -22,7 +22,7 @@
                 <span class="position-relative">
                   <fa-icon class="me-1" [icon]="notificationsIcon"></fa-icon>
                   <small class="position-absolute start-100 top-0 translate-middle">
-                    <span *ngIf="unseenNotificationsCount() > 0" class="badge bg-secondary">{{unseenNotificationsCount()}}</span>
+                    <span *ngIf="unseenNotificationsCount() > 0" class="badge" style="background-color: #ff6d00;">{{unseenNotificationsCount()}}</span>
                   </small>
                 </span>  
               </a>
@@ -33,7 +33,7 @@
 
                       <span class="me-2">
                         <h3>
-                          <fa-icon class="text-dark" [icon]="notificationTypeIcons.get(notification.type)!"></fa-icon>
+                          <fa-icon class="text-main" [icon]="notificationTypeIcons.get(notification.type)!"></fa-icon>
                         </h3>
                       </span>
 
@@ -43,12 +43,12 @@
                       </span>
 
                       <small>
-                        <fa-icon *ngIf="notification.status !== notificationStatus.OPENED " class="text-main" [icon]="newNotificationIcon"></fa-icon>
+                        <fa-icon *ngIf="notification.status !== notificationStatus.OPENED " class="text-main" style="color: #ff6d00;" [icon]="newNotificationIcon"></fa-icon>
                       </small>
 
                     </div>
                     <div class="d-block text-center mt-3">
-                      <a class="text-main" href="javascript:void(0)">მეტის ჩატვირთვა</a>
+                      <a class="link-main" href="javascript:void(0)">მეტის ჩატვირთვა</a>
                     </div>
                   </div>
 

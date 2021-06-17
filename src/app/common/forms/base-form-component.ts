@@ -46,9 +46,6 @@ export abstract class BaseFormComponent {
           if(control.errors.notFound) {
             errorMessages.push(control.errors.notFound.errorText);            
           }
-          if(control.errors.registration) {
-            errorMessages.push(control.errors.registration.errorText);            
-          }
           if(control.errors.custom) {
             errorMessages.push(control.errors.custom.errorText);            
           }

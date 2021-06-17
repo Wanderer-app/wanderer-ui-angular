@@ -150,7 +150,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   routeDefaultStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
-    let color = '#ff0051e6'
+    let color = '#ff6d00'
     let zIndex = undefined
 
     if (feature.getProperty("isSelected")) {

@@ -1,0 +1,76 @@
+<div class="d-flex align-items-center justify-content-center h-100-after-navbar">
+    <div class="shadow bg-light p-3" style="width: 30%;">
+      <form onsubmit="return false" (ngSubmit)="submitRegisterForm()" [formGroup]="form">
+  
+        <h3 class="text-center text-secondary">რეგისტრაცია</h3>
+        <hr>
+    
+        <div class="form-group">
+            <label class="text-secondary mb-1" for="">ელფოსტა</label>
+          <input class="{{errorClasses(userEmail)}} form-control" required email type="email" formControlName="email" #userEmail>
+          <ng-container *ngIf="isInValid(userEmail)">
+              <ng-container *ngFor="let error of getErrors(userEmail)">
+                <small class="text-danger">{{error}}</small>
+              </ng-container>
+          </ng-container>
+        </div>
+
+        <div class="row g-3 mt-1">
+            <div class="col">
+                <div class="form-group">
+                <label class="text-secondary mb-1" for="">სახელი</label>
+                    <input class="{{errorClasses(fName)}} form-control" required type="text" formControlName="firstName" #fName>
+                    <ng-container *ngIf="isInValid(fName)">
+                        <ng-container *ngFor="let error of getErrors(fName)">
+                        <small class="text-danger">{{error}}</small>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group ">
+                <label class="text-secondary mb-1" for="">გვარი</label>
+                    <input class="{{errorClasses(lName)}} form-control" required type="text" formControlName="lastName" #lName>
+                    <ng-container *ngIf="isInValid(lName)">
+                        <ng-container *ngFor="let error of getErrors(lName)">
+                        <small class="text-danger">{{error}}</small>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row g-3 mt-1">
+            <div class="col">
+                <div class="form-group ">
+                <label class="text-secondary mb-1" for="">პაროლი</label>
+                    <input class="{{errorClasses(pass)}} form-control" (change)="removePasswordErrors()" required type="password" formControlName="password" #pass>
+                    <ng-container *ngIf="isInValid(pass)">
+                        <ng-container *ngFor="let error of getErrors(pass)">
+                        <small class="text-danger">{{error}}</small>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group ">
+                <label class="text-secondary mb-1" for="">გაიმეორეთ</label>
+                    <input class="{{errorClasses(passRe)}} form-control" (change)="removePasswordErrors()" required type="password" formControlName="passwordRepeat" #passRe>
+                    <ng-container *ngIf="isInValid(passRe)">
+                        <ng-container *ngFor="let error of getErrors(passRe)">
+                        <small class="text-danger">{{error}}</small>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-main w-100 mt-3" type="submit" [disabled]="form.invalid || registering">
+            <span *ngIf="!registering">შესვლა</span>
+            <span *ngIf="registering" class="spinner-border spinner-border-sm" role="status"></span>
+        </button>
+        
+        <div class="text-danger"><b>{{errorText}}</b></div>
+    </form>
+    </div>
+  </div>

@@ -1,7 +1,7 @@
 <div *ngFor="let reply of comment.responsesPreview">
     <ng-container *ngIf="!hiddenComments.includes(reply)">
         <div class="row gx-2">
-            <div class="col-1 border-end border-dark" ></div>
+            <div class="col-1 border-end border-main" ></div>
             <div class="col-11">
                 <div class="row gx-2">
                     <div class="col-1">
@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-9">
                         <div class="">
-                            <h5 class="d-inline me-2">{{ reply.author | fullname }}</h5> <small class="text-secondary">{{reply.createdAt}}</small>
+                            <h5 class="text-main d-inline me-2">{{ reply.author | fullname }}</h5> <small class="text-secondary">{{reply.createdAt}}</small>
                             <p *ngIf="!isEditable(reply)" class="mb-0">
                                 <small><span class="badge rounded-pill bg-secondary"><u>@{{comment.author | fullname}}</u></span></small> 
                                 {{reply.text}}
@@ -26,14 +26,14 @@
                             <button class="btn btn-sm btn-link mb-2 text-secondary px-0" *ngIf="reply.responseNumber > reply.responsesPreview.length" (click)="gerRepliesForReply(reply)">მეტი პასუხი</button>
                         </div>
                         <div class="mb-2" *ngIf="selectedCommentForReply?.id === reply.id">
-                            <form onsubmit="return false" [formGroup]="replyForm" (ngSubmit)="replyToComment()">
+                            <form onsubmit="return false" [formGroup]="replyForm">
                                 <div class="row g-1">
                                     <div class="col-sm-10 form-group">
                                         <textarea required formControlName="replyText" class="form-control" style="resize: none;" rows="1" placeholder="თქვენი პასუხი..."></textarea>
                                     </div>
                                 
                                     <div class="col-sm-2 form-group">
-                                        <button type="submit" [disabled]="!replyForm.valid" class="btn btn-primary" style="height: 100%; width: 100%;"><fa-icon [icon]="sendIcon"></fa-icon></button>
+                                        <button (click)="replyToComment()" type="submit" [disabled]="!replyForm.valid" class="btn btn-main" style="height: 100%; width: 100%;"><fa-icon [icon]="sendIcon"></fa-icon></button>
                                     </div>
                                 </div>
                             </form>

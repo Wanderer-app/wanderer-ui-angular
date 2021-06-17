@@ -1,7 +1,3 @@
-agm-map {
-    height: calc(100vh - 60px)
-}
-
 .pins-pagination {
     top: calc(100vh - 120px)
 }
@@ -13,7 +9,7 @@ agm-map {
 .growing-button {
     height: 50px;
     width: 50px;
-    background-color: #ff0051;
+    background-color: #500000;
     cursor: pointer;
     transition: 300ms;
     border-radius: 25px;
@@ -22,7 +18,7 @@ agm-map {
 .growing-button-sm {
     height: 40px;
     width: 40px;
-    background-color: #ff0051;
+    background-color: #500000;
     cursor: pointer;
     transition: 300ms;
     border-radius: 20px;
@@ -33,19 +29,19 @@ agm-map {
 }
 
 .growing-button-sm:hover {
-    background-color: #ec004b;
+    background-color: #500000;
     width:125px;
 }
 
 .growing-button:hover {
-    background-color: #ec004b;
+    background-color: #500000;
     width:125px;
 }
 
 .growing-button-clicked {
     height: fit-content;
     width:100%;
-    background-color: #ec004b;
+    background-color: #500000;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     border-bottom-left-radius: 0;

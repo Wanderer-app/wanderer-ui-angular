@@ -5,7 +5,7 @@
             <button (click)="fileUpload.click()" type="button" class="btn bg-white border-top border-bottom text-secondary" style="font-size: 20px;">
                 <fa-icon [icon]="clipIcon"></fa-icon>
             </button>
-            <button type="submit" [disabled]="form.invalid || creatingPost" class="btn btn-primary">
+            <button type="submit" [disabled]="form.invalid || creatingPost" class="btn btn-main">
                 <ng-container *ngIf="!creatingPost">გაგზავნა</ng-container>
                 <span *ngIf="creatingPost" class="spinner-border spinner-border-sm" role="status"></span>
             </button>
