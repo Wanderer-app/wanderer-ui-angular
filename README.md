@@ -17,3 +17,8 @@ https://getbootstrap.com/docs/5.0/components/card/ - Bootstrap Docs
 In order for app to work on your machine, you should provide your own api key. <br>
 1) create a file with path: `src/environments/keys.ts` <br>
 2) create constant with your key in this file: `export const GOOGLE_MAPS_API_KEY = "your.api.key"`
+
+
+### Running with docker
+1) Build.  docker build -t wanderer-ui-angular/angular-app:latest .
+2) Run Container.  docker run -p 4200:80 wanderer-ui-angular/angular-app:latest

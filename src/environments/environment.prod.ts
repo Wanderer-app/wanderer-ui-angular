@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  userContentApiUrl: "http://path-to-service/api/",
-  userApiUrl: "http://path-to-service/api/",
+  userContentApiUrl: "http://localhost:8080/api/",
+  userApiUrl: "http://0.0.0.0:5000/api/v1/",
   firebaseConfig: {
     apiKey: "AIzaSyD24DhMzVpRtRirIJkdPb4DYw6VUmiAun0",
     authDomain: "wanderer-ui.firebaseapp.com",
