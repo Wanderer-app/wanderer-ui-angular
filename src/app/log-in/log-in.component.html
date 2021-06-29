@@ -6,9 +6,9 @@
       <hr>
   
       <div class="form-group">
-        <input class="{{errorClasses(userEmail)}} form-control" required email type="email" formControlName="email" placeholder="ელფოსტა" #userEmail>
-        <ng-container *ngIf="isInValid(userEmail)">
-            <ng-container *ngFor="let error of getErrors(userEmail)">
+        <input class="{{errorClasses(usrName)}} form-control" required type="text" formControlName="userName" placeholder="მომხმარებლის სახელი" #usrName>
+        <ng-container *ngIf="isInValid(usrName)">
+            <ng-container *ngFor="let error of getErrors(usrName)">
               <small class="text-danger">{{error}}</small>
             </ng-container>
         </ng-container>

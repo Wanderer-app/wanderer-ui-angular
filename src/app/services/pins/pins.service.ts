@@ -8,7 +8,6 @@ import { UserAddedContentService } from '../user-added-content-service';
 import { ReportReason, reportReasons } from 'src/app/common/data/report-reason';
 import { UpdatePinData } from 'src/app/pins-detail/update-pin-details/update-pin-data';
 import { PinData, PinShortData } from 'src/app/common/data/pin-data';
-import { PinType } from 'src/app/common/data/pinType';
 import { NewPinInfo } from 'src/app/create-pin-form/new-pin-info';
 import { FileData } from 'src/app/common/data/file-data';
 import { LogInService } from '../log-in/log-in.service';

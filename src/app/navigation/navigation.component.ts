@@ -49,7 +49,7 @@ export class NavigationComponent implements OnInit, OnDestroy, LogInSubscriber {
 
   loadNotifications() {
     if(this.loggedInUser()) {
-      this.userService.getNotificationsForLoggedInUser(20, 1)
+      this.userService.getNotificationsForLoggedInUser()
       .subscribe(data => {
         this.notifications = data
       }) 
@@ -83,7 +83,7 @@ export class NavigationComponent implements OnInit, OnDestroy, LogInSubscriber {
 
   notificationClicked(notification: NotificationData) {
     this.notificationsSubscription = this.userService.notificationOpened(notification.id)
-      .subscribe(n => console.log("Received updated notification!"))
+      .subscribe(n => notification.status = NotificationStatus.OPENED)
 
     if (notification.redirectUrl !== "") {
       this.router.navigateByUrl(this.router.parseUrl(notification.redirectUrl))
@@ -96,7 +96,11 @@ export class NavigationComponent implements OnInit, OnDestroy, LogInSubscriber {
         this.notifications
         .filter(n => n.status === NotificationStatus.UNSEEN)
         .map(n => n.id)
-      ).subscribe()      
+      ).subscribe(reslut => {
+        this.notifications!
+          .filter(n => n.status === NotificationStatus.UNSEEN)
+          .forEach(n => n.status = NotificationStatus.SEEN)
+      })      
     }
   }
 

@@ -1,6 +1,6 @@
 export interface NotificationData {
-    id: number,
-    forUser: number,
+    id: string,
+    forUser: string,
     text: string,
     redirectUrl: string,
     createdAt: string

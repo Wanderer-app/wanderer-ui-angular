@@ -115,7 +115,7 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     return this.logInService.getLoggedInUser()
   }
 
-  hasUsersVote(voterIds: number[]): boolean {
+  hasUsersVote(voterIds: string[]): boolean {
     let user = this.logInService.getLoggedInUser()
 
     return user !== undefined && voterIds.includes(user.id)
@@ -280,23 +280,30 @@ export class RouteDiscussionComponent implements OnInit, OnDestroy {
     
     this.queryParamsSubscription = this.route.queryParamMap.subscribe(params => {
       let postId = params.get("post")
+      let pollId = params.get("poll")
       if (postId) {
-        let matchedDiscussion = discussion.find(d => d.type === UserContentType.POST && d.id === parseInt(postId!))
+        this.findDiscussionElement(UserContentType.POST, parseInt(postId), discussion)
+      }
 
-        if (matchedDiscussion) {
-          matchedDiscussion.highlighted = true
-          this.additionalDiscussion.unshift(matchedDiscussion)
-        } else {
-          this.additionalDiscussionSubScription = this.postService.getPostById(parseInt(postId!))
-            .subscribe(post => {
-              post.highlighted = true
-              this.newlyCreatedElements.unshift(post)
-              console.log(post);
-              
-            })
-        }
+      if (pollId) {
+        this.findDiscussionElement(UserContentType.POLL, parseInt(pollId), discussion)
       }
     })
+  }
+
+  private findDiscussionElement(type: UserContentType, id: number, discussion: DiscussionElement[]) {
+    let matchedDiscussion = discussion.find(d => d.type === type && d.id === id)
+
+    if (matchedDiscussion) {
+      matchedDiscussion.highlighted = true
+      this.additionalDiscussion.unshift(matchedDiscussion)
+    } else {
+      this.additionalDiscussionSubScription = (type === UserContentType.POST ? this.postService.getPostById(id) : this.pollService.getPollById(id))
+        .subscribe(element => {
+          element.highlighted = true
+          this.newlyCreatedElements.unshift(element)          
+        })
+    }
   }
 
 }

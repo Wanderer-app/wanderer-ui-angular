@@ -1,13 +1,17 @@
+import { HttpClient } from '@angular/common/http';
+import { flatten } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { delay, flatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UserData } from 'src/app/common/data/user-full-data';
 import { LogInRequiredError } from 'src/app/common/errors/log-in-required-error';
 import { LogInSubscriber } from 'src/app/common/event-listeners/log-in-subscriber';
 import { JAMBURA, JANGULA, PATATA } from 'src/app/common/mock/mocked-short-users';
 import { NotificationService } from 'src/app/notifications/service/notification.service';
+import { environment } from 'src/environments/environment';
+import { BackEndUserDataResponse } from '../back-end/response';
 import { UserSession } from './user-session';
 
 @Injectable({
@@ -16,13 +20,9 @@ import { UserSession } from './user-session';
 export class LogInService {
 
 
-  constructor(private cookieService: CookieService, private router: Router, private notificationService: NotificationService) { }
+  constructor(private cookieService: CookieService, private router: Router, private notificationService: NotificationService, private httpClient: HttpClient) { }
 
-  usersEmails: Map<string, UserData> = new Map([
-    ["jambura@gmail.com", JAMBURA],
-    ["patata@gmail.com", PATATA],
-    ["jangula@gmail.com", JANGULA],
-  ])
+  private SERVICE_URL = environment.userApiUrl
 
   loginSubscribers: LogInSubscriber[] = []
 
@@ -55,24 +55,29 @@ export class LogInService {
     return undefined
   }
 
-  logIn(email: string, password: string, remember: boolean): Observable<UserData> {
-    let params = {
+  logIn(userName: string, password: string, remember: boolean): Observable<UserData> {
+    let cookieParams = {
       path: "/",
       expires: remember ? 180 : undefined
     }
+    
+    return this.httpClient.post<BackEndUserDataResponse>(this.SERVICE_URL + "login", {
+      username: userName,
+      password: password
+    })
+      .pipe(map(response => ({
+        id: response._id,
+        firstName: response.name,
+        lastName: response.surname,
+        isAdmin: response.privilege === 1,
+        username: response.surname,
+      })))
+      .pipe(
+        tap(user => {
+          this.cookieService.set(SESSION_COOKIE, JSON.stringify({sessionId: user.id, userData: user}), cookieParams)
+          this.notifyLogInSubscribers()
+        }))
 
-    let user = this.usersEmails.get(email)
-    if (user) {
-      return of(user)
-        .pipe(
-          tap(user => {
-            this.cookieService.set(SESSION_COOKIE, JSON.stringify({sessionId: "12345", userData: user}), params)
-            this.notifyLogInSubscribers()
-          }))
-        .pipe(delay(500))
-    } else {
-      return throwError("მომხმარებელი ვერ მოიძებნა")
-    }
   }
 
   logOut() {
@@ -94,14 +99,17 @@ export class LogInService {
     }
   }
 
-  register(firstName: string, lastName: string, password: string, email: string): Observable<UserData> {
-    this.usersEmails.set(email, {
-      id: 10,
-      firstName: firstName,
-      lastName: lastName,
-      isAdmin: false
-    })
-    return this.logIn(email, password, false)
+  register(firstName: string, lastName: string, password: string, email: string, userName: string): Observable<UserData> {
+
+    return this.httpClient.post(this.SERVICE_URL + "users", {
+      name: firstName,
+      surname: lastName,
+      username: userName,
+      password: password,
+      email: email
+    }, { responseType: 'text' })
+      .pipe(switchMap(response => this.logIn(userName, password, false)))
+
   }
 }
 

@@ -20,7 +20,7 @@ export class LogInComponent extends BaseFormComponent implements OnInit, OnDestr
     private notificationService: NotificationService
   ) {
     super(formBuilder.group({
-      email: [''],
+      userName: [''],
       password: [''],
       remember: [false]
     }))
@@ -40,7 +40,7 @@ export class LogInComponent extends BaseFormComponent implements OnInit, OnDestr
   submitLogInForm() {
     this.loggingIn = false
     this.logInSubscription = this.logInService.logIn(
-      this.form.controls.email.value,
+      this.form.controls.userName.value,
       this.form.controls.password.value,
       this.form.controls.remember.value
     )

@@ -1,7 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { NotificationData, NotificationStatus, NotificationType } from 'src/app/common/data/notification-data';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { NotificationData } from 'src/app/common/data/notification-data';
+import { environment } from 'src/environments/environment';
+import { BackEndUserDataResponse } from '../back-end/response';
 import { LogInService } from '../log-in/log-in.service';
 
 @Injectable({
@@ -9,82 +12,44 @@ import { LogInService } from '../log-in/log-in.service';
 })
 export class UserService {
 
-  constructor(private logInService: LogInService) { }
+  constructor(private logInService: LogInService, private httpClient: HttpClient) { }
 
-  getNotificationsForLoggedInUser(pageSize: number, pageNumber: number): Observable<NotificationData[]> {
-    console.log("Getting notifications");
-    
+  private SERVICE_URL = environment.userApiUrl
+
+  getNotificationsForLoggedInUser(): Observable<NotificationData[]> {
+
     let user = this.logInService.requireLoggedInUser()
-    return of(this.notifications).pipe(delay(500))
 
+    return this.httpClient.get<BackEndUserDataResponse>(this.SERVICE_URL + "get_user?id=" + user.id)
+      .pipe(map(user =>
+        (user.notifications || []).map(n => ({
+          id: n._id,
+          forUser: user._id,
+          text: n.text,
+          redirectUrl: n.redirect_url,
+          createdAt: n.created_at,
+          type: n.type,
+          status: n.status
+        }))
+
+      ))
+  
   }
 
-  notificationOpened(id: number): Observable<NotificationData> {
-    console.log("Notification opened");
+  notificationOpened(id: string): Observable<String> {
 
-    let notification = this.notifications.find(n => n.id === id)
-
-    if(notification) {
-      notification.status = NotificationStatus.OPENED
-      return of(notification).pipe(delay(500))
-    }
-    return of()
+    return this.httpClient.post(this.SERVICE_URL + "notification-opened", {
+      id: id
+    }, { responseType: "text" })
     
   }
 
-  notificationsSeen(ids: number[]): Observable<NotificationData[]> {    
-    this.notifications
-      .filter(n => ids.includes(n.id))
-      .forEach(n => n.status = NotificationStatus.SEEN)
+  notificationsSeen(ids: string[]): Observable<String> {  
     
-    return of(this.notifications)
+    return this.httpClient.post(this.SERVICE_URL + "notifications-seen", {
+      ids: ids
+    }, { responseType: "text" })
+    
   }
 
-  notifications: NotificationData[] = [
-    {
-      id: 1,
-      forUser: 1,
-      text: "მომხმარებელმა Nikoloz Patatishvili დააკომენტარა თქვენი პინი",
-      redirectUrl: "/?route=TB201301&pin=1",
-      createdAt: "2021-06-10",
-      type: NotificationType.COMMENT,
-      status: NotificationStatus.UNSEEN
-    },
-    {
-      id: 2,
-      forUser: 1,
-      text: "მომხმარებელმა Nika Jangulashvili შეაფასა თქვენი პინი",
-      redirectUrl: "/?route=TB201301&pin=2",
-      createdAt: "2021-06-10",
-      type: NotificationType.RATING,
-      status: NotificationStatus.UNSEEN
-    },
-    {
-      id: 3,
-      forUser: 1,
-      text: "aaaa",
-      redirectUrl: "/?route=TB201301&pin=3",
-      createdAt: "2021-06-10",
-      type: NotificationType.COMMENT,
-      status: NotificationStatus.UNSEEN
-    },
-    {
-      id: 4,
-      forUser: 1,
-      text: "თქვენი პინი სათაურით 'აეეეეეეეე' დაბლოკა ადმინისტრაციამ",
-      redirectUrl: "",
-      createdAt: "2021-06-10",
-      type: NotificationType.CONTENT_STATUS_CHANGE,
-      status: NotificationStatus.OPENED
-    },
-    {
-      id: 5,
-      forUser: 1,
-      text: "მომხმარებელმა Nika Jangulashvili უპასუხა თქვენ კომენტარს 'რაღაცა ტექს...'",
-      redirectUrl: "/?route=TB201301&post=4",
-      createdAt: "2021-06-10",
-      type: NotificationType.REPLY,
-      status: NotificationStatus.OPENED
-    },
-  ]
 }

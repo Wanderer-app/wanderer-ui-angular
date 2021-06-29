@@ -214,10 +214,11 @@ export class MapComponent implements OnInit, OnDestroy {
             this.selectFeature(feature)
             let pinId = params.get("pin")
             let postId = params.get("post")
+            let pollId = params.get("poll")
             if(pinId) {
               this.pinSelectedEvent.emit(parseInt(pinId))
             }
-            if(postId) {
+            if(postId || pollId) {
               this.showDiscussion()
             }
 

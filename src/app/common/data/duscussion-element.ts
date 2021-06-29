@@ -31,6 +31,6 @@ export interface PollContent {
 export interface PollAnswerData {
     answerId: number,
     title: string,
-    answererIds: number[],
+    answererIds: string[],
     percentage: number
 }

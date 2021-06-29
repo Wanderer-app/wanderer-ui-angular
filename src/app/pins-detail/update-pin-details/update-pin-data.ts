@@ -5,5 +5,5 @@ export interface UpdatePinData {
    newTitle: string,
    newText: string,
    newFile?: FileData,
-   updaterId?: number
+   updaterId?: string
 }

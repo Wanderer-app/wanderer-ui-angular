@@ -22,6 +22,10 @@ export class PollService implements CommentableContentService, RateableContentSe
   commentsBatchSize = 5
   commentsSorting: SortingParams = { fieldName: "rating", sortingDirection: SortingDirection.DESCENDING }
 
+  getPollById(id: number): Observable<DiscussionElement> {
+    return this.api.get<DiscussionElement>(`polls/${id}`)
+  }
+
   getComments(id: number, pageNumber: number): Observable<CommentData[]> {
     return this.api.listOf<CommentData>(`polls/${id}/comments`, {
       batchNumber: pageNumber,

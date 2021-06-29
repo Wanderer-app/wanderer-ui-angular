@@ -22,7 +22,7 @@ export class ContentControlMenuComponent implements OnInit, OnDestroy {
   @Input() placement!: ContentControlMenuPlacement
   @Input() contentType!: UserContentType
   @Input() contentId!: number
-  @Input() contentCreatorId!: number
+  @Input() contentCreatorId!: string
   @Input() contentIsActive!: boolean
   @Input() service!: UserAddedContentService<any>
   @Input() backgroundColor?: string

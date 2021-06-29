@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div *ngIf="element.type === poll && !removedPolls.includes(element.id)" class="rounded shadow mt-4 p-3 bg-white">
+        <div *ngIf="element.type === poll && !removedPolls.includes(element.id)" (click)="element.highlighted = false" class="rounded mt-4 p-3 bg-white {{element.highlighted? 'glow-primary' : 'shadow'}}">
             <div class="row g-2">
                 <div class="col-11 d-flex">
                     <img src="assets/img/avatar.jpg" alt="" style="width:auto;max-height:50px;" class="rounded-circle img-fluid">

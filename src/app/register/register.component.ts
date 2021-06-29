@@ -18,6 +18,7 @@ export class RegisterComponent extends BaseFormComponent implements OnInit, OnDe
     super(formBuilder.group({
       firstName: [''],
       lastName: [''],
+      userName: [''],
       email: [''],
       password: [''],
       passwordRepeat: ['']
@@ -41,6 +42,7 @@ export class RegisterComponent extends BaseFormComponent implements OnInit, OnDe
     let firstName = this.form.controls.firstName.value
     let lastName = this.form.controls.lastName.value
     let email = this.form.controls.email.value
+    let userName = this.form.controls.userName.value
     let password = this.form.controls.password.value
     let passwordRepeat = this.form.controls.passwordRepeat.value
 
@@ -51,7 +53,7 @@ export class RegisterComponent extends BaseFormComponent implements OnInit, OnDe
     }
 
     this.registering = true
-    this.registerSubscription = this.logInService.register(firstName, lastName, password, email)
+    this.registerSubscription = this.logInService.register(firstName, lastName, password, email, userName)
       .pipe(finalize(() => this.registering = false))
       .subscribe(
         userdata => {

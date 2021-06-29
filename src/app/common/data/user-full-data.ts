@@ -1,6 +1,7 @@
 export interface UserData {
-    id: number
+    id: string
     firstName: string
     lastName: string
     isAdmin: boolean
+    username?: string,
 }
