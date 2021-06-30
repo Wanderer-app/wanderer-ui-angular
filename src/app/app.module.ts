@@ -38,6 +38,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { GOOGLE_MAPS_API_KEY } from 'src/environments/keys';
 import { LogoAnimationComponent } from './logo-animation/logo-animation.component';
 import { RegisterComponent } from './register/register.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 registerLocaleData(localeKa)
 
@@ -68,6 +69,7 @@ registerLocaleData(localeKa)
     NavigationComponent,
     LogoAnimationComponent,
     RegisterComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
