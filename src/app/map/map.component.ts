@@ -109,7 +109,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.changeDataLayer(RouteFile.ROUTES_ALL)
+    this.changeDataLayer(RouteFile.ROUTES_TBILISI)
     setTimeout(() => this.firstLoading = false, 2500);
   }
 
